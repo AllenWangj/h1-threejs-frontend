@@ -1,0 +1,30 @@
+:root {
+  --scrm-input-width: 220px;
+  --scrm-layout-table-max-height: calc(100vh - 252px);
+  --ez-fast-table--wrap-padding: 0 10px;
+}
+
+/* 默认充值样式 */
+.ez-search-from .el-input,
+.ez-search-from .el-select {
+  width: var(--scrm-input-width);
+}
+.ez-search-from .el-cascader__tags .el-tag {
+  max-width: 70%;
+}
+.ez-fast-table {
+  border-radius: 5px;
+}
+.ez-fast-table .ez-search-from {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.ez-fast-table .ez-search-from_operate {
+  margin-right: 0;
+}
+
+/* 处理火狐浏览器的input disabled属性不能选择问题 */
+input[disabled] {
+  pointer-events: auto;
+}
