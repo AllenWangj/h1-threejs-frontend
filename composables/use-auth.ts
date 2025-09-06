@@ -68,28 +68,7 @@ export const useAuth = () => {
   const checkAuthentication = async () => {
     try {
       if (permissions.value) return
-      // const { data } = await getMenus()
-      const data = [
-        {
-          createTime: 1731560516817,
-          createBy: 'MaxTan',
-          updateTime: 1732201257884,
-          updateBy: 'MaxTan',
-          id: '8888888888888888888888888888',
-          parentId: null,
-          code: 'home',
-          sort: 0,
-          intro: '',
-          level: 0,
-          name: '首页',
-          path: '/home',
-          icon: null,
-          visible: 1,
-          type: 2,
-          pid: '',
-          target: ''
-        }
-      ]
+      const { data } = await getMenus()
       menus.value = [...(data || [])]
       permissions.value = data.map((item) => item.code)
     } catch (_error) {

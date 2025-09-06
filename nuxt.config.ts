@@ -2,13 +2,7 @@ const getEnvValue = (keyword: string) => process.env[`${process.env.MODE}_${keyw
 export default defineNuxtConfig({
   srcDir: './',
   ssr: false,
-  modules: [
-    '@nuxt/eslint',
-    '@vueuse/nuxt',
-    '@ez-ui/nuxt',
-    '@nuxtjs/tailwindcss',
-    '@sino/nuxt-exclude-pages'
-  ],
+  modules: ['@vueuse/nuxt', '@ez-ui/nuxt', '@nuxtjs/tailwindcss', '@sino/nuxt-exclude-pages'],
   app: {
     head: {
       title: '管理平台'
