@@ -2,41 +2,51 @@
   <div class="three-container">
     <div ref="canvasContainer" class="canvas-wrapper"></div>
     <div class="controls">
-         <button @click="exportToGLTF" class="export-btn">
-        导出为 GLTF
-      </button>
-      <!-- <button @click="toggleRotation" class="control-btn">
-        {{ isRotating ? '暂停旋转' : '开始旋转' }}
-      </button>
-      <button @click="exportToGLTF" class="export-btn">
-        导出为 GLTF
-      </button>
-      <button @click="exportToGLB" class="export-btn">
-        导出为 GLB
-      </button> -->
+      <el-tree style="width:100%" :data="treeData" :props="defaultProps" >
+          <template #default="{ node, data }">
+             <div class="custom-tree-node">
+              <span style="margin-right:10px">{{node.label}}</span>
+              <!-- @click="append(data)" -->
+               <el-button type="primary" link @click.stop="handleExportFile(node.label)" >
+              导出模型
+            </el-button>
+            <el-button style="margin-left:20px" type="primary" link @click.stop="handleExportNameVisible(node.label)" >
+            移除模型
+            </el-button>
+
+            
+             </div>
+          </template>
+      </el-tree>
     </div>
   </div>
 </template>
-
 <script setup>
-import { ref, onMounted, onUnmounted, reactive } from 'vue';
-import Export from "../../utils/exportGLTF"
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
-import { saveAs } from 'file-saver';
-
-// // 容器引用
-const canvasContainer = ref(null);
+import { ref, onMounted, onUnmounted, reactive } from 'vue'
+import Export from '../../utils/exportGLTF'
+import * as THREE from 'three'
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'
+import { saveAs } from 'file-saver'
+const gltfName = "75-test"
 let obj
-onMounted(() =>{
-const object =   new Export(canvasContainer.value)
-obj = object
-object.loadSceneData("/gltf/test/test.gltf")
+const canvasContainer = ref(null)
+const treeData = ref([])
+const defaultProps = {
+  children: 'children',
+  label: 'name'
+}
+onMounted(() => {
+  const object = new Export(canvasContainer.value, {
+    loadCbk: (containObjectList) => {
+      treeData.value = containObjectList
+    }
+  })
+  obj = object
+  object.loadSceneData('/gltf/test/landmark.gltf')
+   object.loadExportMode("/gltf/test/75/75-test-Group_37.gltf")
 })
-
 // function exportToGLTF(){
-
 // }
 // Three.js 核心对象
 // let scene, camera, renderer, controls;
@@ -111,7 +121,7 @@ object.loadSceneData("/gltf/test/test.gltf")
 // // 窗口大小调整处理
 // const onWindowResize = () => {
 //   if (!camera || !renderer || !canvasContainer.value) return;
-  
+
 //   camera.aspect = canvasContainer.value.clientWidth / canvasContainer.value.clientHeight;
 //   camera.updateProjectionMatrix();
 //   renderer.setSize(
@@ -123,15 +133,15 @@ object.loadSceneData("/gltf/test/test.gltf")
 // // 动画循环
 // const animate = () => {
 //   animateId = requestAnimationFrame(animate);
-  
+
 //   if (state.isRotating) {
 //     cube.rotation.x += 0.01;
 //     cube.rotation.y += 0.01;
-    
+
 //     sphere.rotation.x -= 0.01;
 //     sphere.rotation.y -= 0.01;
 //   }
-  
+
 //   controls.update();
 //   renderer.render(scene, camera);
 // };
@@ -143,8 +153,8 @@ object.loadSceneData("/gltf/test/test.gltf")
 
 // // 导出为GLTF格式
 const exportToGLTF = () => {
-  exportScene(false);
-};
+  exportScene(false)
+}
 
 // // 导出为GLB格式
 // const exportToGLB = () => {
@@ -153,48 +163,83 @@ const exportToGLTF = () => {
 
 // // 导出场景的核心方法
 const exportScene = (binary = false) => {
-  if (!obj.scene) return;
+  if (!obj.scene) return
 
   // 创建导出器实例
-  const exporter = new GLTFExporter();
+  const exporter = new GLTFExporter()
 
   // 导出选项配置
   const options = {
-    trs: true,                // 导出位置、旋转、缩放为单独的属性
-    onlyVisible: true,        // 只导出可见对象
-    truncateDrawRange: true,  // 截断绘制范围
-    binary: binary,           // 是否导出为二进制格式(GLB)
+    trs: false, // 导出位置、旋转、缩放为单独的属性
+    onlyVisible: true, // 只导出可见对象
+    truncateDrawRange: true, // 截断绘制范围
+    binary: binary, // 是否导出为二进制格式(GLB)
     forcePowerOfTwoTextures: false,
-    embedImages: true         // 将图像嵌入到输出文件
-  };
- const object = obj.scene.getObjectByName("Group_36")
- const clone = object.clone()
-//  clone.position.set(0, 0, 0);
-// clone.rotation.set(0, 0, 0);
-clone.scale.set(0.01, 0.01, 0.01);
-clone.rotation.y = Math.PI / 2;
+    embedImages: true // 将图像嵌入到输出文件
+  }
+  const gltfName = 'Group_37'
+  const object = obj.scene.getObjectByName(gltfName)
+  const position = object.position.clone()
+  //  const world = object.localToWorld(position)
+  //  console.log("world---",world)
+  object.visible = false
+  const clone = object.clone()
+  clone.visible = true
+  clone.scale.set(0.025, 0.025, 0.025)
+  //  const p2 = new THREE.Vector3(position.x*0.025, position.y*0.025, position.z*0.025);
+  //  const rotationMatrix = new THREE.Matrix4();
+  //  const p1 = new THREE.Vector3().copy(p2).applyMatrix4(rotationMatrix);
+  // rotationMatrix.makeRotationX(-Math.PI / 2);
+  // //
+  //  clone.visible = true
+  //   clone.position.set(p1.x,p1.y,p1.z)
+  //  clone.rotation.x = Math.PI /2;
+  //  clone.position.set(world.x,world.y,world.z)
+  //  clone.position.set(0,0,0)
+  clone.position.set(position.x * 0.025, position.y * 0.025, position.z * 0.025)
+  obj.scene.add(clone)
 
-clone.updateMatrix();
-// clone.geometry.applyMatrix4(clone.matrix);
-clone.position.set(0, 0, 0);
-// clone.rotation.set(0, 0, 0);
-//  clone.scale.set(1, 1, 1);
+  //  clone.rotation.copy(object.rotation)
+  //  clone.position.set(position.x*0.025, position.y*0.025, position.z*0.025)
+  //   //  clone.rotation.x += Math.PI /2;
+
+  //  obj.scene.add(clone)
+  //  return
+  //
+  // clone.updateMatrix();
+
+  //  clone.position.set(0, 0, 0);
+  // clone.rotation.set(0, 0, 0);
+
+  // clone.updateMatrix();
+  // clone.geometry.applyMatrix4(clone.matrix);
+  // clone.position.set(0, 0, 0);
+  // clone.rotation.set(0, 0, 0);
+  //  clone.scale.set(1, 1, 1);
   // 执行导出
-  exporter.parse(clone, (result) => {
-    if (binary && result instanceof ArrayBuffer) {
-      // 处理GLB格式
-      const blob = new Blob([result], { type: 'application/octet-stream' });
-      saveAs(blob, 'scene-1.glb');
-    } else {
-      // 处理GLTF格式
-      const output = JSON.stringify(result, null, 2);
-      const blob = new Blob([output], { type: 'application/json' });
-      saveAs(blob, 'scene-2.gltf');
-    }
-  }, (error) => {
-    console.error('导出过程中发生错误:', error);
-  }, options);
-};
+
+  setTimeout(() => {
+    exporter.parse(
+      clone,
+      (result) => {
+        if (binary && result instanceof ArrayBuffer) {
+          // 处理GLB格式
+          const blob = new Blob([result], { type: 'application/octet-stream' })
+          saveAs(blob, 'scene-1.glb')
+        } else {
+          // 处理GLTF格式
+          const output = JSON.stringify(result, null, 2)
+          const blob = new Blob([output], { type: 'application/json' })
+          saveAs(blob, `${gltfName}.gltf`)
+        }
+      },
+      (error) => {
+        console.error('导出过程中发生错误:', error)
+      },
+      options
+    )
+  }, 4000)
+}
 
 // 组件挂载时初始化
 // onMounted(() => {
@@ -206,19 +251,68 @@ clone.position.set(0, 0, 0);
 // onUnmounted(() => {
 //   window.removeEventListener('resize', onWindowResize);
 //   cancelAnimationFrame(animateId);
-  
+
 //   if (renderer) {
 //     renderer.dispose();
 //   }
-  
+
 //   if (controls) {
 //     controls.dispose();
 //   }
-  
+
 //   if (canvasContainer.value && renderer?.domElement) {
 //     canvasContainer.value.removeChild(renderer.domElement);
 //   }
 // });
+function handleExportNameVisible(name){
+  const binary =false
+  const itemName = `${gltfName}-${name}`
+  localStorage.setItem(itemName,itemName)
+  const object = obj.scene.getObjectByName(name)
+   object.visible = false
+   object.parent.remove(object)
+}
+function handleExportFile(name) {
+  const binary =false
+  const itemName = `${gltfName}-${name}`
+  localStorage.setItem(itemName,itemName)
+  const object = obj.scene.getObjectByName(name)
+   object.visible = false
+  const clone = object.clone()
+  clone.visible = true
+  const position = clone.position.clone()
+  clone.position.set(0,0,0)
+   const exporter = new GLTFExporter()
+  // 导出选项配置
+  const options = {
+    trs: false, // 导出位置、旋转、缩放为单独的属性
+    onlyVisible: true, // 只导出可见对象
+    truncateDrawRange: true, // 截断绘制范围
+    binary: binary, // 是否导出为二进制格式(GLB)
+    forcePowerOfTwoTextures: false,
+    embedImages: true // 将图像嵌入到输出文件
+  }
+    exporter.parse(
+      clone,
+      (result) => {
+        if (binary && result instanceof ArrayBuffer) {
+          // 处理GLB格式
+          const blob = new Blob([result], { type: 'application/octet-stream' })
+          saveAs(blob, 'scene-1.glb')
+        } else {
+          // 处理GLTF格式
+          const output = JSON.stringify(result, null, 2)
+          const blob = new Blob([output], { type: 'application/json' })
+          saveAs(blob, `${itemName}.gltf`)
+        }
+      },
+      (error) => {
+        console.error('导出过程中发生错误:', error)
+      },
+      options
+    )
+ 
+}
 </script>
 
 <style scoped>
@@ -235,13 +329,19 @@ clone.position.set(0, 0, 0);
 
 .controls {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 0px;
+  right: 0px;
   display: flex;
-  gap: 10px;
+  /* gap: 10px; */
+  width: 400px;
+  height: 100%;
+  background: #fff;
+  z-index: 100;
+  overflow: auto;
 }
 
-.control-btn, .export-btn {
+.control-btn,
+.export-btn {
   padding: 8px 16px;
   border: none;
   border-radius: 4px;

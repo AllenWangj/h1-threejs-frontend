@@ -24,7 +24,7 @@ class Three {
             75,
             this.node.clientWidth / this.node.clientHeight,
             0.1,
-            1000
+            1000000
         );
         // this.scene.add(this.camera)
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -105,7 +105,7 @@ class Three {
         // );
         // centerMarker.position.copy(center);
         // this.scene.add(centerMarker);
-        
+        // const diagle = 
         return {
             width: size.x,    // X轴方向尺寸
             height: size.y,   // Y轴方向尺寸
