@@ -95,11 +95,31 @@ class Three {
         // 计算中心点
         const center = new THREE.Vector3();
         box.getCenter(center);
+        const rect = new THREE.Vector3()
+         box.getSize(rect)
+         const maxDim = Math.max(size.x, size.y, size.z);
+         // 可视化包围盒
+        //  const boxHelper = new THREE.Box3Helper(box, 0xffff00);
+        //  this.scene.add(boxHelper);
+         
+         // 可视化中心点
+        //  const centerMarker = new THREE.Mesh(
+        //      new THREE.SphereGeometry(0.3, 16, 16),
+        //      new THREE.MeshBasicMaterial({ color: 0xff00ff })
+        //  );
+        //  centerMarker.position.copy(center);
+        //  this.scene.add(centerMarker);
+ 
+         // 使用Box3计算立方体的包围盒
+        //  const box3 = new THREE.Box3();
+        //  box3.setFromObject(cube);
+        //  console.log("rect---",rect)
         return {
             width: size.x,    // X轴方向尺寸
             height: size.y,   // Y轴方向尺寸
             depth: size.z,    // Z轴方向尺寸
-            center: center    // 中心点坐标
+            center: center ,
+            size:rect   // 大小
         };
     };
     protected loadGLTFResource(url: string, loadGltfCbk?: (progress: number) => void): Promise<GLTF> {
