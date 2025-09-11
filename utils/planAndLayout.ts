@@ -1,7 +1,6 @@
 import Three from "./threejs";
 import * as THREE from 'three';
 import { Set75 } from "./utilsTwoSet/set75";
-
 export enum EnumLayoutCategory {
     EnumLayoutCategory_75 = "75",
     EnumLayoutCategory_150 = "150",
@@ -26,7 +25,7 @@ class PlanAndLayout extends Three {
     private currentStartMoveMode: THREE.Object3D | null = null //代表选中的模型
     private previousMousePosition: THREE.Vector2 = new THREE.Vector2() //记录初始化移动位置
     private raycasterSaveData: THREE.Object3D[] = []
-    private isDrag=true
+    private isDrag = true
     constructor(node: HTMLElement, option?: IOptipn) {
         super(node)
         this.option = Object.assign({
@@ -90,7 +89,6 @@ class PlanAndLayout extends Three {
         })
     }
     public handleAIData() {
-
         // 清楚默认场景的数据，释放内存
         this.disposeGLTFGroup(this.wrapper)
         this.defaultGroup = null
@@ -99,10 +97,6 @@ class PlanAndLayout extends Three {
         return this.raycasterSaveData
     }
     private addEventListeners(): void {
-        // 窗口大小变化事件
-        //  window.addEventListener('resize', () => this.onWindowResize());
-
-        // 鼠标事件
         this.renderer.domElement.addEventListener('mousedown', (e) => this.handleOnMouseDown(e));
         this.renderer.domElement.addEventListener('mousemove', (e) => this.handleOnMouseMove(e));
         this.renderer.domElement.addEventListener('mouseup', (e) => this.handleOnMouseUp(e));
@@ -112,8 +106,6 @@ class PlanAndLayout extends Three {
         // this.controls.enabled = false
         const dpX = event.clientX;
         const dpY = event.clientY;
-
-       
         const ndc = this.convertDpToNdc(dpX, dpY);
         this.mouse.x = ndc.x;
         this.mouse.y = ndc.y;
@@ -143,9 +135,9 @@ class PlanAndLayout extends Three {
             // 代表找到了这个模型，需要移动了
             this.currentStartMoveMode = selectObject
             this.controls.enabled = false
-            if(this.isDrag) {
+            if (this.isDrag) {
                 this.handleMousePosition(event)
-            }else {
+            } else {
                 this.previousMousePosition.x = event.clientX;
                 this.previousMousePosition.y = event.clientY
             }
@@ -167,17 +159,17 @@ class PlanAndLayout extends Three {
             y: event.clientY - this.previousMousePosition.y
         };
         const parent = this.currentStartMoveMode.parent
-        parent.rotation.z +=deltaMove.x * 0.05;
+        parent.rotation.z += deltaMove.x * 0.05;
         // 更新上一帧鼠标位置
         this.previousMousePosition.x = event.clientX
         this.previousMousePosition.y = event.clientY
     }
-    
+
     private handleOnMouseUp(event: MouseEvent) {
         // 鼠标抬起
         this.controls.enabled = true
-        if(this.isDrag ){
-        this.handleOnMouseMove(event)
+        if (this.isDrag) {
+            this.handleOnMouseMove(event)
         }
         this.currentStartMoveMode = null
     }
@@ -186,9 +178,9 @@ class PlanAndLayout extends Three {
         if (!this.currentStartMoveMode) {
             return
         }
-        if(this.isDrag ){
+        if (this.isDrag) {
             this.handleMousePosition(event)
-        }else {
+        } else {
             this.handleMouseRotation(event)
         }
         return
@@ -196,7 +188,7 @@ class PlanAndLayout extends Three {
     }
     private handleScenMode() {
         // 加载默认场景数据
-        Set75.forEach(ele=>{
+        Set75.forEach(ele => {
             this.loadGLTFResource(ele.url).then(res => {
                 const group = res.scene.children[0] as THREE.Group
                 const size = this.calculateGroupDimensions(group)
@@ -206,7 +198,7 @@ class PlanAndLayout extends Three {
                 const y = yPos
                 const z = 0
                 group.name = ele.groupName
-                group.rotation.z = ele.deg*Math.PI/180
+                group.rotation.z = ele.deg * Math.PI / 180
                 const pivot = new THREE.Object3D();
                 pivot.position.set(x + size.width / 2, y + size.height / 2, 0)
                 group.position.set(-size.width / 2, -size.height / 2, 0)
@@ -238,7 +230,6 @@ class PlanAndLayout extends Three {
             'Group_70',
             'Group_71',
             'Group_78',
-            // 'Group_70',
         ]
         hiddenNamne.forEach(ele => {
             const target = group.getObjectByName(ele)
@@ -255,15 +246,12 @@ class PlanAndLayout extends Three {
         const ndc = new THREE.Vector2();
         ndc.x = (x / this.renderer.domElement.clientWidth) * 2 - 1;
         ndc.y = -(y / this.renderer.domElement.clientHeight) * 2 + 1;
-
         // 2. 创建射线投射器
         const raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(ndc, this.camera);
-
         // 3. 计算射线与物体的交点
         // 这里假设场景中有一个地面平面或其他物体
         const intersects = raycaster.intersectObjects(this.scene.children, true);
-
         if (intersects.length > 0) {
             // 返回第一个交点的位置
             return intersects[0].point;
