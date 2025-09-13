@@ -29,6 +29,7 @@ export const Set75 = [
             z: 0
         }
     },
+    
     {
         groupName: 'Group_7',
         url: "/gltf/test/75/75-test-Group_6.gltf",
@@ -251,7 +252,7 @@ export const Set75 = [
         position: {
             x: 7408.212890625,
             y: 4113.110725402832,
-            z: 90
+            z: 0
         }
     },
 
@@ -312,8 +313,8 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x: 4943.64599609375 ,
-            y:  4743.014312744141,
+            x: 4943.64599609375,
+            y: 4743.014312744141,
             z: 0
         }
     },
@@ -326,8 +327,8 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x:4943.64599609375,
-            y:  4861.124542236328,
+            x: 4943.64599609375,
+            y: 4861.124542236328,
             z: 0
         }
     },
@@ -339,7 +340,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x:  4943.64599609375  ,
+            x: 4943.64599609375,
             y: 4388.68359375,
             z: 0
         }
@@ -352,7 +353,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x: 4943.64599609375  ,
+            x: 4943.64599609375,
             y: 4506.793830871582,
             z: 0
         }
@@ -362,7 +363,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x:4943.64599609375 ,
+            x: 4943.64599609375,
             y: 4624.904067993164,
             z: 0
         }
@@ -372,7 +373,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x: 4313.724792480469  ,
+            x: 4313.724792480469,
             y: 4743.014312744141,
             z: 0
         }
@@ -382,8 +383,8 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x:  3841.298095703125 ,
-            y:4388.68359375 ,
+            x: 3841.298095703125,
+            y: 4388.68359375,
             z: 0
         }
     },
@@ -392,7 +393,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_84.gltf",
         deg: 0,
         position: {
-            x:  3841.298095703125  ,
+            x: 3841.298095703125,
             y: 4743.014312744141,
             z: 0
         }
@@ -402,8 +403,8 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x: 4313.724792480469 ,
-            y: 4388.68359375 ,
+            x: 4313.724792480469,
+            y: 4388.68359375,
             z: 0
         }
     },
@@ -412,7 +413,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_36.gltf",
         deg: 0,
         position: {
-            x: 5494.8271484375 ,
+            x: 5494.8271484375,
             y: 4388.68359375,
             z: 0
         }
@@ -422,7 +423,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x:3198.208984375  ,
+            x: 3198.208984375,
             y: 4388.68359375,
             z: 0
         }
@@ -433,8 +434,8 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x: 2961.988525390625 ,
-            y: 4388.68359375 ,
+            x: 2961.988525390625,
+            y: 4388.68359375,
             z: 0
         }
     },
@@ -443,8 +444,8 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x:3198.208984375 ,
-            y:4743.01416015625 ,
+            x: 3198.208984375,
+            y: 4743.01416015625,
             z: 0
         }
     },
@@ -453,7 +454,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x: 2961.988525390625  ,
+            x: 2961.988525390625,
             y: 4743.01416015625,
             z: 0
         }
@@ -463,58 +464,39 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_74.gltf",
         deg: 0,
         position: {
-            x:2489.547607421875  ,
+            x: 2489.547607421875,
             y: 4743.01416015625,
             z: 0
         }
     },
-
-
-
-
-
-
-  
-
-    // {
-    //     groupName: 'Group_31',
-    //     url: "/gltf/test/75/75-test-Group_25.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 6479.0791015625,
-    //         y: 3113.0927734375,
-    //         z: 0
-    //     }
-    // },
-
     {
         groupName: "Group_14",
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x:3526.3231811523438 ,
+            x: 3526.3231811523438,
             y: 3113.0927734375,
             z: 0
         }
     },
 
-{
+    {
         groupName: "Group_15",
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x: 3880.6539306640625 ,
+            x: 3880.6539306640625,
             y: 3113.0927734375,
             z: 0
         }
     },
     {
-        groupName:"Group_16",
+        groupName: "Group_16",
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x:  3171.992477416992 ,
-            y:3113.0927734375,
+            x: 3171.992477416992,
+            y: 3113.0927734375,
             z: 0
         }
     },
@@ -523,7 +505,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x: 4234.984619140625 ,
+            x: 4234.984619140625,
             y: 3113.0927734375,
             z: 0
         }
@@ -533,8 +515,8 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x: 3526.3231811523438 ,
-            y:3601.28173828125,
+            x: 3526.3231811523438,
+            y: 3601.28173828125,
             z: 0
         }
     },
@@ -543,17 +525,17 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x: 3880.6539306640625 ,
+            x: 3880.6539306640625,
             y: 3601.28173828125,
             z: 0
         }
     },
     {
-        groupName:  "Group_34",
+        groupName: "Group_34",
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x: 3171.992477416992 ,
+            x: 3171.992477416992,
             y: 3601.28173828125,
             z: 0
         }
@@ -563,7 +545,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_40.gltf",
         deg: 0,
         position: {
-            x:4234.984619140625 ,
+            x: 4234.984619140625,
             y: 3601.28173828125,
             z: 0
         }
@@ -574,7 +556,7 @@ export const Set75 = [
         deg: 0,
         position: {
             x: 2975.14208984375,
-            y:  3113.0927734375,
+            y: 3113.0927734375,
             z: 0
         }
     },
@@ -583,19 +565,17 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_25.gltf",
         deg: 0,
         position: {
-            x: 2975.14208984375 ,
+            x: 2975.14208984375,
             y: 3601.28173828125,
             z: 0
         }
     },
-
- 
     {
         groupName: 'Group_1',
         url: "/gltf/test/75/75-test-Group_2.gltf",
         deg: 0,
         position: {
-            x: 2345.2207725048065  ,
+            x: 2345.2207725048065,
             y: 3581.596710205078,
             z: 0
         }
@@ -605,7 +585,7 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_2.gltf",
         deg: 0,
         position: {
-            x: 2345.2207725048065 ,
+            x: 2345.2207725048065,
             y: 3113.0927734375,
             z: 0
         }
@@ -615,183 +595,9 @@ export const Set75 = [
         url: "/gltf/test/75/75-test-Group_2.gltf",
         deg: 0,
         position: {
-            x:  2345.2207725048065 ,
-            y: 3368.998291015625 ,
+            x: 2345.2207725048065,
+            y: 3368.998291015625,
             z: 0
         }
     },
-
-    // {
-    //     groupName: 'Group_36',
-    //     url: "/gltf/test/75/75-test-Group_36.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x:2489.547607421875  ,
-    //         y: 4743.01416015625,
-    //         z: 0
-    //     }
-    // },
-    // {
-    //     groupName: 'Group_7',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 3804,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // }, {
-    //     groupName: 'Group_37',
-    //     url: "/gltf/test/75/75-test-Group_37.gltf",
-    //     deg: 0,
-    //     position: {
-    //         x: 2800,
-    //         y: 2128,
-    //         z: 0
-    //     }
-    // },
 ]

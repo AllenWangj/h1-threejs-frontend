@@ -8,7 +8,6 @@
     <NuxtPage />
   </div>
 </template>
-
 <style lang="less" scoped>
 .el-button+.el-button {
   margin-top: 10px;

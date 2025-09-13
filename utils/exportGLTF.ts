@@ -128,7 +128,6 @@ class ExportThree extends Three {
                     whileGroup=  parent
 
                 }
-                console.log(key,"x---",x,y)
             }
         })
     }
