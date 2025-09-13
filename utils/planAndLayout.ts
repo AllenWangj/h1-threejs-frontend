@@ -47,11 +47,8 @@ class PlanAndLayout extends Three {
         this.loadGLTFResource("/gltf/test/75/landmark.gltf", (progress) => {
             this.option.loadSceneCBK(progress)
         }).then(res => {
-            console.log("scene", res)
             this.wrapper.add(res.scene)
             const size = this.calculateGroupDimensions(this.wrapper)
-            // console.log("size.center", size.center)
-
             const number = 3000
             this.camera!.position.set(size.center.x, size.center.y, size.center.z + number)
             this.controls.target.set(size.center.x, size.center.y, size.center.z)
@@ -118,20 +115,20 @@ class PlanAndLayout extends Three {
             const { object } = intersects[0]
             let selectObject = object
             let stop = false
-
-            while (selectObject.name.indexOf("Group") == -1 || stop) {
+            // selectObject.name.indexOf("Group") == -1 ||
+            while ( !stop) {
                 // 代表没有找到目标元素
                 selectObject = selectObject.parent
-                if (selectObject.name === this.wrapperName) {
+                if (selectObject.parent.parent.name === this.wrapperName) {
                     // 
                     stop = true
                 }
             }
-            if (stop == true) {
-                // 代表是没有找到的
-                // todo 提示报错
-                return
-            }
+            // if (stop == true) {
+            //     // 代表是没有找到的
+            //     // todo 提示报错
+            //     return
+            // }
             // 代表找到了这个模型，需要移动了
             this.currentStartMoveMode = selectObject
             this.controls.enabled = false
@@ -148,10 +145,12 @@ class PlanAndLayout extends Three {
         const mouseX = (event.clientX - rect.left)
         const mouseY = (event.clientY - rect.top)
         const worldPos = this.getWorldPositionFromScreen(mouseX, mouseY)
+        // console.log("worldPos===",worldPos)
         const parent = this.currentStartMoveMode.parent
         const x = worldPos.x
         const y = worldPos.y
-        parent.position.set(x, y, 0)
+        const z = 0
+        parent.position.set(x, y, z)
     }
     private handleMouseRotation(event: MouseEvent) {
         const deltaMove = {
@@ -196,12 +195,12 @@ class PlanAndLayout extends Three {
                 const yPos = ele.position.y
                 const x = xPos
                 const y = yPos
-                const z = 0
+                const z = ele.position.z
                 group.name = ele.groupName
                 group.rotation.z = ele.deg * Math.PI / 180
                 const pivot = new THREE.Object3D();
-                pivot.position.set(x + size.width / 2, y + size.height / 2, 0)
-                group.position.set(-size.width / 2, -size.height / 2, 0)
+                pivot.position.set(x + size.width / 2, y + size.height / 2, z)
+                group.position.set(-size.width / 2, -size.height / 2, z)
                 pivot.add(group)
                 this.wrapper.add(pivot)
                 this.raycasterSaveData.push(pivot)
@@ -263,6 +262,5 @@ class PlanAndLayout extends Three {
             return this.camera.position.clone().add(direction.multiplyScalar(distance));
         }
     }
-
 }
 export default PlanAndLayout
