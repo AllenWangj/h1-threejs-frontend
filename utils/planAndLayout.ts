@@ -26,6 +26,7 @@ class PlanAndLayout extends Three {
     private previousMousePosition: THREE.Vector2 = new THREE.Vector2() //记录初始化移动位置
     private raycasterSaveData: THREE.Object3D[] = []
     private isDrag = true
+    private isStopDrag = true //停止移动
     constructor(node: HTMLElement, option?: IOptipn) {
         super(node)
         this.option = Object.assign({
@@ -116,7 +117,7 @@ class PlanAndLayout extends Three {
             let selectObject = object
             let stop = false
             // selectObject.name.indexOf("Group") == -1 ||
-            while ( !stop) {
+            while (!stop) {
                 // 代表没有找到目标元素
                 selectObject = selectObject.parent
                 if (selectObject.parent.parent.name === this.wrapperName) {
@@ -132,6 +133,20 @@ class PlanAndLayout extends Three {
             // 代表找到了这个模型，需要移动了
             this.currentStartMoveMode = selectObject
             this.controls.enabled = false
+            // 需要记录按下的时候位置信息，方便复位
+            this.currentStartMoveMode.parent.userData.position = new THREE.Vector3(
+                this.currentStartMoveMode.parent.position.x,
+                this.currentStartMoveMode.parent.position.y,
+                this.currentStartMoveMode.parent.position.z,
+
+            )
+
+            this.currentStartMoveMode.parent.userData.rotation = new THREE.Vector3(
+                this.currentStartMoveMode.parent.rotation.x,
+                this.currentStartMoveMode.parent.rotation.y,
+                this.currentStartMoveMode.parent.rotation.z,
+            )
+            this.isStopDrag = false
             if (this.isDrag) {
                 this.handleMousePosition(event)
             } else {
@@ -167,20 +182,30 @@ class PlanAndLayout extends Three {
     private handleOnMouseUp(event: MouseEvent) {
         // 鼠标抬起
         this.controls.enabled = true
-        if (this.isDrag) {
-            this.handleOnMouseMove(event)
+        if (this.isStopDrag) {
+            return
         }
-        this.currentStartMoveMode = null
+        if (this.isDrag) {
+            this.isStopDrag = true
+            this.handleOnMouseMove(event)
+        } else {
+            this.isStopDrag = true
+        }
+        // this.currentStartMoveMode = null
     }
     private handleOnMouseMove(event: MouseEvent) {
         // 鼠标移动
         if (!this.currentStartMoveMode) {
             return
         }
+        if (this.isStopDrag) {
+            return
+        }
         if (this.isDrag) {
             this.handleMousePosition(event)
         } else {
             this.handleMouseRotation(event)
+
         }
         return
 
@@ -261,6 +286,41 @@ class PlanAndLayout extends Three {
             const distance = 0; // 距离相机的距离
             return this.camera.position.clone().add(direction.multiplyScalar(distance));
         }
+    }
+    public handleThreeIsDrag() {
+        // 设置移动
+
+        this.isDrag = true
+        this.currentStartMoveMode = null
+    }
+    public handleThreeIsNotDrag() {
+        // 设置旋转
+        this.currentStartMoveMode = null
+        this.isDrag = false
+    }
+    public handleRestPosition() {
+        // 复位
+        if (this.currentStartMoveMode) {
+            if (this.isDrag) {
+                const position = this.currentStartMoveMode.parent.userData.position
+                this.currentStartMoveMode.parent.position.set(
+                    position.x,
+                    position.y,
+                    position.z,
+                )
+            } else {
+                const rotation = this.currentStartMoveMode.parent.userData.rotation
+                this.currentStartMoveMode.parent.rotation.set(
+                    rotation.x,
+                    rotation.y,
+                    rotation.z,
+                )
+            }
+
+        }
+    }
+    public handleDeleteMode(){
+        this.currentStartMoveMode.parent.parent.remove(this.currentStartMoveMode.parent)
     }
 }
 export default PlanAndLayout

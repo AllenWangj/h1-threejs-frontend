@@ -13,8 +13,6 @@
             <el-button style="margin-left:20px" type="primary" link @click.stop="handleExportNameVisible(node.label)" >
             移除模型
             </el-button>
-
-            
              </div>
           </template>
       </el-tree>
@@ -28,7 +26,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'
 import { saveAs } from 'file-saver'
-const gltfName = "75-test"
+const gltfName = "tool_6"
 let obj
 const canvasContainer = ref(null)
 const treeData = ref([])
@@ -43,7 +41,7 @@ onMounted(() => {
     }
   })
   obj = object
-  object.loadSceneData('/gltf/75-test/75-test.skp.gltf')
+  object.loadSceneData('/gltf/6-test/6-test.gltf')
   //  object.loadExportMode("/gltf/test/75/75-test-Group_37.gltf")
 })
 // function exportToGLTF(){
