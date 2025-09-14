@@ -38,7 +38,8 @@ class Three {
         // 添加控制器
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         // this.scene.add(this.controls)
-        this.controls.enableDamping = true;
+        this.controls.enableDamping = false;
+        // this.controls.
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
         this.scene.add(ambientLight);
 
@@ -91,29 +92,12 @@ class Three {
         // 计算尺寸（长宽高）
         const size = new THREE.Vector3();
         box.getSize(size);
-
         // 计算中心点
         const center = new THREE.Vector3();
         box.getCenter(center);
         const rect = new THREE.Vector3()
          box.getSize(rect)
          const maxDim = Math.max(size.x, size.y, size.z);
-         // 可视化包围盒
-        //  const boxHelper = new THREE.Box3Helper(box, 0xffff00);
-        //  this.scene.add(boxHelper);
-         
-         // 可视化中心点
-        //  const centerMarker = new THREE.Mesh(
-        //      new THREE.SphereGeometry(0.3, 16, 16),
-        //      new THREE.MeshBasicMaterial({ color: 0xff00ff })
-        //  );
-        //  centerMarker.position.copy(center);
-        //  this.scene.add(centerMarker);
- 
-         // 使用Box3计算立方体的包围盒
-        //  const box3 = new THREE.Box3();
-        //  box3.setFromObject(cube);
-        //  console.log("rect---",rect)
         return {
             width: size.x,    // X轴方向尺寸
             height: size.y,   // Y轴方向尺寸
@@ -200,9 +184,24 @@ class Three {
         // matrix.makeRotationZ(Math.PI/2);  // 应用X轴旋转
         // matrix.makeRotationFromQuaternion()
         matrix.setPosition(translation);  // 应用平移
-        console.log("matrix--",matrix)
         return matrix;
     }
+    protected convertDpToNdc(dpX: number, dpY: number) {
+        // 转换为标准化设备坐标
+       // 获取渲染器元素的边界矩形
+       const rect = this.renderer.domElement.getBoundingClientRect();
+       // 计算相对于渲染器的dp坐标
+       const relativeX = dpX - rect.left;
+       const relativeY = dpY - rect.top;
+       // 转换为0-1范围的坐标
+       const normalizedX = relativeX / rect.width;
+       const normalizedY = relativeY / rect.height;
+       // 转换为Three.js的标准化设备坐标(-1到1)
+       return {
+           x: normalizedX * 2 - 1,
+           y: -(normalizedY * 2 - 1)
+       };
+   }
 
 }
 export default Three

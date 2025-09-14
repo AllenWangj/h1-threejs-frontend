@@ -1,0 +1,1305 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "THREE.GLTFExporter r180"
+  },
+  "scenes": [
+    {
+      "name": "AuxScene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0,
+  "nodes": [
+    {
+      "matrix": [
+        -4.440892098500626e-16,
+        1.0000000000000002,
+        4.996003610813204e-16,
+        0,
+        4.996003610813204e-16,
+        -6.661338147750939e-16,
+        1.0000000000000002,
+        0,
+        1.0000000000000002,
+        2.7755575615628914e-16,
+        -6.661338147750939e-16,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "name": "Group_111",
+      "extras": {
+        "name": "Group",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        1,
+        4,
+        7,
+        10,
+        13,
+        16,
+        19,
+        22,
+        25,
+        28,
+        31,
+        34,
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55
+      ]
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        0,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_133",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        2,
+        3
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        1.1811023950576782,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_134",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        5,
+        6
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        0.7086614370346069,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_135",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        8,
+        9
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        2.5984251499176025,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_136",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        11,
+        12
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        3.543307065963745,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_137",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        14,
+        15
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        1.6535433530807495,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_138",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        17,
+        18
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        2.8346457481384277,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_139",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        20,
+        21
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        4.015748023986816,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_140",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        23,
+        24
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        1.8897638320922852,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_141",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        26,
+        27
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        4.2519683837890625,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_142",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        29,
+        30
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        3.7795276641845703,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_143",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        32,
+        33
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        0.23622047901153564,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_144",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        35,
+        36
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        3.070866107940674,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_145",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        38,
+        39
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        3.307086706161499,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_146",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        41,
+        42
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        0.4724409580230713,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_147",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        44,
+        45
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        0.9448819160461426,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_148",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        47,
+        48
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        2.3622047901153564,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_149",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        50,
+        51
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        1.4173228740692139,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_150",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        53,
+        54
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    },
+    {
+      "matrix": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        3.422854177870249e-8,
+        0.9999999657714582,
+        0,
+        0,
+        -0.9999999657714582,
+        3.422854177870249e-8,
+        0,
+        2.1259841918945312,
+        1.9685039520263672,
+        100.3936996459961,
+        1
+      ],
+      "name": "<组件#37>_151",
+      "extras": {
+        "name": "<组件#37>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        56,
+        57
+      ]
+    },
+    {
+      "name": "mesh_15",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_15_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wlhcmkitpuelzompxpgl"
+          }
+        }
+      },
+      "mesh": 1
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 576,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 576,
+      "byteLength": 192,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 768,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1056,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1344,
+      "byteLength": 192,
+      "target": 34962,
+      "byteStride": 8
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1536,
+      "byteLength": 144,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1680,
+      "uri": "data:application/octet-stream;base64,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"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 48,
+      "max": [
+        0.23622047901153564,
+        1.9685039520263672,
+        1.9685039520263672
+      ],
+      "min": [
+        0,
+        -100.3936996459961,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5125,
+      "count": 48,
+      "max": [
+        47
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        1,
+        1,
+        1
+      ],
+      "min": [
+        -1,
+        -1,
+        -1
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        0.23622047901153564,
+        1.9685039520263672,
+        1.9685039520263672
+      ],
+      "min": [
+        0,
+        -100.3936996459961,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        2.549999952316284,
+        2.549999952316284
+      ],
+      "min": [
+        -2.549999952316284,
+        -0.05000000074505806
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5125,
+      "count": 36,
+      "max": [
+        23
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "name": "DefaultMaterialEdge"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.7411764860153198,
+          0.7176470756530762,
+          0.41960784792900085,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "doubleSided": true,
+      "name": "[0057_DarkKhaki]"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "mode": 1,
+          "attributes": {
+            "POSITION": 0
+          },
+          "indices": 1,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "primitives": [
+        {
+          "mode": 4,
+          "attributes": {
+            "NORMAL": 2,
+            "POSITION": 3,
+            "TEXCOORD_0": 4
+          },
+          "indices": 5,
+          "material": 1
+        }
+      ]
+    }
+  ]
+}
