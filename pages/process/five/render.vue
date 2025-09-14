@@ -1,21 +1,36 @@
 <template>
-  <div v-loading="loading" class="w-[100%] h-[100%] relative">
+  <div v-loading="loading" :element-loading-text="loadingText" class="w-[100%] h-[100%] relative">
     <div ref="threeContainer" class="three-container" />
-    <div class="toolbar-container">
-      <el-button class="w-[120px]" :type="hideModel.includes(1) ? 'info' : 'primary'" @click="playStep1Animation(1)">
+    <div v-if="!loading" class="toolbar-container">
+      <el-button class="w-[120px]" :type="hideModel.includes(1) ? 'info' : 'primary'" @click="playStepAnimation(1)">
         窗
       </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(2) ? 'info' : 'primary'" @click="playStep2Animation(2)">
+      <el-button class="w-[120px]" :type="hideModel.includes(2) ? 'info' : 'primary'" @click="playStepAnimation(2)">
         门
       </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(3) ? 'info' : 'primary'" @click="playStep3Animation(3)">
+      <el-button class="w-[120px]" :type="hideModel.includes(3) ? 'info' : 'primary'" @click="playStepAnimation(3)">
         屋面板
       </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(4) ? 'info' : 'primary'" @click="playStep4Animation(4)">
+      <el-button class="w-[120px]" :type="hideModel.includes(4) ? 'info' : 'primary'" @click="playStepAnimation(4)">
         屋顶
       </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(5) ? 'info' : 'primary'" @click="playStep5Animation(5)">
+      <el-button class="w-[120px]" :type="hideModel.includes(5) ? 'info' : 'primary'" @click="playStepAnimation(5)">
         墙壁
+      </el-button>
+      <el-button class="w-[120px]" :type="hideModel.includes(6) ? 'info' : 'primary'" @click="playStepAnimation(6)">
+        地板
+      </el-button>
+      <el-button class="w-[120px]" :type="hideModel.includes(7) ? 'info' : 'primary'" @click="playStepAnimation(7)">
+        顶板
+      </el-button>
+      <el-button class="w-[120px]" :type="hideModel.includes(8) ? 'info' : 'primary'" @click="playStepAnimation(8)">
+        柱
+      </el-button>
+      <el-button class="w-[120px]" :type="hideModel.includes(9) ? 'info' : 'primary'" @click="playStepAnimation(9)">
+        梁
+      </el-button>
+      <el-button class="w-[120px]" :type="hideModel.includes(10) ? 'info' : 'primary'" @click="playStepAnimation(10)">
+        连接器
       </el-button>
     </div>
   </div>
@@ -26,7 +41,13 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { modeService } from './composables/mode-service'
+// 模型数据服务
+const serviceData = modeService()
+
 const loading = ref(false)
+const loadingText = ref('0%...')
+
 const hideModel = ref([])
 
 const threeContainer = ref(null)
@@ -46,7 +67,7 @@ onBeforeUnmount(() => {
 function initThree() {
   scene = new THREE.Scene()
   // 设置天空背景
-  scene.background = new THREE.Color(0x87ceeb); // 天空蓝颜色
+  scene.background = new THREE.Color(0x87ceeb) // 天空蓝颜色
 
   const width = threeContainer.value.clientWidth
   const height = threeContainer.value.clientHeight
@@ -102,7 +123,7 @@ function loadModel() {
   const loader = new GLTFLoader()
   loader.load(
     '/models/tool5/scene.gltf', // 替换成你自己的路径
-   async (gltf) =>  {
+    async (gltf) => {
       const root = gltf.scene
       console.log('模型根节点:', root)
       scene.add(root)
@@ -115,11 +136,15 @@ function loadModel() {
       root.position.sub(center)
 
 
-      await nextTick()
-      loading.value = false
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
     },
     (xhr) => {
-      if (xhr.total) console.log(`加载进度: ${((xhr.loaded / xhr.total) * 100).toFixed(2)}%`)
+      if (xhr.total) {
+        console.log(`加载进度: ${((xhr.loaded / xhr.total) * 100).toFixed(2)}%`)
+        loadingText.value = `${((xhr.loaded / xhr.total) * 100).toFixed(2)}%...`
+      }
     },
     (error) => {
       console.error('模型加载失败:', error)
@@ -127,143 +152,47 @@ function loadModel() {
   )
 }
 
-async function playStep1Animation(value) {
-  const names = [
-    '<组件#66>',
-    '<组件#66>_1',
-    '<组件#66>_2',
-    '<组件#66>_3',
-    '<组件#66>_4',
-    '<组件#66>_5',
-    '<组件#66>_6',
-    '<组件#66>_7',
-    '<组件#66>_8',
-    '<组件#66>_9',
-    '<组件#66>_10',
-    '<组件#66>_11',
-    '<组件#66>_12',
-    '<组件#66>_13',
-    '<组件#66>_14',
-    '<组件#66>_15',
-    '<组件#66>_16',
-    '<组件#66>_17',
-    '<组件#66>_18',
-    '<组件#66>_19',
-    '<组件#66>_20',
-    '<组件#66>_21',
-    '<组件#66>_22'
-  ]
-  settingModelStatus(names, value)
+// 步骤模型显示隐藏方案
+async function playStepAnimation(value) {
+  let models = []
+  switch (value) {
+    case 1: // 窗
+      models = serviceData.windowData()
+      break // 门
+    case 2:
+      models = serviceData.doorData()
+      break
+    case 3: // 屋面板
+      models = serviceData.roofData()
+      break
+    case 4: // 屋顶
+      models = serviceData.roofTopData()
+      break
+    case 5: // 墙壁
+      models = serviceData.wallData()
+      break
+    case 6: //  地板
+      models = serviceData.floorData()
+      break
+    case 7: // 顶板
+      models = serviceData.floorTopData()
+      break
+    case 8: // 柱
+      models = serviceData.pillarData()
+      break
+    case 9: // 梁
+      models = serviceData.beamData()
+      break
+    case 10:// 连接器
+      models = serviceData.connectorData()
+      break
+    default:
+      break
+  }
+
+  settingModelStatus(models, value)
 }
 
-async function playStep2Animation(value) {
-  const names = new Array(19)
-    .fill(0)
-    .map((_, i) => `IfcDoor_-_单嵌板木门_14D-04455344<3ID151naX4SP9QZfy4vvW9#1>${i !== 0 ? '_' + i : ''}`)
-  settingModelStatus(names, value)
-}
-
-async function playStep3Animation(value) {
-  const names12 = new Array(32).fill(0).map((_, i) => `<组件#10>${i !== 0 ? '_' + i : ''}`)
-  const names1 = new Array(19).fill(0).map((_, i) => `<组件#12>${i !== 0 ? '_' + i : ''}`)
-  const names2 = [
-    '<组件#19>',
-    '<组件#8>',
-    '<组件#107>',
-    '<组件#107>_1',
-    '<组件#107>_2',
-    '<组件#77>',
-    '<组件#77>_1',
-    '<组件#77>_2',
-    '<组件#77>_3',
-    '<组件#79>',
-    '<组件#79>_1',
-    '<组件#79>_2',
-    '<组件#79>_3',
-    '<组件#105>',
-    '<组件#105>_1',
-    '<组件#109>',
-    '<组件#109>_1',
-    '<组件#111>',
-    '<组件#58>',
-    '<组件#45>',
-    '<组件#47>',
-    '<组件#21>',
-    '<组件#25>',
-    '<组件#75>',
-    '<组件#64>',
-    '<组件#67>',
-    '<组件#11>',
-    '<组件#69>',
-    '<组件#71>',
-    '<组件#73>'
-  ]
-  const names3 = new Array(12).fill(0).map((_, i) => `<组件#42>${i !== 0 ? '_' + i : ''}`)
-  const names4 = new Array(6).fill(0).map((_, i) => `<组件#95>${i !== 0 ? '_' + i : ''}`)
-  const names5 = new Array(9).fill(0).map((_, i) => `<组件#90>${i !== 0 ? '_' + i : ''}`)
-  const names6 = new Array(9).fill(0).map((_, i) => `<组件#92>${i !== 0 ? '_' + i : ''}`)
-  const names7 = new Array(9).fill(0).map((_, i) => `<组件#88>${i !== 0 ? '_' + i : ''}`)
-  // 柱子的面板
-  const names8 = ['<组件#113>', ...new Array(4).fill(0).map((_, i) => `<组件#83>${i !== 0 ? '_' + i : ''}`)]
-
-  // 内部
-  const names9 = new Array(19).fill(0).map((_, i) => `<组件#45>${i !== 0 ? '_' + i : ''}`)
-  const names10 = new Array(18).fill(0).map((_, i) => `<组件#46>${i !== 0 ? '_' + i : ''}`)
-  const names11 = new Array(19).fill(0).map((_, i) => `<组件#47>${i !== 0 ? '_' + i : ''}`)
-
-  const names = [
-    ...names1,
-    ...names2,
-    ...names3,
-    ...names4,
-    ...names5,
-    ...names6,
-    ...names7,
-    ...names8,
-    ...names9,
-    ...names10,
-    ...names11,
-    ...names12
-  ]
-
-  settingModelStatus(names, value)
-}
-
-async function playStep4Animation(value) {
-  const names = ['Group_821']
-  settingModelStatus(names, value)
-}
-
-async function playStep5Animation(value) {
-  const names1 = new Array(48).fill(0).map((_, i) => `<组件#40>${i !== 0 ? '_' + i : ''}`)
-  const names2 = new Array(10).fill(0).map((_, i) => `<组件#44>${i !== 0 ? '_' + i : ''}`)
-  const names3 = new Array(14).fill(0).map((_, i) => `<组件#41>${i !== 0 ? '_' + i : ''}`)
-  const names4 = new Array(144).fill(0).map((_, i) => `<组件#37>${i !== 0 ? '_' + i : ''}`)
-  const names5 = new Array(36).fill(0).map((_, i) => `<组件#39>${i !== 0 ? '_' + i : ''}`)
-  const names6 = [
-    'Group_110',
-    'Group_41',
-    'Group_621',
-    'Group_591',
-    'Group_168',
-    'Group_237',
-    'Group_487',
-    'Group_419',
-    'Group_548',
-    'Group_518',
-    'Group_294',
-    'Group_363',
-    'Group_694',
-    'Group_705',
-    'Group_768',
-    'Group_816',
-    'Group_883',
-    'Group_673'
-  ]
-  const names = [...names1, ...names2, ...names3, ...names4, ...names5, ...names6]
-
-  settingModelStatus(names, value)
-}
 
 function settingModelStatus(names = [], value) {
   if (hideModel.value.includes(value)) {
@@ -298,6 +227,7 @@ function showModel(names = []) {
     }
   })
 }
+
 // 渲染循环
 function animate() {
   animationId = requestAnimationFrame(animate)
@@ -324,7 +254,6 @@ window.addEventListener('resize', () => {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 999;
   background: transparent;
   overflow-y: auto;
   display: flex;
