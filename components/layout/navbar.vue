@@ -36,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import { Expand, Fold, UserFilled } from '@element-plus/icons-vue'
 const { logOut } = useAuth()
 const { updateExpand, expand } = useMenu()
 const selectMenu = (value: string) => {
