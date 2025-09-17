@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full flex">
     <div class="w-[280px] bg-[#f8f9fa] rounded-[4px] flex flex-col items-center">
-      <div class="flex flex-col justify-center items-center py-[30px]">
+      <div class="pointer flex flex-col justify-center items-center py-[30px]"  @click="handleCreateProject">
         <img src="../assets/images/home/addIcon.svg" alt="add" class="w-[44px] h-[44px]" />
         <span class="text-[#333333] text-[14px] mt-[10px]">新建项目</span>
       </div>
@@ -19,7 +19,7 @@
             <p class="list-wrap-item-header__title">wwwwwwwwwwwwwwwwwwwwwwww</p>
             <span class="flex-1"></span>
             <img class="list-wrap-item-header__edit" src="../assets/images/home/edit.svg" alt="" />
-            <div class="list-wrap-item-header__status">进行中</div>
+            <div class="list-wrap-item-header__status" @click="handlepushLibarty">进行中</div>
           </div>
           <div class="list-wrap-item-body">
             <div class="body-item">
@@ -94,8 +94,16 @@
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
+const router = useRouter()
 
 const searchText = ref('')
+function handleCreateProject(){
+router.push('/fivelibary')
+}
+
+function handlepushLibarty(){
+router.push('/show-mode-libary')
+}
 </script>
 
 <style lang="less" scoped>
