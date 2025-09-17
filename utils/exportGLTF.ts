@@ -49,7 +49,6 @@ class ExportThree extends Three {
             loader.load(url,
                 (gltf) => {
                     const root = gltf.scene.getObjectByName("root")
-                    debugger
                     const children = root.children
                     const group = new THREE.Group()
                     group.name = "wrapper"

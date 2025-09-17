@@ -160,7 +160,6 @@ class PlanAndLayout extends Three {
         const mouseX = (event.clientX - rect.left)
         const mouseY = (event.clientY - rect.top)
         const worldPos = this.getWorldPositionFromScreen(mouseX, mouseY)
-        // console.log("worldPos===",worldPos)
         const parent = this.currentStartMoveMode.parent
         const x = worldPos.x
         const y = worldPos.y
@@ -212,23 +211,36 @@ class PlanAndLayout extends Three {
     }
     private handleScenMode() {
         // 加载默认场景数据
-        Set75.forEach(ele => {
+        Set75.forEach((ele, index) => {
             this.loadGLTFResource(ele.url).then(res => {
-                const group = res.scene.children[0] as THREE.Group
-                const size = this.calculateGroupDimensions(group)
-                const xPos = ele.position.x
-                const yPos = ele.position.y
-                const x = xPos
-                const y = yPos
-                const z = ele.position.z
-                group.name = ele.groupName
-                group.rotation.z = ele.deg * Math.PI / 180
-                const pivot = new THREE.Object3D();
-                pivot.position.set(x + size.width / 2, y + size.height / 2, z)
-                group.position.set(-size.width / 2, -size.height / 2, z)
-                pivot.add(group)
-                this.wrapper.add(pivot)
-                this.raycasterSaveData.push(pivot)
+                if (index == 0) {
+                    const xPos = ele.position.x
+                    const yPos = ele.position.y
+                    const group =res.scenes[0]
+                    const size = this.calculateGroupDimensions(group)
+
+                    debugger
+                    group.position.set(xPos, yPos, 0)
+                    this.wrapper.add(group)
+
+                } else {
+                    const group = res.scene.children[0] as THREE.Group
+                    const size = this.calculateGroupDimensions(group)
+                    const xPos = ele.position.x
+                    const yPos = ele.position.y
+                    const x = xPos
+                    const y = yPos
+                    const z = ele.position.z
+                    group.name = ele.groupName
+                    group.rotation.z = ele.deg * Math.PI / 180
+                    const pivot = new THREE.Object3D();
+                    pivot.position.set(x + size.width / 2, y + size.height / 2, z)
+                    group.position.set(-size.width / 2, -size.height / 2, z)
+                    pivot.add(group)
+                    this.wrapper.add(pivot)
+                    this.raycasterSaveData.push(pivot)
+                }
+
             })
         })
     }
@@ -261,7 +273,6 @@ class PlanAndLayout extends Three {
                 target.parent.remove(target)
 
             } else {
-                console.log("target---", target, ele)
             }
         })
     }
@@ -319,7 +330,7 @@ class PlanAndLayout extends Three {
 
         }
     }
-    public handleDeleteMode(){
+    public handleDeleteMode() {
         this.currentStartMoveMode.parent.parent.remove(this.currentStartMoveMode.parent)
     }
 }

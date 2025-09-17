@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import SubMenuSidebar from '@/components/sub-mune-sidebar/index.vue'
-
 const router = useRouter()
 const route = useRoute()
 console.log('route', route)

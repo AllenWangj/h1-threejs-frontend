@@ -1,7 +1,7 @@
 export const Set75 = [
     {
         groupName: 'Group_37',
-        url: "/gltf/test/75/75-test-Group_37.gltf",
+        url: "/a.glb",
         deg: 0,
         position: {
             x: 2800,

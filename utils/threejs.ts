@@ -82,7 +82,7 @@ class Three {
         }
     }
 
-    protected calculateGroupDimensions(group) {
+    protected calculateGroupDimensions(group,isLoadBox=false) {
         // 创建包围盒
         const box = new THREE.Box3();
 
@@ -98,12 +98,37 @@ class Three {
         const rect = new THREE.Vector3()
          box.getSize(rect)
          const maxDim = Math.max(size.x, size.y, size.z);
+
+
+  const box1 = new THREE.Box3().setFromObject(group);
+  const size1 = box1.getSize(new THREE.Vector3());
+  const center1 = box1.getCenter(new THREE.Vector3());
+    // const min = new THREE.Vector3();
+  
+  console.log("min",rect)
+  // 创建一个与边界匹配的立方体
+  const boundingGeometry = new THREE.BoxGeometry(size1.x, size1.y, size1.z);
+  // 使用EdgesGeometry提取边缘
+  const edgesGeometry = new THREE.EdgesGeometry(boundingGeometry);
+  const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 2 });
+  
+  const boundingBox = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+  // 定位到组的中心
+  boundingBox.position.copy(new THREE.Vector3(0,0,0));
+  if(isLoadBox){
+//   this.scene!.add(boundingBox)
+
+
+  }
         return {
             width: size.x,    // X轴方向尺寸
             height: size.y,   // Y轴方向尺寸
             depth: size.z,    // Z轴方向尺寸
             center: center ,
-            size:rect   // 大小
+            size:rect ,
+            maxDim,  // 大小
+            position: box1.min,
+            
         };
     };
     protected loadGLTFResource(url: string, loadGltfCbk?: (progress: number) => void): Promise<GLTF> {
@@ -117,6 +142,7 @@ class Three {
                     const progress = Math.round((xhr.loaded / xhr.total) * 100);
                     loadGltfCbk && loadGltfCbk(progress)
                 }, err => {
+                    console.log("err--",err)
                     reject(err || '加载出错')
                 }
             )
