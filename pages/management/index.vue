@@ -56,8 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import { Plus } from '@ez-ui/icons'
-import type { SelectOption, TableColumn } from 'ez-ui'
+import { Plus } from '@element-plus/icons-vue'
+import type { SelectOption, TableColumn } from '@maxtan/ez-ui'
 definePageMeta({
   layout: 'management'
 })
