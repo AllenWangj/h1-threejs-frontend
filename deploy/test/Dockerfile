@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/maxtan-frontend/node-18.18.2:4.30 as builder
+FROM registry.cn-hangzhou.aliyuncs.com/maxtan-frontend/node-nginx:99b9268d as builder
 
 RUN npm config set registry https://registry.npmmirror.com
  
