@@ -2,7 +2,7 @@
   <el-container class="h-screen container-background">
     <!-- <layout-sidebar /> -->
     <el-container direction="vertical">
-      <layout-navbar />
+      <layout-new-navbar />
       <el-main class="flex p-0">
         <div class="flex-1 flex-col flex shadow-sm min-w-[1000px] overflow-auto px-[32px] pt-0 pb-[20px]">
           <slot />

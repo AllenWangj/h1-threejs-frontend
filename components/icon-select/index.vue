@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import type { ButtonInstance } from 'element-plus'
-import * as icons from '@ez-ui/icons'
+import * as icons from '@maxtan/ez-ui-icons'
 const modelValue = defineModel<string | null>({ required: true, default: null })
 const buttonRef = ref<ButtonInstance | null>(null)
 const selectIcon = (icon = '') => {

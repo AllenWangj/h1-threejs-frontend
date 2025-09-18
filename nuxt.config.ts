@@ -10,8 +10,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      baseURL: getEnvValue('api'),
-      convertApi: getEnvValue('convert_api')
+      baseURL: getEnvValue('api')
     }
   },
   devtools: {

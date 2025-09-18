@@ -1,13 +1,19 @@
 <template>
   <el-header class="flex justify-between items-center border-solid border-[#dcdfe6] pt-[5px]" height="60px">
-    <div class="flex flex-1">
+    <!-- <div class="flex flex-1">
       <div class="flex items-center flex-1">
         <el-icon class="cursor-pointer mr-[20px]" :size="20" @click="triggerMenu()">
           <Fold v-if="expand" />
           <Expand v-else />
         </el-icon>
       </div>
-    </div>
+    </div> -->
+    <img
+      src="../../assets/images/home/nameText.svg"
+      alt=""
+      class="cursor-pointer h-[48%] ml-[10px]"
+      @click="triggerHome()"
+    />
     <div class="flex h-full">
       <el-dropdown placement="bottom-end" trigger="click" @command="selectMenu">
         <div class="flex items-center px-[12px] cursor-pointer">
