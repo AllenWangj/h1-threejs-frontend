@@ -41,7 +41,8 @@ import { getUserPage, createUser, updateUser, removeUser } from '~/apis/account'
 import type { UserItem } from '~/types/account'
 import type { TableColumn } from '@maxtan/ez-ui'
 definePageMeta({
-  layout: 'management'
+  layout: 'management',
+  permissions: 'system:account:user'
 })
 
 const loading = ref(false)

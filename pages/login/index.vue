@@ -14,6 +14,14 @@ import LoginForm from './components/login-form.vue'
 definePageMeta({
   layout: false
 })
+
+const { clearLoginState } = useAuth()
+
+onMounted(() => {
+  // 进入登录页清空权限信息
+  clearLoginState()
+})
+
 </script>
 <style scoped>
 .login {

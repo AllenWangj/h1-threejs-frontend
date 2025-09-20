@@ -69,8 +69,9 @@ export const useAuth = () => {
     try {
       if (permissions.value) return
       const { data } = await getMenus()
-      menus.value = [...(data || [])]
-      permissions.value = data.map((item) => item.code)
+      console.log('Fetched menus:', data)
+      menus.value = [...data.flat()]
+      permissions.value = menus.value.map((item) => item.code)
     } catch (_error) {
       clearLoginState()
     }

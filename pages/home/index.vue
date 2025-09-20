@@ -94,6 +94,10 @@
 
 <script setup lang="ts">
 import { Search } from '@maxtan/ez-ui-icons'
+definePageMeta({
+  permissions: 'home'
+})
+
 const router = useRouter()
 
 const searchText = ref('')

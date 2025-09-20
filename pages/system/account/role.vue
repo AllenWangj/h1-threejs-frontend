@@ -41,7 +41,8 @@ import { getRolePage, createRole, updateRole, removeRole } from '~/apis/account'
 import type { RoleItem } from '~/types/account'
 import type { TableColumn } from '@maxtan/ez-ui'
 definePageMeta({
-  layout: 'management'
+  layout: 'management',
+  permissions: 'system:account:role'
 })
 
 const loading = ref(false)

@@ -42,7 +42,8 @@ import type { MenuTree } from '~/types/account'
 import { useSystem } from '~/pages/system/composables/use-system'
 import type { TableColumn } from '@maxtan/ez-ui'
 definePageMeta({
-  layout: 'management'
+  layout: 'management',
+  permissions: 'system:account:menu'
 })
 
 const loading = ref(false)

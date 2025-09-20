@@ -6,6 +6,11 @@
     <el-form-item label="账号" prop="account">
       <el-input v-model="formData.account" class="w-[220px]"></el-input>
     </el-form-item>
+    <el-form-item label="角色" prop="roles">
+      <el-select v-model="formData.roles" multiple placeholder="请选择角色"  class="w-[220px]">
+        <el-option v-for="item in rolesOptions" :key="item.value" :label="item.label" :value="item.value" />
+      </el-select>
+    </el-form-item>
     <el-form-item label="简介">
       <el-input v-model="formData.intro" type="textarea" class="w-[400px]"></el-input>
     </el-form-item>
@@ -13,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { getUserDetail } from '~/apis/account'
+import { getUserDetail, getRolePage } from '~/apis/account'
 import type { UserItem } from '~/types/account'
 import type { FormInstance } from 'element-plus'
 interface PropsType {
@@ -22,9 +27,12 @@ interface PropsType {
 const props = withDefaults(defineProps<PropsType>(), {
   recordId: ''
 })
+const rolesOptions = reactive([]);
+
 const formData = ref<Partial<UserItem>>({
   name: '',
   account: '',
+  roles: [],
   intro: ''
 })
 const loading = ref(false)
@@ -59,6 +67,25 @@ const getFormData = async () => {
     throw new Error(err);
   }
 }
+
+/**
+ * 获取角色列表
+ */
+const getRoles = async () => {
+  try {
+   const res = await getRolePage({ current: 1, size: 1000 })
+   console.log('res', res);
+   rolesOptions.splice(0, rolesOptions.length, ...res.data.records.map(item => ({ label: item.name, value: item.id })));
+  }
+  catch (err) {
+    console.error('获取角色列表失败', err);
+  }
+}
+onMounted(() => {
+  getRoles();
+})
+
+
 watch(
   () => props.recordId,
   (val) => {
