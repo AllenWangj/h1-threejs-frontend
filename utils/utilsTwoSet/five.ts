@@ -1,6 +1,6 @@
 export const five = [
     {
-        type: null,
+        type: null, 
         children: [
             {
                 type: 1,//_组件#63__7.gltf
@@ -458,3 +458,9 @@ export const five = [
         ]
     }
 ]
+/**
+ * type：小构建模型,如果是null，代表这是一个容器，不需要加载小构件，非null代表小构建的类型
+ * children: 容器包含的子构建
+ * position:构建的位置
+ * rotation:构建的旋转
+ * */ 
