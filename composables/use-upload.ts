@@ -37,13 +37,10 @@ export const useUpload = () => {
                 Body: new Uint8Array(fileArrayBuffer),
                 ContentType: file.type
             })
-            const result = await s3Client.send(command)
-            console.log("result", result)
-            console.log(`https://cdn.spic.cc/h1-static/uploads/${file.name}`);
+            await s3Client.send(command)
             return { url: `https://cdn.spic.cc/h1-static/uploads/${file.name}` }
         } catch (error) {
-            console.log("error", error)
-            throw error(error)
+            throw new Error(error);
         }
     }
 
