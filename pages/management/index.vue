@@ -58,6 +58,7 @@
 <script setup lang="ts">
 import { Plus } from '@maxtan/ez-ui-icons'
 import type { SelectOption, TableColumn } from '@maxtan/ez-ui'
+import { useUpload } from '~/composables/use-upload'
 definePageMeta({
   layout: 'management',
   permissions: 'management'
@@ -217,13 +218,10 @@ function createdUploadFile() {
    */
   const submitFile = async (file: any) => {
     try {
-      const fd = new FormData()
-      fd.append('file', file.raw)
       uploadLoading.value = true
-
-      const { data } = {} as any // 这里写请求的方法
+      const { url } = await useUpload().loadFile(file.raw)
       ElMessage.success('上传成功')
-      formData.url = data?.url
+      formData.url = url
     } catch (error) {
       formData.name = ''
       formData.url = ''

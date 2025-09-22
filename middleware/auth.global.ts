@@ -7,6 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
     }
     if (isLogin.value) {
       await checkAuthentication()
+      useUpload().fetchOssAuth()
       if (to.path === '/') {
         return autoJump()
       } else if (to.meta && to.meta.permissions && !hasPermission(to.meta.permissions as string)) {
