@@ -86,7 +86,7 @@ input:-webkit-autofill {
 }
 .el-input__wrapper:hover,
 .el-input__wrapper.is-focus {
-  border-bottom-color: #d11f25;
+  border-bottom-color: #3a83fc;
 }
 
 .el-input__wrapper::before {
@@ -113,6 +113,27 @@ input::placeholder {
   height: 48px;
   font-size: 22px;
   font-weight: 600;
-  background: #d11f25;
+  background: #3a83fc;
+  border-color: #3a83fc;
+}
+
+.el-button:hover,
+.el-button:focus,
+.el-button:active {
+  background: #3a83fc;
+  border-color: #3a83fc;
+  opacity: 0.9;
+}
+
+.el-button:focus {
+  background: #3a83fc;
+  border-color: #3a83fc;
+  opacity: 0.8;
+}
+
+.el-button.is-disabled, .el-button.is-disabled:hover {
+  background: #3a83fc;
+  border-color: #3a83fc;
+  opacity: 0.7;
 }
 </style>

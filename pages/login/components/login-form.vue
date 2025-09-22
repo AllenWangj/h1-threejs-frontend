@@ -1,8 +1,8 @@
 <template>
   <div class="form-content w-full h-full">
     <p class="text-[#f4f5f8] text-[43px] mb-[5px]">HELLO</p>
-    <p class="text-[32px] text-[#333]">欢迎使用SCRM管理平台</p>
-    <div class="w-[36px] h-[6px] bg-[#d11f25] mt-[11px] mb-[49px]"></div>
+    <p class="text-[32px] text-[#333]">欢迎使用智能建造管理平台</p>
+    <div class="w-[36px] h-[6px] bg-[#3a83fc] mt-[11px] mb-[49px]"></div>
     <login-text @success="onSuccess" />
   </div>
 </template>

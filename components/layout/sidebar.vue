@@ -5,7 +5,7 @@
   >
     <nuxt-link class="flex items-center justify-center h-[60px]" to="/">
       <img class="w-[45px] h-[45px]" src="~/assets/images/ican.png" alt="logo" />
-      <span v-show="expand" class="truncate ml-[15px] text-[18px] font-bold">SCRM管理平台</span>
+      <span v-show="expand" class="truncate ml-[15px] text-[18px] font-bold">智能建造管理工具</span>
     </nuxt-link>
     <div class="h-[calc(100%-60px)] flex flex-col">
       <layout-menu-list />

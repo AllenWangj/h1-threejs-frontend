@@ -20,6 +20,7 @@
     "typescript-eslint": "^8.32.1"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.893.0",
     "@maxtan/ez-ui": "^0.12.1",
     "@maxtan/ez-ui-icons": "^1.4.0",
     "@maxtan/ez-ui-nuxt": "^0.5.2",

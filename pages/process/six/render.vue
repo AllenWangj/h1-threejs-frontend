@@ -13,6 +13,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import * as THREE from "three";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { DragControls } from "three/examples/jsm/controls/DragControls.js";
 
@@ -55,6 +56,35 @@ onUnmounted(() => {
   window.removeEventListener("keydown", onKeyDown);
 });
 
+
+function loadMianModel() {
+  // ✅ 用 GLTFLoader 替换 BoxGeometry
+  const loader = new GLTFLoader();
+  loader.load("/models/tool6/tool_6-Group_1.gltf", (gltf) => {
+    const containerMesh = gltf.scene;
+
+    // 缩放到和 containerSize 一致
+    const boxGeo = new THREE.Box3().setFromObject(containerMesh);
+    const size = new THREE.Vector3();
+    boxGeo.getSize(size);
+
+    const scale = new THREE.Vector3(
+      containerSize.x / size.x,
+      containerSize.y / size.y,
+      containerSize.z / size.z
+    );
+    containerMesh.scale.set(scale.x, scale.y, scale.z);
+
+    // 保持中心对齐
+    boxGeo.setFromObject(containerMesh);
+    const center = new THREE.Vector3();
+    boxGeo.getCenter(center);
+    containerMesh.position.sub(center); // 移动到原点
+
+    scene.add(containerMesh);
+  });
+}
+
 function initScene() {
   scene = new THREE.Scene();
   // 设置天空背景
@@ -87,67 +117,72 @@ function initScene() {
   directionalLight.castShadow = true;
   scene.add(directionalLight);
 
-  // 容器边框可视化
-  const boxGeo = new THREE.BoxGeometry(
-    containerSize.x,
-    containerSize.y,
-    containerSize.z
-  );
+  // // 容器边框可视化
+  // const boxGeo = new THREE.BoxGeometry(
+  //   containerSize.x,
+  //   containerSize.y,
+  //   containerSize.z
+  // );
+  // // 创建带有单独底部颜色的材质
+  // const boxMaterials = [
+  //   new THREE.MeshPhongMaterial({
+  //     // 右面
+  //     color: 0xffffff,
+  //     transparent: true,
+  //     opacity: 0.2,
+  //     side: THREE.BackSide,
+  //     depthWrite: false,
+  //   }),
+  //   new THREE.MeshPhongMaterial({
+  //     // 左面
+  //     color: 0xffffff,
+  //     transparent: true,
+  //     opacity: 0.2,
+  //     side: THREE.BackSide,
+  //     depthWrite: false,
+  //   }),
+  //   new THREE.MeshPhongMaterial({
+  //     // 上面
+  //     color: 0xffffff,
+  //     transparent: true,
+  //     opacity: 0.2,
+  //     side: THREE.BackSide,
+  //     depthWrite: false,
+  //   }),
+  //   new THREE.MeshPhongMaterial({
+  //     // 下面（底部）
+  //     color: 0x00ffff, // 单独设置底部颜色为青色
+  //     transparent: true,
+  //     opacity: 1,
+  //     side: THREE.BackSide,
+  //     depthWrite: false,
+  //   }),
+  //   new THREE.MeshPhongMaterial({
+  //     // 前面
+  //     color: 0xffffff,
+  //     transparent: true,
+  //     opacity: 0.2,
+  //     side: THREE.BackSide,
+  //     depthWrite: false,
+  //   }),
+  //   new THREE.MeshPhongMaterial({
+  //     // 后面
+  //     color: 0xffffff,
+  //     transparent: true,
+  //     opacity: 0.2,
+  //     side: THREE.BackSide,
+  //     depthWrite: false,
+  //   }),
+  // ];
+  // const containerMesh = new THREE.Mesh(boxGeo, boxMaterials);
+  // scene.add(containerMesh);
+  // // 轮廓线
+  // const edges = new THREE.EdgesGeometry(boxGeo);
+  // const lineMat = new THREE.LineBasicMaterial({ color: 0x000000 });
+  // const lineMesh = new THREE.LineSegments(edges, lineMat);
+  // containerMesh.add(lineMesh);
 
-  // 创建带有单独底部颜色的材质
-  const boxMaterials = [
-    new THREE.MeshPhongMaterial({
-      // 右面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false,
-    }),
-    new THREE.MeshPhongMaterial({
-      // 左面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false,
-    }),
-    new THREE.MeshPhongMaterial({
-      // 上面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false,
-    }),
-    new THREE.MeshPhongMaterial({
-      // 下面（底部）
-      color: 0x00ffff, // 单独设置底部颜色为青色
-      transparent: true,
-      opacity: 1,
-      side: THREE.BackSide,
-      depthWrite: false,
-    }),
-    new THREE.MeshPhongMaterial({
-      // 前面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false,
-    }),
-    new THREE.MeshPhongMaterial({
-      // 后面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false,
-    }),
-  ];
-
-  const containerMesh = new THREE.Mesh(boxGeo, boxMaterials);
-  scene.add(containerMesh);
+  loadMianModel();
 
   // 添加底部地面 (比容器更大)
   const groundSize = containerSize.x * 3; // 让地面比容器大300%
@@ -186,12 +221,6 @@ function initScene() {
   ground.rotation.x = Math.PI / 2; // 旋转至水平位置
   ground.position.y = -containerSize.y / 2 - 1; // 定位在容器底部
   scene.add(ground); // 将地面直接添加到场景中，而不是容器中
-
-  // 轮廓线
-  const edges = new THREE.EdgesGeometry(boxGeo);
-  const lineMat = new THREE.LineBasicMaterial({ color: 0x000000 });
-  const lineMesh = new THREE.LineSegments(edges, lineMat);
-  containerMesh.add(lineMesh);
 
   orbitControls = new OrbitControls(camera, renderer.domElement);
 
@@ -505,6 +534,13 @@ function onKeyDown(event) {
     selectedObject.position.addScaledVector(direction, allowedMove);
   }
 }
+
+// 窗口变化刷新
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth, window.innerHeight)
+})
 </script>
 
 <style>

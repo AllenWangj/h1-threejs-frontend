@@ -30,6 +30,7 @@ export interface UserItem extends BaseItem {
   sign: string
   intro: string
   status: number
+  roles: string[]
 }
 export interface LoginInfo {
   token: string
@@ -40,4 +41,5 @@ export interface RoleItem extends BaseItem {
   name: string
   intro: string
   status: number
+  menus: string[]
 }

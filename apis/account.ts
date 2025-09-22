@@ -10,7 +10,7 @@ export const login = (params) => useBaseFetch().post<LoginInfo>(`${baseUrl}user/
 /**
  * 获取权限
  */
-export const getMenus = () => useBaseFetch().get<MenuItem[]>(`${baseUrl}user/v1/menus`)
+export const getMenus = () => useBaseFetch().get<MenuItem[][]>(`${baseUrl}user/v1/menus`)
 
 /**
  * 获取角色列表

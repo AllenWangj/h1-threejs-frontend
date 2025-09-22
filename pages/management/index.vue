@@ -56,10 +56,11 @@
 </template>
 
 <script setup lang="ts">
-import { Plus } from '@element-plus/icons-vue'
+import { Plus } from '@maxtan/ez-ui-icons'
 import type { SelectOption, TableColumn } from '@maxtan/ez-ui'
 definePageMeta({
-  layout: 'management'
+  layout: 'management',
+  permissions: 'management'
 })
 
 const router = useRouter()
