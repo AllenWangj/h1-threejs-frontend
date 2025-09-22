@@ -65,6 +65,7 @@ definePageMeta({
 })
 
 const router = useRouter()
+const { fetchOssAuth, loadFile } = useUpload()
 
 const loading = ref(false)
 const { formatTime } = useUtils()
@@ -125,6 +126,7 @@ const deleteItem = (_item) => {
 }
 
 onMounted(() => {
+  fetchOssAuth()
   search()
 })
 
@@ -219,7 +221,7 @@ function createdUploadFile() {
   const submitFile = async (file: any) => {
     try {
       uploadLoading.value = true
-      const { url } = await useUpload().loadFile(file.raw)
+      const { url } = await loadFile(file.raw)
       ElMessage.success('上传成功')
       formData.url = url
     } catch (error) {

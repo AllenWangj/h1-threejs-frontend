@@ -29,6 +29,7 @@ export const useUpload = () => {
 
     const loadFile = async (file: File) => {
         try {
+            await fetchOssAuth()
             const s3Client = new S3Client(config.value)
             const fileArrayBuffer = await file.arrayBuffer();
             const command = new PutObjectCommand({
