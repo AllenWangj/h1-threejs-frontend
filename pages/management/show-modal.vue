@@ -1,5 +1,5 @@
 <template>
-  <BasicModal @register="register" width="1200px" title="上传模型" :before-close="beforeCloseEvt"
+  <BasicModal @register="register" width="1200px" title="在线查看模型" :before-close="beforeCloseEvt"
     :close-on-click-modal="false">
     <div class="show-modal-wrapper" v-loading="loading" :element-loading-text="message">
       <div class="show-modal-three" ref="three"></div>
