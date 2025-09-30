@@ -273,7 +273,6 @@ function handlepushLibarty() {
 
     &>div {
       position: relative;
-      background-image: url('../../assets/images/home/1-1.svg');
       width: 172px;
       height: 49px;
 
@@ -314,6 +313,7 @@ function handlepushLibarty() {
   .step-button-1 {
     top: 40%;
     left: 3.5%;
+    background-image: url('../../assets/images/home/1-1.svg');
 
     &:hover {
       &>div {
@@ -325,6 +325,7 @@ function handlepushLibarty() {
   .step-button-2 {
     top: 60%;
     left: 14.5%;
+    background-image: url('../../assets/images/home/2-1.svg');
 
     &:hover {
       &>div {
@@ -336,6 +337,7 @@ function handlepushLibarty() {
   .step-button-3 {
     top: 67%;
     left: 31.5%;
+    background-image: url('../../assets/images/home/3-1.svg');
 
     &:hover {
       &>div {
@@ -347,6 +349,7 @@ function handlepushLibarty() {
   .step-button-4 {
     top: 67%;
     left: 51.5%;
+    background-image: url('../../assets/images/home/4-1.svg');
 
     &:hover {
       &>div {
@@ -358,6 +361,7 @@ function handlepushLibarty() {
   .step-button-5 {
     top: 60%;
     left: 69.5%;
+    background-image: url('../../assets/images/home/5-1.svg');
 
     &:hover {
       &>div {
@@ -369,6 +373,7 @@ function handlepushLibarty() {
   .step-button-6 {
     top: 40%;
     left: 82.5%;
+    background-image: url('../../assets/images/home/6-1.svg');
 
     &:hover {
       &>div {
@@ -380,6 +385,7 @@ function handlepushLibarty() {
   .step-button-7 {
     top: 21%;
     left: 66.5%;
+    background-image: url('../../assets/images/home/7-1.svg');
 
     &:hover {
       &>div {
