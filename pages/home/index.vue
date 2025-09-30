@@ -9,7 +9,7 @@
       <div class="mt-[20px] w-[100%] px-[10px]">
         <el-input v-model="searchText" placeholder="Please input" class="w-[100%]">
           <template #append>
-            <el-button :icon="Search" class="!text-[#fff] !rounded-[0] p-[1px]" style="background: linear-gradient(#3a83fc 16%,#a0c6ff);" />
+            <el-button :icon="Search" class="!text-[#fff] !rounded-[0]" style="background: linear-gradient(#3a83fc 16%,#a0c6ff);" />
           </template>
         </el-input>
       </div>
