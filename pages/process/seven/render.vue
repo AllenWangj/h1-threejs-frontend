@@ -1,18 +1,22 @@
 <template>
-  <div class="w-[100%] h-[100%] relative">
-    <div ref="threeContainer" class="three-container"></div>
-    <div class="toolbar-container">
-      <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep1Animation">步骤1</el-button>
-      <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep2Animation">步骤2</el-button>
-      <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep3Animation">步骤3</el-button>
-      <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep4Animation">步骤4</el-button>
-      <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep5Animation">步骤5</el-button>
+  <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
+    <schemes-list></schemes-list>
+    <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
+      <div ref="threeContainer" class="three-container"></div>
+      <div class="toolbar-container">
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep1Animation">步骤1</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep2Animation">步骤2</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep3Animation">步骤3</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep4Animation">步骤4</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep5Animation">步骤5</el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import SchemesList from '@/components/schemes-list/index.vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -374,11 +378,12 @@ function animate() {
 }
 
 // 窗口变化刷新
-window.addEventListener('resize', () => {
+window.addEventListener('resize', onResize)
+function onResize() {
   camera.aspect = threeContainer.value.clientWidth / threeContainer.value.clientHeight
   camera.updateProjectionMatrix()
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
-})
+}
 </script>
 
 <style scoped>

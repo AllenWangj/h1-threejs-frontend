@@ -1,43 +1,51 @@
 <template>
-  <div v-loading="loading" :element-loading-text="loadingText" class="w-[100%] h-[100%] relative">
-    <div ref="threeContainer" class="three-container" />
-    <div v-if="!loading" class="toolbar-container">
-      <el-button class="w-[120px]" :type="hideModel.includes(1) ? 'info' : 'primary'" @click="playStepAnimation(1)">
-        窗
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(2) ? 'info' : 'primary'" @click="playStepAnimation(2)">
-        门
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(3) ? 'info' : 'primary'" @click="playStepAnimation(3)">
-        屋面板
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(4) ? 'info' : 'primary'" @click="playStepAnimation(4)">
-        屋顶
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(5) ? 'info' : 'primary'" @click="playStepAnimation(5)">
-        墙壁
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(6) ? 'info' : 'primary'" @click="playStepAnimation(6)">
-        地板
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(7) ? 'info' : 'primary'" @click="playStepAnimation(7)">
-        顶板
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(8) ? 'info' : 'primary'" @click="playStepAnimation(8)">
-        柱
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(9) ? 'info' : 'primary'" @click="playStepAnimation(9)">
-        梁
-      </el-button>
-      <el-button class="w-[120px]" :type="hideModel.includes(10) ? 'info' : 'primary'" @click="playStepAnimation(10)">
-        连接器
-      </el-button>
+  <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
+    <schemes-list></schemes-list>
+    <div
+      v-loading="loading"
+      :element-loading-text="loadingText"
+      class="flex-1 relative border border-[1px] border-[#adcdf7]"
+    >
+      <div ref="threeContainer" class="three-container" />
+      <div v-if="!loading" class="toolbar-container">
+        <el-button class="w-[120px]" :type="hideModel.includes(1) ? 'info' : 'primary'" @click="playStepAnimation(1)">
+          窗
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(2) ? 'info' : 'primary'" @click="playStepAnimation(2)">
+          门
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(3) ? 'info' : 'primary'" @click="playStepAnimation(3)">
+          屋面板
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(4) ? 'info' : 'primary'" @click="playStepAnimation(4)">
+          屋顶
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(5) ? 'info' : 'primary'" @click="playStepAnimation(5)">
+          墙壁
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(6) ? 'info' : 'primary'" @click="playStepAnimation(6)">
+          地板
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(7) ? 'info' : 'primary'" @click="playStepAnimation(7)">
+          顶板
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(8) ? 'info' : 'primary'" @click="playStepAnimation(8)">
+          柱
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(9) ? 'info' : 'primary'" @click="playStepAnimation(9)">
+          梁
+        </el-button>
+        <el-button class="w-[120px]" :type="hideModel.includes(10) ? 'info' : 'primary'" @click="playStepAnimation(10)">
+          连接器
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
+import SchemesList from '@/components/schemes-list/index.vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -62,7 +70,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   cancelAnimationFrame(animationId)
   renderer.dispose()
-  // 移除窗口监听
   window.removeEventListener('resize', onResize)
 })
 
@@ -137,7 +144,6 @@ function loadModel() {
       // 把 root 整体往反方向平移，使模型中心对齐到 (0,0,0)
       root.position.sub(center)
 
-
       setTimeout(() => {
         loading.value = false
       }, 1000)
@@ -185,7 +191,7 @@ async function playStepAnimation(value) {
     case 9: // 梁
       models = serviceData.beamData()
       break
-    case 10:// 连接器
+    case 10: // 连接器
       models = serviceData.connectorData()
       break
     default:
@@ -194,7 +200,6 @@ async function playStepAnimation(value) {
 
   settingModelStatus(models, value)
 }
-
 
 function settingModelStatus(names = [], value) {
   if (hideModel.value.includes(value)) {
@@ -238,11 +243,12 @@ function animate() {
 }
 
 // 窗口变化刷新
-window.addEventListener('resize', () => {
+window.addEventListener('resize', onResize)
+function onResize() {
   camera.aspect = threeContainer.value.clientWidth / threeContainer.value.clientHeight
   camera.updateProjectionMatrix()
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
-})
+}
 </script>
 
 <style scoped>

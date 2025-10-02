@@ -1,21 +1,25 @@
 <template>
-  <div class="w-[100%] h-[100%] relative">
-    <div ref="threeContainer" class="three-container"></div>
-    <div class="toolbar-container">
-      <el-button class="w-[120px]" type="primary" @click="addCube('cube1')">物体1</el-button>
-      <el-button class="w-[120px]" type="primary" @click="addCube('cube2')">物体2</el-button>
-      <el-button class="w-[120px]" type="primary" @click="addCube('cube3')">物体3</el-button>
-      <el-button class="w-[120px]" type="primary" @click="addCube('cube4')">物体4</el-button>
-      <el-button class="w-[120px]" type="primary" @click="addCube('cube5')">物体5</el-button>
-      <el-button class="w-[120px]" type="primary" :plain="rotateEnabled" @click="toggleRotate">
-        {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
-      </el-button>
+  <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
+    <schemes-list></schemes-list>
+    <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
+      <div ref="threeContainer" class="three-container"></div>
+      <div class="toolbar-container">
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube1')">物体1</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube2')">物体2</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube3')">物体3</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube4')">物体4</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube5')">物体5</el-button>
+        <el-button class="w-[120px]" type="primary" :plain="rotateEnabled" @click="toggleRotate">
+          {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import SchemesList from '@/components/schemes-list/index.vue'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -386,7 +390,7 @@ function addCube(name = 'cube1') {
   if (!geomData) return
 
   const material = new THREE.MeshPhongMaterial({
-    color: geomData.color,
+    color: geomData.color
   })
   const mesh = new THREE.Mesh(geomData.geometry.clone(), material)
 
@@ -572,11 +576,12 @@ function onKeyDown(event) {
 }
 
 // 窗口变化刷新
-window.addEventListener('resize', () => {
+window.addEventListener('resize', onResize)
+function onResize() {
   camera.aspect = threeContainer.value.clientWidth / threeContainer.value.clientHeight
   camera.updateProjectionMatrix()
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
-})
+}
 </script>
 
 <style>
