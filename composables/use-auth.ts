@@ -1,6 +1,11 @@
 import { getMenus } from '~/apis/account'
-import type { MenuItem, MenuTree } from '~/types/account'
+import type { MenuItem, MenuTree, UserItem } from '~/types/account'
 export const useAuth = () => {
+  /** 用户信息 */
+   const userInfoCookie = useCookie<UserItem | null>('USER_INFO', {
+    maxAge: 60 * 60 * 24 * 7
+  })
+  const userInfo = useState<UserItem | null>('userInfo', () => userInfoCookie.value)
   /** 权限菜单 */
   const menus = useState<MenuItem[] | null>('menus', () => [])
   const menuTree = computed(() => transfromTree(menus.value || []))
@@ -19,6 +24,11 @@ export const useAuth = () => {
   const isLogin = computed(() => !!token.value)
   /** 白名单不走页面鉴权处理 */
   const whitelist = ['/login']
+  /** 更新 userInfo */
+  const updateUserInfo = (value: UserItem | null) => {
+    userInfo.value = value
+    userInfoCookie.value = value
+  }
   /** 更新 token */
   const updateToken = (value: string | null) => {
     token.value = value
@@ -59,6 +69,7 @@ export const useAuth = () => {
    */
   const clearLoginState = () => {
     updateToken(null)
+    updateUserInfo(null)
     permissions.value = null
     menus.value = []
   }
@@ -129,8 +140,10 @@ export const useAuth = () => {
     permissions,
     hasPermission,
     token,
+    userInfo,
     isLogin,
     updateToken,
+    updateUserInfo,
     logOut,
     whitelist,
     checkAuthentication,

@@ -24,7 +24,7 @@
             </el-icon>
           </el-avatar> -->
           <img src="../../assets/images/home/touxiang.svg" alt="" class="w-[24px] h-[24px] mr-[8px]" />
-          <span class="text-[14px]">MaxTan</span>
+          <span class="text-[14px]">{{ userInfo?.name }}</span>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-const { logOut } = useAuth()
+const { logOut, userInfo } = useAuth()
 const { updateExpand, expand } = useMenu()
 const { formatTime } = useUtils()
 

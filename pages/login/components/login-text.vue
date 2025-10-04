@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import type { FormInstance } from 'element-plus'
 import { login } from '~~/apis/account'
-const { updateToken } = useAuth()
+const { updateToken, updateUserInfo } = useAuth()
 const $emits = defineEmits(['success'])
 const formRef = ref<FormInstance>()
 const loading = ref(false)
@@ -48,6 +48,7 @@ const submit = async () => {
     const { data } = await login(formData)
     if (data.token) {
       updateToken(data.token)
+      updateUserInfo(data.userInfo) // 更新用户信息
       $emits('success')
     }
   } finally {
