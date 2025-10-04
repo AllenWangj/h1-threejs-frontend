@@ -230,6 +230,42 @@ class Three {
             y: -(normalizedY * 2 - 1)
         };
     }
+    protected async runWithConcurrency<T>(
+        promises: (() => Promise<T>)[],
+        concurrency: number
+    ): Promise<T[]> {
+        const results: T[] = [];
+        const total = promises.length;
+        let index = 0;
+
+        // 创建并发控制器
+        async function executeNext() {
+            if (index >= total) return;
+
+            const currentIndex = index++;
+            try {
+                // 执行当前Promise
+                const result = await promises[currentIndex]();
+                results[currentIndex] = result;
+            } catch (error) {
+                // 可以根据需要处理错误，这里简单地将错误存储在结果中
+                results[currentIndex] = error as T;
+            }
+
+            // 继续执行下一个
+            return executeNext();
+        }
+
+        // 启动初始的并发任务
+        const initialPromises = Array(Math.min(concurrency, total))
+            .fill(0)
+            .map(executeNext);
+
+        // 等待所有任务完成
+        await Promise.all(initialPromises);
+
+        return results;
+    }
 
 }
 export default Three

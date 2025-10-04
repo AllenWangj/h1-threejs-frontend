@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="process-menu">
         <div data-v-d10265b4="" class="list" @click="$router.push('/process/two/upload-file/file')" >
             <div class="shangchuan"></div>
@@ -13,8 +13,33 @@
             </div><span>生成方案</span>
         </div>
     </div>
+</template> -->
+
+<template>
+    <div class="process-menu">
+        <!-- '/process/two/upload-file/file' -->
+        <div data-v-d10265b4="" class="list" @click="$router.push(props.uploadFileUrl)" >
+            <div class="shangchuan"></div>
+            <span>上传文件</span>
+        </div>
+        <div class="list"  @click="$router.push(props.paramsSetUrl)">
+            <div class="canshu"></div>
+            <span>输入参数</span>
+        </div>
+        <div class="list" @click="$router.push(props.createUrl)">
+            <div class="fangan">
+            </div><span>生成方案</span>
+        </div>
+    </div>
+
 </template>
 <script setup lang="ts">
+const props = withDefaults(defineProps<{
+    uploadFileUrl? :string
+    paramsSetUrl?:string
+    createUrl?:string
+}>(), {
+})
 // import {ref} from "vue"
 </script>
 <style lang="less" scoped>

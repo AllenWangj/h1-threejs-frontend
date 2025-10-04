@@ -1,6 +1,13 @@
 <template>
     <div class="two-wrapper">
-        <ProcessMenu />
+        <ProcessMenu 
+        uploadFileUrl="/process/two/upload-file/file"
+        paramsSetUrl="/process/two/params-set/params"
+        createUrl="/process/two/generate-plan/generateplan"
+
+        
+        
+        />
         <div class="next-page-connnntent">
             <NuxtPage />
              <!-- <PlanAndLayout/> -->
