@@ -29,7 +29,6 @@ import ProcessMenu from "~~/component/process-menu/index.vue"
         border-left: 0;
         margin: 20px;
         height:calc(100% - 40px);
-
         box-sizing: border-box;
     }
 }

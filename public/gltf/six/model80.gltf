@@ -1,0 +1,247 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "THREE.GLTFExporter r180"
+  },
+  "scenes": [
+    {
+      "name": "AuxScene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0,
+  "nodes": [
+    {
+      "name": "<组件#80>_1",
+      "extras": {
+        "name": "<组件#80>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "mesh_11",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wznnubioypdbrdwmrisw_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_11_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "wznnubioypdbrdwmrisw"
+          }
+        }
+      },
+      "mesh": 1
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 576,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 576,
+      "byteLength": 192,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 768,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1056,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1344,
+      "byteLength": 192,
+      "target": 34962,
+      "byteStride": 8
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1536,
+      "byteLength": 144,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1680,
+      "uri": "data:application/octet-stream;base64,AAAAACaTSUBxOOxCXS6XQCaTSUBxOOxCAAAAAAAAAABxOOxCAAAAACaTSUBxOOxCXS6XQAAAAABxOOxCAAAAAAAAAABxOOxCXS6XQCaTSUBxOOxCXS6XQAAAAABxOOxCAAAAACaTSUAAAAAAXS6XQCaTSUAAAAAAAAAAACaTSUAAAAAAAAAAACaTSUBxOOxCAAAAACaTSUBxOOxCXS6XQCaTSUBxOOxCXS6XQCaTSUAAAAAAXS6XQCaTSUBxOOxCXS6XQAAAAAAAAAAAAAAAAAAAAAAAAAAAXS6XQAAAAAAAAAAAXS6XQAAAAABxOOxCXS6XQAAAAABxOOxCAAAAAAAAAABxOOxCAAAAAAAAAAAAAAAAAAAAAAAAAABxOOxCAAAAACaTSUAAAAAAXS6XQCaTSUAAAAAAXS6XQCaTSUAAAAAAXS6XQAAAAAAAAAAAXS6XQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACaTSUAAAAAAAAAAAAAAAAAAAAAAAAAAACaTSUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABxOOxCAAAAAAAAAABxOOxCAAAAACaTSUBxOOxCAAAAACaTSUAAAAAAAAAAACaTSUBxOOxCXS6XQCaTSUAAAAAAXS6XQAAAAAAAAAAAXS6XQCaTSUAAAAAAXS6XQCaTSUBxOOxCXS6XQCaTSUBxOOxCXS6XQAAAAABxOOxCXS6XQAAAAAAAAAAAXS6XQAAAAABxOOxCAAAAAAEAAAACAAAAAwAAAAQAAAAFAAAABgAAAAcAAAAIAAAACQAAAAoAAAALAAAADAAAAA0AAAAOAAAADwAAABAAAAARAAAAEgAAABMAAAAUAAAAFQAAABYAAAAXAAAAGAAAABkAAAAaAAAAGwAAABwAAAAdAAAAHgAAAB8AAAAgAAAAIQAAACIAAAAjAAAAJAAAACUAAAAmAAAAJwAAACgAAAApAAAAKgAAACsAAAAsAAAALQAAAC4AAAAvAAAAXS6XQAAAAABxOOxCAAAAACaTSUBxOOxCAAAAAAAAAABxOOxCXS6XQCaTSUBxOOxCAAAAACaTSUBxOOxCXS6XQCaTSUAAAAAAAAAAACaTSUAAAAAAXS6XQCaTSUBxOOxCXS6XQAAAAABxOOxCAAAAAAAAAAAAAAAAXS6XQAAAAAAAAAAAAAAAAAAAAABxOOxCXS6XQCaTSUAAAAAAAAAAAAAAAAAAAAAAAAAAACaTSUAAAAAAXS6XQAAAAAAAAAAAAAAAACaTSUBxOOxCAAAAAAAAAAAAAAAAAAAAAAAAAABxOOxCAAAAACaTSUAAAAAAXS6XQCaTSUAAAAAAXS6XQAAAAABxOOxCXS6XQAAAAAAAAAAAXS6XQCaTSUBxOOxCAAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAgL8AAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAj8L1PQAAAIAAAAAACtejvQAAAAAAAACAj8L1PQrXo70AAAAAAABAwI/C9b0AAACAAAAAAAAAAICPwvW9AABAwI/C9T0AAEDAAAAAAAAAAICPwvU9AAAAgAAAAAAAAEDAj8L1vQrXo70AAAAAAAAAgAAAAAAK16O9j8L1vQAAAIAK16O9AABAwAAAAAAAAACAAAAAAAAAQMAK16O9AAAAgArXoz0AAACAAAAAAAAAQMAAAAAAAAAAgArXoz0AAEDAAAAAAAEAAAACAAAAAQAAAAAAAAADAAAABAAAAAUAAAAGAAAABQAAAAQAAAAHAAAACAAAAAkAAAAKAAAACQAAAAgAAAALAAAADAAAAA0AAAAOAAAADQAAAAwAAAAPAAAAEAAAABEAAAASAAAAEQAAABAAAAATAAAAFAAAABUAAAAWAAAAFQAAABQAAAAXAAAA"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 48,
+      "max": [
+        4.724409580230713,
+        3.149606227874756,
+        118.11023712158203
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5125,
+      "count": 48,
+      "max": [
+        47
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        4.724409580230713,
+        3.149606227874756,
+        118.11023712158203
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        1,
+        1,
+        1
+      ],
+      "min": [
+        -1,
+        -1,
+        -1
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        0.11999999731779099,
+        0
+      ],
+      "min": [
+        -0.11999999731779099,
+        -3
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5125,
+      "count": 36,
+      "max": [
+        23
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "name": "DefaultMaterialEdge"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.239215686917305,
+          0.8470588326454163,
+          0.3607843220233917,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "doubleSided": true,
+      "name": "[Color M00]"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "mode": 1,
+          "attributes": {
+            "POSITION": 0
+          },
+          "indices": 1,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "primitives": [
+        {
+          "mode": 4,
+          "attributes": {
+            "POSITION": 2,
+            "NORMAL": 3,
+            "TEXCOORD_0": 4
+          },
+          "indices": 5,
+          "material": 1
+        }
+      ]
+    }
+  ]
+}

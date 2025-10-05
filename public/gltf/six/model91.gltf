@@ -1,0 +1,247 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "THREE.GLTFExporter r180"
+  },
+  "scenes": [
+    {
+      "name": "AuxScene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0,
+  "nodes": [
+    {
+      "name": "<组件#91>_1",
+      "extras": {
+        "name": "<组件#91>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "mesh_14",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "bguodlvzbngbnajdmxgg_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_14_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "bguodlvzbngbnajdmxgg"
+          }
+        }
+      },
+      "mesh": 1
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 576,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 576,
+      "byteLength": 192,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 768,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1056,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1344,
+      "byteLength": 192,
+      "target": 34962,
+      "byteStride": 8
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1536,
+      "byteLength": 144,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1680,
+      "uri": "data:application/octet-stream;base64,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"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 48,
+      "max": [
+        1.1811023950576782,
+        1.1811023950576782,
+        119.29133605957031
+      ],
+      "min": [
+        0,
+        -5.329070518200751e-15,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5125,
+      "count": 48,
+      "max": [
+        47
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        1,
+        1,
+        1
+      ],
+      "min": [
+        -1,
+        -1,
+        -1
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        1.1811023950576782,
+        1.1811023950576782,
+        119.29133605957031
+      ],
+      "min": [
+        0,
+        -5.329070518200751e-15,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        0.029999999329447746,
+        1.3535839283518916e-16
+      ],
+      "min": [
+        -0.029999999329447746,
+        -3.0299999713897705
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5125,
+      "count": 36,
+      "max": [
+        23
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "name": "DefaultMaterialEdge"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.9411764740943909,
+          0.501960813999176,
+          0.501960813999176,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "doubleSided": true,
+      "name": "[0013_LightCoral]"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "mode": 1,
+          "attributes": {
+            "POSITION": 0
+          },
+          "indices": 1,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "primitives": [
+        {
+          "mode": 4,
+          "attributes": {
+            "NORMAL": 2,
+            "POSITION": 3,
+            "TEXCOORD_0": 4
+          },
+          "indices": 5,
+          "material": 1
+        }
+      ]
+    }
+  ]
+}

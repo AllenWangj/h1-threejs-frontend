@@ -90,7 +90,7 @@ class ProcesTwo extends Three {
                 // 代表是内墙
                 this.innerGroup.push(object.scene)
             } else if(this.handleGroupType(name)===EGroupType.TOP_GRoup) {
-                debugger
+                // debugger
                 this.topGroup.push(object.scene)
             }
         })

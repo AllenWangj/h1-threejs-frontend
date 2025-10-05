@@ -152,7 +152,9 @@ class PositionLayout extends Three {
     }
     handleInitModel() {
         // this.loadGLTFResource("/gltf/5/three.skp.gltf", (progress) => {
-        this.loadGLTFResource("/six/six.gltf", (progress) => {
+        // this.loadGLTFResource("/six/six.gltf", (progress) => {
+        this.loadGLTFResource("/gltf/originsix/six.gltf", (progress) => {
+
 
 
         }).then(res => {

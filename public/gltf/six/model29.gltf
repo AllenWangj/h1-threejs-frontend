@@ -1,0 +1,247 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "THREE.GLTFExporter r180"
+  },
+  "scenes": [
+    {
+      "name": "AuxScene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0,
+  "nodes": [
+    {
+      "name": "<组件#29>_1",
+      "extras": {
+        "name": "<组件#29>",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "mesh_9",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "bnyczbmiqlhiyzjbgnvk_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_9_1",
+      "extras": {
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "bnyczbmiqlhiyzjbgnvk"
+          }
+        }
+      },
+      "mesh": 1
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 576,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 576,
+      "byteLength": 192,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 768,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1056,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1344,
+      "byteLength": 192,
+      "target": 34962,
+      "byteStride": 8
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1536,
+      "byteLength": 144,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1680,
+      "uri": "data:application/octet-stream;base64,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"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 48,
+      "max": [
+        3.149606227874756,
+        4.724409580230713,
+        110.23622131347656
+      ],
+      "min": [
+        -2.2737367544323206e-12,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5125,
+      "count": 48,
+      "max": [
+        47
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        3.149606227874756,
+        4.724409580230713,
+        110.23622131347656
+      ],
+      "min": [
+        -2.2737367544323206e-12,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        1,
+        1,
+        1
+      ],
+      "min": [
+        -1,
+        -1,
+        -1
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        0.11999999731779099,
+        7.893311438283163e-18
+      ],
+      "min": [
+        -0.11999999731779099,
+        -2.799999952316284
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5125,
+      "count": 36,
+      "max": [
+        23
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "name": "DefaultMaterialEdge"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.49803921580314636,
+          1,
+          0.8313725590705872,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "doubleSided": true,
+      "name": "[0088_Aquamarine]"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "mode": 1,
+          "attributes": {
+            "POSITION": 0
+          },
+          "indices": 1,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "primitives": [
+        {
+          "mode": 4,
+          "attributes": {
+            "POSITION": 2,
+            "NORMAL": 3,
+            "TEXCOORD_0": 4
+          },
+          "indices": 5,
+          "material": 1
+        }
+      ]
+    }
+  ]
+}
