@@ -62,37 +62,51 @@
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
               <span class="title">地址决策</span>
-              <span class="status status-done">已完成</span>
+              <span class="status" v-if="item.siteStatus == 0">未选择</span>
+              <span class="status status-ongoing" v-else-if="item.siteStatus == 1">进行中</span>
+              <span class="status status-done" v-else-if="item.siteStatus == 2">已完成</span>
             </div>
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
               <span class="title">规划布局</span>
-              <span class="status status-ongoing">进行中</span>
+              <span class="status" v-if="item.planLayoutStatus == 0">未选择</span>
+              <span class="status status-ongoing" v-else-if="item.planLayoutStatus == 1">进行中</span>
+              <span class="status status-done" v-else-if="item.planLayoutStatus == 2">已完成</span>
             </div>
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
               <span class="title">内部结构</span>
-              <span class="status">未选择</span>
+              <span class="status" v-if="item.internalLayoutStatus == 0">未选择</span>
+              <span class="status status-ongoing" v-else-if="item.internalLayoutStatus == 1">进行中</span>
+              <span class="status status-done" v-else-if="item.internalLayoutStatus == 2">已完成</span>
             </div>
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
               <span class="title">结构设计</span>
-              <span class="status">未选择</span>
+              <span class="status" v-if="item.structuralDesignStatus == 0">未选择</span>
+              <span class="status status-ongoing" v-else-if="item.structuralDesignStatus == 1">进行中</span>
+              <span class="status status-done" v-else-if="item.structuralDesignStatus == 2">已完成</span>
             </div>
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
               <span class="title">部件生产</span>
-              <span class="status">未选择</span>
+              <span class="status" v-if="item.packingStatus == 0">未选择</span>
+              <span class="status status-ongoing" v-else-if="item.packingStatus == 1">进行中</span>
+              <span class="status status-done" v-else-if="item.packingStatus == 2">已完成</span>
             </div>
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
               <span class="title">运输保障</span>
-              <span class="status">未选择</span>
+              <span class="status" v-if="item.partsProductionStatus == 0">未选择</span>
+              <span class="status status-ongoing" v-else-if="item.partsProductionStatus == 1">进行中</span>
+              <span class="status status-done" v-else-if="item.partsProductionStatus == 2">已完成</span>
             </div>
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
               <span class="title">现场组装</span>
-              <span class="status">未选择</span>
+              <span class="status" v-if="item.assembleStatus == 0">未选择</span>
+              <span class="status status-ongoing" v-else-if="item.assembleStatus == 1">进行中</span>
+              <span class="status status-done" v-else-if="item.assembleStatus == 2">已完成</span>
             </div>
             <div class="body-item">
               <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/timeIcon.svg" alt="" />
@@ -104,55 +118,76 @@
       </div>
     </div>
     <div class="relative flex-1 ml-[15px] home-background" v-loading="detailLoading">
-      <RouterLink to="/process/one" class="text-[#007bff] mx-[10px] step-button step-button-1">
+      <a
+        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-1"
+        @click="handleStepClick('/process/one', currentProjectDetail.siteStatus)"
+      >
         <div>
-          <span v-if="false" class="status-unselected">未选择</span>
-          <span v-if="false" class="status-ongoing">进行中</span>
-          <span v-if="true" class="status-done">已完成</span>
+          <span v-if="currentProjectDetail.siteStatus == 0" class="status-unselected">未选择</span>
+          <span v-if="currentProjectDetail.siteStatus == 1" class="status-ongoing">进行中</span>
+          <span v-if="currentProjectDetail.siteStatus == 2" class="status-done">已完成</span>
         </div>
-      </RouterLink>
-      <RouterLink to="/process/two" class="text-[#007bff] mx-[10px] step-button step-button-2">
+      </a>
+      <a
+        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-2"
+        @click="handleStepClick('/process/two', currentProjectDetail.planLayoutStatus)"
+      >
         <div>
-          <span v-if="false" class="status-unselected">未选择</span>
-          <span v-if="true" class="status-ongoing">进行中</span>
-          <span v-if="false" class="status-done">已完成</span>
+          <span v-if="currentProjectDetail.planLayoutStatus == 0" class="status-unselected">未选择</span>
+          <span v-if="currentProjectDetail.planLayoutStatus == 1" class="status-ongoing">进行中</span>
+          <span v-if="currentProjectDetail.planLayoutStatus == 2" class="status-done">已完成</span>
         </div>
-      </RouterLink>
-      <RouterLink to="/process/three" class="text-[#007bff] mx-[10px] step-button step-button-3">
+      </a>
+      <a
+        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-3"
+        @click="handleStepClick('/process/three', currentProjectDetail.internalLayoutStatus)"
+      >
         <div>
-          <span v-if="true" class="status-unselected">未选择</span>
-          <span v-if="false" class="status-ongoing">进行中</span>
-          <span v-if="false" class="status-done">已完成</span>
+          <span v-if="currentProjectDetail.internalLayoutStatus == 0" class="status-unselected">未选择</span>
+          <span v-if="currentProjectDetail.internalLayoutStatus == 1" class="status-ongoing">进行中</span>
+          <span v-if="currentProjectDetail.internalLayoutStatus == 2" class="status-done">已完成</span>
         </div>
-      </RouterLink>
-      <RouterLink to="/process/four" class="text-[#007bff] mx-[10px] step-button step-button-4">
+      </a>
+      <a
+        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-4"
+        @click="handleStepClick('/process/four', currentProjectDetail.structuralDesignStatus)"
+      >
         <div>
-          <span v-if="true" class="status-unselected">未选择</span>
-          <span v-if="false" class="status-ongoing">进行中</span>
-          <span v-if="false" class="status-done">已完成</span>
+          <span v-if="currentProjectDetail.structuralDesignStatus == 0" class="status-unselected">未选择</span>
+          <span v-if="currentProjectDetail.structuralDesignStatus == 1" class="status-ongoing">进行中</span>
+          <span v-if="currentProjectDetail.structuralDesignStatus == 2" class="status-done">已完成</span>
         </div>
-      </RouterLink>
-      <RouterLink to="/process/five" class="text-[#007bff] mx-[10px] step-button step-button-5">
+      </a>
+      <a
+        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-5"
+        @click="handleStepClick('/process/five', currentProjectDetail.packingStatus)"
+      >
         <div>
-          <span v-if="true" class="status-unselected">未选择</span>
-          <span v-if="false" class="status-ongoing">进行中</span>
-          <span v-if="false" class="status-done">已完成</span>
+          <span v-if="currentProjectDetail.packingStatus == 0" class="status-unselected">未选择</span>
+          <span v-if="currentProjectDetail.packingStatus == 1" class="status-ongoing">进行中</span>
+          <span v-if="currentProjectDetail.packingStatus == 2" class="status-done">已完成</span>
         </div>
-      </RouterLink>
-      <RouterLink to="/process/six" class="text-[#007bff] mx-[10px] step-button step-button-6">
+      </a>
+      <a
+        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-6"
+        @click="handleStepClick('/process/six', currentProjectDetail.partsProductionStatus)"
+      >
         <div>
-          <span v-if="true" class="status-unselected">未选择</span>
-          <span v-if="false" class="status-ongoing">进行中</span>
-          <span v-if="false" class="status-done">已完成</span>
+          <span v-if="currentProjectDetail.partsProductionStatus == 0" class="status-unselected">未选择</span>
+          <span v-if="currentProjectDetail.partsProductionStatus == 1" class="status-ongoing">进行中</span>
+          <span v-if="currentProjectDetail.partsProductionStatus == 2" class="status-done">已完成</span>
         </div>
-      </RouterLink>
-      <RouterLink to="/process/seven" class="text-[#007bff] mx-[10px] step-button step-button-7">
+      </a>
+      <a
+        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-7"
+        @click="handleStepClick('/process/seven', currentProjectDetail.assembleStatus)"
+      >
         <div>
-          <span v-if="true" class="status-unselected">未选择</span>
-          <span v-if="false" class="status-ongoing">进行中</span>
-          <span v-if="false" class="status-done">已完成</span>
+          <span v-if="currentProjectDetail.assembleStatus == 0" class="status-unselected">未选择</span>
+          <span v-if="currentProjectDetail.assembleStatus == 1" class="status-ongoing">进行中</span>
+          <span v-if="currentProjectDetail.assembleStatus == 2" class="status-done">已完成</span>
         </div>
-      </RouterLink>
+      </a>
     </div>
     <!-- 新建项目 -->
     <ez-dialog
@@ -212,6 +247,26 @@ const projectList = ref([])
 const currentProject = ref(null)
 // 项目详情loading
 const detailLoading = ref(false)
+// 当前查看详情的项目
+const currentProjectDetail = ref({
+  siteStatus: 0,
+  planLayoutStatus: 0,
+  internalLayoutStatus: 0,
+  structuralDesignStatus: 0,
+  packingStatus: 0,
+  partsProductionStatus: 0,
+  assembleStatus: 0
+})
+
+// 步骤点击
+const handleStepClick = (path, status) => {
+  if (status <= 0) {
+    ElMessage.warning('当前状态不能操作')
+    return
+  }
+  router.push({ path })
+}
+
 // 搜索项目
 const handleSearchProject = () => {
   fetchProjectList()
@@ -249,7 +304,7 @@ const handleEditProject = async (item) => {
   dialogFlag.value = true
   projectForm.id = item.id
   projectForm.name = item.name
-  projectForm.types = [1, 2, 3]
+  projectForm.types = item.types ? item.types.split(',').map((type) => Number(type)) : []
 }
 
 // 新增弹窗
@@ -317,6 +372,8 @@ const handleSubmitProject = async () => {
   try {
     submitLoading.value = true
     await projectFormRef.value.validate()
+    const params = JSON.parse(JSON.stringify(projectForm))
+    params.types = params.types.join(',')
     if (projectForm.id) {
       // 编辑项目
       await updateProject(projectForm)
@@ -350,8 +407,9 @@ const handleSelectType = (id: number) => {
 async function fetchProjectDetail(id: number) {
   try {
     detailLoading.value = true
-    const res = await getProjectDetail({ id })
-    console.log('项目详情', res)
+    const { data } = await getProjectDetail({ id })
+    console.log('项目详情', data)
+    currentProjectDetail.value = data
   } catch (error) {
     console.error('获取项目详情失败', error)
   } finally {
@@ -368,6 +426,10 @@ async function fetchProjectList() {
     size: 1000
   })
   projectList.value = res.data.records || []
+  if (projectList.value.length) {
+    // 默认选择第一个项目
+    handleTapProject(projectList.value[0])
+  }
 }
 
 onMounted(() => {
