@@ -39,6 +39,9 @@
           连接器
         </el-button>
       </div>
+      <div v-if="!loading" class="toolbar-content">
+        <BuildInfo v-for="n in 5" :key="n"></BuildInfo>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +49,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
+import BuildInfo from './components/build-info.vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -262,16 +266,36 @@ function onResize() {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: transparent;
+  width: 270px;
   overflow-y: auto;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 
   .el-button {
     margin: 0;
+    width: 120px;
     margin-bottom: 10px;
   }
+}
+
+.toolbar-content {
+  position: absolute;
+  top: 250px;
+  right: 20px;
+  bottom: 20px;
+  width: 270px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 </style>
