@@ -40,6 +40,7 @@ export const useUpload = () => {
             })
             const result = await s3Client.send(command)
             const url = `https://cdn.spic.cc/h1-static/uploads/${file.name}`
+            debugger
             const params = {
                 name: file.name,
                 url,
@@ -49,7 +50,7 @@ export const useUpload = () => {
                 hash: result.ETag.replaceAll('\"', ''),
             }
             // 提交创建记录
-            createOssRecord(params)
+           const {data} = await createOssRecord(params)
             return { url }
         } catch (error) {
             throw new Error(error);

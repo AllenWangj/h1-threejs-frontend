@@ -264,7 +264,7 @@ const handleStepClick = (path, status) => {
     ElMessage.warning('当前状态不能操作')
     return
   }
-  router.push({ path })
+  router.push({ path, query: { projectId: currentProject.value } })
 }
 
 // 搜索项目

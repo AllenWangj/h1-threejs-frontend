@@ -26,3 +26,19 @@ export const getProjectDetail = (params) => useBaseFetch().get(`${baseUrl}record
  * 更新项目
 */
 export const updateProject = (params) => useBaseFetch().post(`${baseUrl}record/v1/update`, params)
+
+
+/**
+ * 创建工具5（部件生产）的生产数据
+*/
+export const createPartsProduction = (params) => useBaseFetch().post(`${baseUrl}parts-production/v1/create`, params)
+
+/**
+ * 获取工具5（部件生产）的详情
+*/
+export const getPartsProductionDetail = (params) => useBaseFetch().get(`${baseUrl}parts-production/v1/detail`, params)
+
+/**
+ * 更新工具5（部件生产）的数据
+*/
+export const updatePartsProduction = (params) => useBaseFetch().post(`${baseUrl}parts-production/v1/update`, params)
