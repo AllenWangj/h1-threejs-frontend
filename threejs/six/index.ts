@@ -8,11 +8,17 @@ class SixObject extends Three {
     private wrapper = new THREE.Group()
     private draggesObject: THREE.Group[] = []
     public dragControls: DragControls
-    private containerSize: {
-        x: number
-        y: number
-        z: number
-    } = { x: 0, y: 0, z: 0 }
+    private boxSize = {
+        x:0,
+        y:0,
+        z:0,
+        len:0,
+        width:0,
+        height:0,
+    }
+    private containerSize= { x: 0, y: 0, z: 0 ,   len:0,
+        width:0,
+        height:0,}
     public promiseFactories: (() => Promise<{
         wrapper: THREE.Group,
         object: GLTF,
@@ -39,6 +45,12 @@ class SixObject extends Three {
                 position.y,
                 position.z,
             )
+            const mesh =  object.scene.children[0].children[0]
+            console.log("wrapper.name--",wrapper.name)
+            // if(wrapper.name !== "Group_1") {
+            //
+            // }
+             mesh.visible = false
             object.scene.rotation.set(
                 roation.x,
                 roation.y,
@@ -49,31 +61,26 @@ class SixObject extends Three {
                 scale.y,
                 scale.z,
             )
-                  object.scene.children.forEach(child => {
-                    child.children.forEach(child => {
-                        child.raycast = () => {}; // 空函数，不响应射线检测
-
-                    })
-        });
-            // object.scene.children[0].raycast = () => {};
-            // object.scene.children[1].raycast = () => {};
-
-            console.log("name---",name)
             object.scene.name = name
             object.scene.userData.isGroup = true
             this.draggesObject.push(wrapper)
             wrapper.add(object.scene)
         })
         this.initDragControls()
-        const size = this.calculateGroupDimensions(this.wrapper)
+        const size = this.calculateGroupDimensions(this.wrapper,true)
         const number = 600
 
         this.camera!.position.set(size.center.x, size.center.y - number, size.center.z)
         this.controls.target.set(size.center.x, size.center.y, size.center.z)
         //设置长宽高
-        this.containerSize.x = size.width
-        this.containerSize.y = size.height
-        this.containerSize.z = size.depth
+        this.containerSize.len = size.width
+        this.containerSize.width = size.height
+        this.containerSize.height = size.depth
+        this.containerSize.x = 0
+        this.containerSize.y = 0
+        this.containerSize.z =0
+        // this.containerSize.x = size.width/2
+        console.log("this.containerSize--",this.containerSize)
     }
     private handleLoadUrl(object: any, parent: any) {
         if (object.url) {
@@ -159,26 +166,26 @@ class SixObject extends Three {
     private initDragControls() {
         if (this.dragControls) this.dragControls.dispose()
         const meshes = this.draggesObject.map((o: any) => o)
-    // debugger
         this.dragControls = new DragControls(meshes, this.camera, this.renderer.domElement)
         this.dragControls.addEventListener('dragstart', (event) => {
             this.controls.enabled = false
             const object = event.object
             const originPos = object.position.clone()
             object.userData.pos = originPos
-            
-            console.log("event.object---", object)
             // const obj = draggableObjects.find((o) => o.mesh === event.object)
             // if (obj) obj.prevPosition = event.object.position.clone()
         })
 
         this.dragControls.addEventListener('drag', (event) => {
-            // console.log("----", event.object)
-            const object = event.object
+            const object =  event.object as THREE.Mesh
+            // const size = this.calculateGroupDimensions(object)
+            // console.log("x:", targetPos.x)
+            // console.log("x:", targetPos.x,this.containerSize.x+this.containerSize.len)          
+            // const object = event.object
             let group: any = null
             let isResult = true
             // debugger
-            let initObject = object
+            let initObject:any= object 
             while (isResult) {
                 group = initObject.parent
                 if (group.userData.isGroup) {
@@ -187,6 +194,58 @@ class SixObject extends Three {
                 initObject = initObject.parent
             }
             let targetPos = event.object.position.clone()
+            const position = initObject.position.clone()
+           targetPos.x += position.x 
+           targetPos.y += position.y
+           targetPos.z += position.z
+           const size= this.calculateGroupDimensions(object)
+        //    console.log("-size",size,targetPos,this.containerSize)
+      
+           const maxX  = this.containerSize.x+this.containerSize.len-size.width
+           const maxY  = this.containerSize.y+this.containerSize.width-size.height
+           const maxZ = this.containerSize.z+this.containerSize.height
+        //    debugger
+            console.log("targetPos.y> this.containerSize.y && targetPos.y < maxY ",
+            targetPos.z,this.containerSize.z ,  maxZ 
+           )
+            console.log("targetPos.y> this.containerSize.y && targetPos.y < maxY ",
+            targetPos.x,this.containerSize.x ,  maxX
+           )
+            console.log("targetPos.y> this.containerSize.y && targetPos.y < maxY ",
+            targetPos.y,this.containerSize.y ,  maxY
+           )
+            // console.log("maxX---",maxY)
+            // console.log("maxX---",maxZ)
+            const insideContainerX =
+                targetPos.x > this.containerSize.x && targetPos.x < maxX &&
+                targetPos.y> this.containerSize.y && targetPos.y < maxY &&
+                targetPos.z> this.containerSize.z && targetPos.z < maxZ
+                console.log("insideContainerX---",insideContainerX)
+            if(!insideContainerX) {
+                // 不在容器内
+                let x = targetPos.x
+                debugger
+                if(x > maxX) {
+                    x = maxX - position.x
+                }
+
+                //  let y = targetPos.y
+                // if(y > maxY) {
+                //     y = maxY
+                // }
+
+                //  let z = targetPos.z
+                // if(z > maxZ) {
+                //     z = maxZ
+                // }
+                // const x =Math.min(targetPos.x,)
+              object.position.set(
+                x,
+                targetPos.y,
+                targetPos.z
+              )  
+            }
+            // let targetPos = event.object.position.clone()
            
             //  object.userData.pos = originPos
         

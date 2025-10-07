@@ -28,7 +28,7 @@ import { position } from "./sixPosition"
 
 const threeContainer = ref(null)
 let scene, containerScene, camera, renderer, orbitControls, dragControls
-const containerSize = { x: 60, y: 20, z: 20 }
+const containerSize = { x: 260, y: 60, z: 80 }
 let rotateEnabled = ref(true)
 let selectedObject = null // 当前选中的物体
 
@@ -107,7 +107,7 @@ function initScene() {
     0.1,
     2000
   )
-  camera.position.set(-57, 20, 15)
+  camera.position.set(-57, 120, 115)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
@@ -191,8 +191,8 @@ function initScene() {
 
   // 创建棋盘格纹理来模拟地面
   const canvas = document.createElement('canvas')
-  canvas.width = 512
-  canvas.height = 512
+  canvas.width = 512 *2
+  canvas.height = 512*2
   const ctx = canvas.getContext('2d')
 
   // 绘制棋盘格纹理
@@ -229,31 +229,6 @@ function initScene() {
   orbitControls.maxPolarAngle = Math.PI / 2 - 0.1 // 限制垂直旋转角度，防止从下方看
   orbitControls.minDistance = 10 // 最小距离
   orbitControls.maxDistance = 200 // 最大距离
-  const wrapper1 = new THREE.Group()
-  wrapper1.name = "容器"
-  scene.add(wrapper1)
-  handleLoadUrl(position, wrapper1)
-  runWithConcurrency(promiseFactories, 500).then(results => {
-    results.forEach(ele => {
-      const { object, wrapper, position, roation, scale, name } = ele
-      object.scene.position.set(
-        position.x,
-        position.y,
-        position.z,
-      )
-      object.scene.rotation.set(
-        roation.x,
-        roation.y,
-        roation.z,
-      )
-      object.scene.scale.set(
-        scale.x,
-        scale.y,
-        scale.z,
-      )
-      wrapper.add(object.scene)
-    })
-  })
   initDragControls()
 }
 function initDragControls() {
@@ -402,7 +377,7 @@ function initPreGeometries() {
   })
 }
 
-function addCube(name = 'cube1') {
+async function addCube(name = 'cube1') {
   const allInside = draggableObjects.every((obj) => obj.enteredContainer)
   if (!allInside) {
     ElMessage({
@@ -411,31 +386,51 @@ function addCube(name = 'cube1') {
     })
     return
   }
-  const geomData = preGeometries.find((g) => g.name === name)
-  if (!geomData) return
-
-  const material = new THREE.MeshPhongMaterial({
-    color: geomData.color
-  })
-  const mesh = new THREE.Mesh(geomData.geometry.clone(), material)
-
-  // 生成容器外位置
-  mesh.position.copy(getNonOverlappingPosition(geomData.size))
-
-  scene.add(mesh)
-  draggableObjects.push({
-    mesh,
-    size: geomData.size,
+  const loader = new GLTFLoader()
+  
+  loader.load("/gltf/six/model90.gltf",(gltf) =>{
+    console.log("gltf",gltf.scene)
+    // gltf.scene.scale.set(0.5,0.5,0.5)
+    // gltf.scene.position.set(0,-20,100)
+    const mesh = gltf.scene.children[0].children[1]
+    //  mesh.scale.set(0.5,0.5,0.5)
+    // mesh.position.set(0,-20,100)
+  const size=  calculateGroupDimensions(mesh)
+    //  gltf.scene.copy(getNonOverlappingPosition(geomData.size))
+    scene.add(mesh)
+      draggableObjects.push({
+    mesh:mesh,
+    size: {
+      x:size.width,
+      y:size.height,
+      z:size.depth
+    },
     prevPosition: mesh.position.clone(),
     enteredContainer: false, // 新增标记
     initialPosition: mesh.position.clone() // 新增
   })
+  // debugger
 
   if (dragControls) {
     dragControls.objects.push(mesh)
   } else {
     initDragControls()
   }
+  })
+  // return
+  // const geomData = preGeometries.find((g) => g.name === name)
+  // if (!geomData) return
+
+  // const material = new THREE.MeshPhongMaterial({
+  //   color: geomData.color
+  // })
+  // const mesh = new THREE.Mesh(geomData.geometry.clone(), material)
+
+  // // 生成容器外位置
+  // mesh.position.copy(getNonOverlappingPosition(geomData.size))
+
+  // scene.add(mesh)
+
 }
 
 // 生成容器外随机位置
@@ -607,125 +602,58 @@ function onResize() {
   camera.updateProjectionMatrix()
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
 }
-function handleLoadUrl(object, parent) {
-  if (object.url) {
-    promiseFactories.push(() => {
-      return new Promise((reslove) => {
-        this.loadGLTFResource(`/gltf/5/libary/${object.url}`).then(res => {
-          reslove({
-            wrapper: parent,
-            object: res,
-            position: object.position,
-            roation: object.roation,
-            scale: object.scale,
-            name: object.name
-          })
-        })
-      })
-    })
-  }
-  else if (object.name.indexOf("<组件#") != -1) {
-    const children = object.children[0]
-    if (children.name && children.name.indexOf("<组件#") != -1) {
-      const group = new THREE.Group()
-      group.name = object.name
-      group.position.set(
-        object.position.x,
-        object.position.y,
-        object.position.z,
-      )
-      group.rotation.set(
-        object.roation.x,
-        object.roation.y,
-        object.roation.z,
-      )
-      group.scale.set(
-        object.scale.x,
-        object.scale.y,
-        object.scale.z,
-      )
-      parent.add(group)
-      object.children.forEach(ele => {
-        handleLoadUrl(ele, group)
-      })
-    } else {
-      // 说明需要加载组件
-      const result = object.name.replace(/<组件#(\d+)>.*/, "model$1");
-      promiseFactories.push(() => {
-        return new Promise((reslove) => {
-          loadGLTFResource(`/gltf/six/${result}.gltf`).then(res => {
-            reslove({
-              wrapper: parent,
-              object: res,
-              position: object.position,
-              roation: object.roation,
-              scale: object.scale,
-              name: object.name
-            })
-          })
-        })
-      })
-    }
-  }
-  else if (object.children && object.children.length > 0) {
-    const group = new THREE.Group()
-    group.name = object.name
-    group.position.set(
-      object.position.x,
-      object.position.y,
-      object.position.z,
 
-    )
-    group.rotation.set(
-      object.roation.x,
-      object.roation.y,
-      object.roation.z,
-    )
-    parent.add(group)
-    object.children.forEach(ele => {
-      handleLoadUrl(ele, group)
-    })
-  }
-}
-function loadGLTFResource(url) {
-  const loader = new GLTFLoader();
-  return new Promise((reslove) => {
-    loader.load(url,
-      (gltf) => {
-        reslove(gltf)
-      },
-    )
-  })
-}
-async function runWithConcurrency(promises, concurrency) {
-  const results = [];
-  const total = promises.length;
-  let index = 0;
 
-  // 创建并发控制器
-  async function executeNext() {
-    if (index >= total) return;
 
-    const currentIndex = index++;
-    try {
-      // 执行当前Promise
-      const result = await promises[currentIndex]();
-      results[currentIndex] = result;
-    } catch (error) {
-      // 可以根据需要处理错误，这里简单地将错误存储在结果中
-      results[currentIndex] = error
-    }
+  function calculateGroupDimensions(group, isLoadBox = false) {
+        // 创建包围盒
+        const box = new THREE.Box3();
 
-    // 继续执行下一个
-    return executeNext();
-  }
+        // 扩展包围盒以包含整个组
+        box.expandByObject(group);
 
-  // 启动初始的并发任务
-  const initialPromises = Array(Math.min(concurrency, total)).fill(0).map(executeNext);
-  // 等待所有任务完成
-  await Promise.all(initialPromises);
-  return results;
-} 
+        // 计算尺寸（长宽高）
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        // 计算中心点
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+        const rect = new THREE.Vector3()
+        box.getSize(rect)
+        const maxDim = Math.max(size.x, size.y, size.z);
+
+
+        const box1 = new THREE.Box3().setFromObject(group);
+        const size1 = box1.getSize(new THREE.Vector3());
+        const center1 = box1.getCenter(new THREE.Vector3());
+        // const min = new THREE.Vector3();
+
+        console.log("min", rect)
+        // 创建一个与边界匹配的立方体
+        const boundingGeometry = new THREE.BoxGeometry(size1.x, size1.y, size1.z);
+        // 使用EdgesGeometry提取边缘
+        const edgesGeometry = new THREE.EdgesGeometry(boundingGeometry);
+        const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 2 });
+
+        const boundingBox = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+        // 定位到组的中心
+        boundingBox.position.copy(new THREE.Vector3(0, 0, 0));
+        if (isLoadBox) {
+            //   this.scene!.add(boundingBox)
+
+
+        }
+        return {
+            width: size.x,    // X轴方向尺寸
+            height: size.y,   // Y轴方向尺寸
+            depth: size.z,    // Z轴方向尺寸
+            center: center,
+            size: rect,
+            maxDim,  // 大小
+            position: box1.min,
+
+        };
+    };
 </script>
 
 <style>

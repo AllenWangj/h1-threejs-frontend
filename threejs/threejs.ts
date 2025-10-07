@@ -105,7 +105,7 @@ class Three {
         const center1 = box1.getCenter(new THREE.Vector3());
         // const min = new THREE.Vector3();
 
-        console.log("min", rect)
+        // console.log("min", rect)
         // 创建一个与边界匹配的立方体
         const boundingGeometry = new THREE.BoxGeometry(size1.x, size1.y, size1.z);
         // 使用EdgesGeometry提取边缘
@@ -114,11 +114,9 @@ class Three {
 
         const boundingBox = new THREE.LineSegments(edgesGeometry, edgesMaterial);
         // 定位到组的中心
-        boundingBox.position.copy(new THREE.Vector3(0, 0, 0));
+        boundingBox.position.copy(new THREE.Vector3(size.x/2, size.y/2, -size.z/2));
         if (isLoadBox) {
-            //   this.scene!.add(boundingBox)
-
-
+            this.scene!.add(boundingBox)
         }
         return {
             width: size.x,    // X轴方向尺寸
