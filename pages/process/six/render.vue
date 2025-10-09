@@ -24,6 +24,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { DragControls } from 'three/examples/jsm/controls/DragControls.js'
+import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js'
 
 const threeContainer = ref(null)
 let scene, containerScene, camera, renderer, orbitControls, dragControls
@@ -228,6 +229,12 @@ function initScene() {
   orbitControls.minDistance = 10 // 最小距离
   orbitControls.maxDistance = 200 // 最大距离
 
+
+
+  // 辅助坐标系
+  const axesHelper = new THREE.AxesHelper(1000);
+  scene.add(axesHelper);
+
   initDragControls()
 }
 
@@ -245,71 +252,68 @@ function initDragControls() {
   dragControls.addEventListener('drag', (event) => {
     const obj = draggableObjects.find((o) => o.mesh === event.object)
     if (!obj) return
-
     const halfSize = {
       x: obj.size.x / 2,
       y: obj.size.y / 2,
       z: obj.size.z / 2
     }
     let targetPos = event.object.position.clone()
+    const sizeA = new THREE.Vector3(obj.size.x, obj.size.y, obj.size.z)
 
     // 限制物体不能低于地面
-    const groundLevel = -containerSize.y / 2 + halfSize.y
+    // const groundLevel = -containerSize.y / 2 + halfSize.y
+    const groundLevel = -containerSize.y / 2
     targetPos.y = Math.max(groundLevel, targetPos.y)
 
     // 判断是否已经进入容器
     const insideContainer =
-      targetPos.x - halfSize.x >= -containerSize.x / 2 &&
+      targetPos.x >= -containerSize.x / 2 &&
       targetPos.x + halfSize.x <= containerSize.x / 2 &&
-      targetPos.y - halfSize.y >= -containerSize.y / 2 &&
+      targetPos.y >= -containerSize.y / 2 &&
       targetPos.y + halfSize.y <= containerSize.y / 2 &&
-      targetPos.z - halfSize.z >= -containerSize.z / 2 &&
+      targetPos.z >= -containerSize.z / 2 &&
       targetPos.z + halfSize.z <= containerSize.z / 2
 
     if (insideContainer) obj.enteredContainer = true
+    console.log('Object inside container:', insideContainer, obj.enteredContainer)
 
     // 如果已经进入过容器，限制在容器内，否则允许在外面拖动
     if (obj.enteredContainer) {
-      targetPos.x = Math.max(-containerSize.x / 2 + halfSize.x, Math.min(containerSize.x / 2 - halfSize.x, targetPos.x))
-      targetPos.y = Math.min(containerSize.y / 2 - halfSize.y, Math.max(-containerSize.y / 2 + halfSize.y, targetPos.y))
-      targetPos.z = Math.max(-containerSize.z / 2 + halfSize.z, Math.min(containerSize.z / 2 - halfSize.z, targetPos.z))
+      // targetPos.x = Math.max(-containerSize.x / 2 + halfSize.x, Math.min(containerSize.x / 2 - halfSize.x, targetPos.x))
+      // targetPos.y = Math.min(containerSize.y / 2 - halfSize.y, Math.max(-containerSize.y / 2 + halfSize.y, targetPos.y))
+      // targetPos.z = Math.max(-containerSize.z / 2 + halfSize.z, Math.min(containerSize.z / 2 - halfSize.z, targetPos.z))
+      // 模型缩放后有误差
+      const minX = -containerSize.x / 2 - 0.4
+      const maxX = containerSize.x / 2 - obj.size.x - 0.3
+      const minY = -containerSize.y / 2
+      const maxY = containerSize.y / 2 - obj.size.y
+      const minZ = -containerSize.z / 2
+      const maxZ = containerSize.z / 2 - obj.size.z
+
+      targetPos.x = Math.max(minX, Math.min(maxX, targetPos.x))
+      targetPos.y = Math.max(minY, Math.min(maxY, targetPos.y))
+      targetPos.z = Math.max(minZ, Math.min(maxZ, targetPos.z))
     }
 
-    // 碰撞检测
-    const minA = new THREE.Vector3(targetPos.x - halfSize.x, targetPos.y - halfSize.y, targetPos.z - halfSize.z)
-    const maxA = new THREE.Vector3(targetPos.x + halfSize.x, targetPos.y + halfSize.y, targetPos.z + halfSize.z)
+    // 构建当前模型的 AABB
+    const boxA = new THREE.Box3().setFromCenterAndSize(targetPos.clone(), sizeA)
 
     let overlap = false
     for (let other of draggableObjects) {
       if (other.mesh === obj.mesh) continue
-      const halfOther = {
-        x: other.size.x / 2,
-        y: other.size.y / 2,
-        z: other.size.z / 2
-      }
-      const minB = new THREE.Vector3(
-        other.mesh.position.x - halfOther.x,
-        other.mesh.position.y - halfOther.y,
-        other.mesh.position.z - halfOther.z
-      )
-      const maxB = new THREE.Vector3(
-        other.mesh.position.x + halfOther.x,
-        other.mesh.position.y + halfOther.y,
-        other.mesh.position.z + halfOther.z
-      )
 
-      if (
-        minA.x < maxB.x &&
-        maxA.x > minB.x &&
-        minA.y < maxB.y &&
-        maxA.y > minB.y &&
-        minA.z < maxB.z &&
-        maxA.z > minB.z
-      ) {
+      const otherPos = other.mesh.position.clone()
+      const sizeB = new THREE.Vector3(other.size.x, other.size.y, other.size.z)
+      const boxB = new THREE.Box3().setFromCenterAndSize(otherPos, sizeB)
+
+      if (boxA.intersectsBox(boxB)) {
         overlap = true
         break
       }
     }
+
+
+    console.log('==========================================')
 
     // 根据物体位置调整材质亮度
     if (obj.enteredContainer) {
@@ -370,10 +374,44 @@ function initPreGeometries() {
     { name: 'cube5', color: 0xff00ff, x: 6, y: 2, z: 4 }
   ]
 
-  sizes.forEach((size) => {
-    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z)
-    geometry.name = size.name // 给几何体命名
-    preGeometries.push({ geometry, size: { x: size.x, y: size.y, z: size.z }, name: size.name, color: size.color })
+  // sizes.forEach((size) => {
+  //   const geometry = new THREE.BoxGeometry(size.x, size.y, size.z)
+  //   geometry.name = size.name // 给几何体命名
+  //   preGeometries.push({ geometry, size: { x: size.x, y: size.y, z: size.z }, name: size.name, color: size.color })
+  // })
+  const loader = new GLTFLoader()
+  sizes.forEach((item) => {
+    loader.load(`/gltf/5/libary/model10.gltf`, (gltf) => {
+      console.log('Loaded GLTF:', gltf)
+      const originalModel = gltf.scene.children[0].children[0].children[1];
+
+      // 克隆一份，避免破坏原模型
+      const model = SkeletonUtils.clone(originalModel);
+
+      // 缩放模型
+      const scale = 0.1;
+      model.scale.setScalar(scale);
+
+      // 创建一个空 group 来作为新 pivot
+      // const wrapper = new THREE.Group();
+      // wrapper.name = item.name;
+
+      // // 计算包围盒
+      const box = new THREE.Box3().setFromObject(model);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      // const center = new THREE.Vector3();
+      // box.getCenter(center);
+
+      // // 将模型内部移动，使中心在 group 中心
+      // model.position.sub(center);
+
+      // 添加到 wrapper
+      // wrapper.add(model);
+      console.log('Prepared model:', model.position);
+
+      preGeometries.push({ name: item.name, model: model, size });
+    })
   })
 }
 
@@ -386,28 +424,27 @@ function addCube(name = 'cube1') {
     })
     return
   }
-  const geomData = preGeometries.find((g) => g.name === name)
-  if (!geomData) return
+  const modelData = preGeometries.find((g) => g.name === name)
+  if (!modelData) return
 
-  const material = new THREE.MeshPhongMaterial({
-    color: geomData.color
-  })
-  const mesh = new THREE.Mesh(geomData.geometry.clone(), material)
+  const modelClone = SkeletonUtils.clone(modelData.model)
+  modelClone.userData = { name: modelData.name }
 
-  // 生成容器外位置
-  mesh.position.copy(getNonOverlappingPosition(geomData.size))
+  modelClone.position.copy(getNonOverlappingPosition(modelData.size))
 
-  scene.add(mesh)
+  scene.add(modelClone)
+
+  // 3) 注册到 draggableObjects —— 注意 size 使用实际尺寸（乘以 scale）
   draggableObjects.push({
-    mesh,
-    size: geomData.size,
-    prevPosition: mesh.position.clone(),
-    enteredContainer: false, // 新增标记
-    initialPosition: mesh.position.clone() // 新增
+    mesh: modelClone,
+    size: modelData.size,
+    prevPosition: modelClone.position.clone(),
+    enteredContainer: false,
+    initialPosition: modelClone.position.clone()
   })
 
   if (dragControls) {
-    dragControls.objects.push(mesh)
+    dragControls.objects.push(modelClone)
   } else {
     initDragControls()
   }
