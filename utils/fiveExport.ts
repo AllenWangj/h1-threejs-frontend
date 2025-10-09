@@ -31,11 +31,10 @@ class FiveExport extends Three {
         const clone = object.clone(true)
         clone.name = name
         clone.position.set(0, 0, 0)
-        clone.rotation.set(0,0,90 * (Math.PI / 180))
+        clone.rotation.set(0, 0,0)
         clone.scale.set(1, 1, 1)
         this.wrapper.add(clone)
         const size = this.calculateGroupDimensions(this.wrapper, true)
-        console.log("size",size)
         // const group1 = 
         // this.wrapper.add(clone)
         // this.wrapper.position.set(0, 0, 0)

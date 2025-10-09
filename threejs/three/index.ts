@@ -63,6 +63,7 @@ class ProcesTwo extends Three {
         )
         this.wrapper.add(base)
         this.handleLoadUrl(position, base)
+        console.log("position",position)
         const results = await this.runWithConcurrency(this.promiseFactories, 500)
         results.forEach(ele => {
             
@@ -133,8 +134,17 @@ class ProcesTwo extends Three {
             })
         }
         else if (object.name.indexOf("<组件#") != -1) {
-            const children = object.children[0]
-            if (children.name && children.name.indexOf("<组件#") != -1) {
+            let isPart = false
+
+            // 
+           
+            let name = ""
+            if(object.children && object.children.length > 0){
+                 const children = object.children[0]
+                name =children.name 
+            }
+            // if()
+            if (name && name.indexOf("<组件#") != -1) {
                 const group = new THREE.Group()
                 group.name = object.name
                 group.position.set(
@@ -159,10 +169,14 @@ class ProcesTwo extends Three {
             } else {
                 // 说明需要加载组件
                 const result = object.name.replace(/<组件#(\d+)>.*/, "model$1");
+                // const name = (result as string).split("model")
+                // object.code = "102"+name[name.length -1]
                 // this.promiseFactories.push(() =>this.loadGLTFResource(`/gltf/5/libary/${result}.gltf`))
                 this.promiseFactories.push(() => {
                     return new Promise((reslove) => {
-                        this.loadGLTFResource(`/gltf/5/libary/${result}.gltf`).then(res => {
+                        const code = object.code
+                        
+                        this.loadGLTFResource(`/gltf/5/libary/${code}.gltf`).then(res => {
                             reslove({
                                 wrapper: parent,
                                 object: res,

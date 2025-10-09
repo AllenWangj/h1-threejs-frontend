@@ -68,7 +68,7 @@ class PlanAndLayout extends Three {
     private handleLoadDefaultScene() {
         // this.isLoadAIStart = false
         const sceneGLTF = {
-            [EnumLayoutCategory.EnumLayoutCategory_75]: "/75-test/75-test.skp.gltf"
+            [EnumLayoutCategory.EnumLayoutCategory_75]: "/test/75/base.gltf"
         }
         this.loadGLTFResource(`/gltf/${sceneGLTF[this.option.enumLayoutCategory]}`, (progress) => {
             this.option.loadSceneCBK(progress)
@@ -82,7 +82,7 @@ class PlanAndLayout extends Three {
             this.camera!.position.set(size.center.x, size.center.y - number, size.center.z + number)
             this.controls.target.set(size.center.x, size.center.y, size.center.z)
             // 移除模版中不要的小模块
-            this.handleRemoveMode(this.defaultGroup)
+            // this.handleRemoveMode(this.defaultGroup)
             this.handleScenMode()
         })
     }
@@ -209,10 +209,21 @@ class PlanAndLayout extends Three {
         return
 
     }
+     getResult(str) {
+    // 匹配字符串末尾的数字（.gltf前的数字）
+    const reg = /(\d+)\.gltf$/;
+    const match = str.match(reg);
+    if (match && match[1]) {
+        // 提取数字并补零至2位，与前缀101组合
+        const num = match[1].padStart(2, '0');
+        return '101' + num;
+    }
+    return ''; // 匹配失败返回空
+}
     private handleScenMode() {
         // 加载默认场景数据
         Set75.forEach((ele, index) => {
-            this.loadGLTFResource(ele.url).then(res => {
+            this.loadGLTFResource(`/gltf/test/75/${ele.code}.gltf`).then(res => {
                 if (index == 0) {
                     const xPos = ele.position.x
                     const yPos = ele.position.y
@@ -240,38 +251,7 @@ class PlanAndLayout extends Three {
             })
         })
     }
-    private handleRemoveMode(group: THREE.Group) {
-        // 隐藏模型指定的模型
-        const hiddenNamne = [
-            'Group',
-            'Group_37',
-            'Group_4',
-            'Group_38',
-            'Group_24',
-            'Group_24',
-            'Group_18',
-            'Group_11',
-            'Group_36',
-            'Group_50',
-            'Group_60',
-            'Group_80',
-            'Group_81',
-            'Group_76',
-            'Group_77',
-            'Group_79',
-            'Group_70',
-            'Group_71',
-            'Group_78',
-        ]
-        hiddenNamne.forEach(ele => {
-            const target = group.getObjectByName(ele)
-            if (target) {
-                target.parent.remove(target)
-
-            } else {
-            }
-        })
-    }
+   
     private getWorldPositionFromScreen(x, y) {
         // 1. 将屏幕坐标转换为标准化设备坐标 (-1 到 1)
         const ndc = new THREE.Vector2();
