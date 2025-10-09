@@ -270,6 +270,7 @@ function initDragControls() {
 
     // 如果已经进入过容器，限制在容器内，否则允许在外面拖动
     if (obj.enteredContainer) {
+      // debugger
       targetPos.x = Math.max(-containerSize.x / 2 + halfSize.x, Math.min(containerSize.x / 2 - halfSize.x, targetPos.x))
       targetPos.y = Math.min(containerSize.y / 2 - halfSize.y, Math.max(-containerSize.y / 2 + halfSize.y, targetPos.y))
       targetPos.z = Math.max(-containerSize.z / 2 + halfSize.z, Math.min(containerSize.z / 2 - halfSize.z, targetPos.z))
@@ -410,13 +411,14 @@ async function addCube(name = 'cube1') {
   //  mesh.position.set( -size.width,  size.height / 2, size.depth/2)
   // pivot.add(mesh)
 
-   scene.add(mesh)
 
-  //  const boxGeo = new THREE.Box3().setFromObject(mesh)
-  //   //  boxGeo.setFromObject(mesh)
-  //   const center = new THREE.Vector3()
-  //   boxGeo.getCenter(center)
-  //   mesh.position.sub(center) // 移动到原点
+   const boxGeo = new THREE.Box3().setFromObject(mesh)
+    //  boxGeo.setFromObject(mesh)
+    const center = new THREE.Vector3()
+    boxGeo.getCenter(center)
+    mesh.position.sub(center) // 移动到原点
+   scene.add(mesh)
+      calculateGroupDimensions(mesh,true)
 
    draggableObjects.push({
     mesh,
@@ -558,6 +560,7 @@ function onKeyDown(event) {
 
   // === 1. 检查容器边界 ===
   if (direction.x !== 0) {
+
     if (direction.x > 0) {
       const dist = containerSize.x / 2 - halfSize.x - selectedObject.position.x
       allowedMove = Math.min(allowedMove, dist)
@@ -656,8 +659,6 @@ function onResize() {
   camera.updateProjectionMatrix()
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
 }
-
-
 
   function calculateGroupDimensions(group, isLoadBox = false) {
         // 创建包围盒
