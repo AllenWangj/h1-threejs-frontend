@@ -75,7 +75,7 @@ class SixObject extends Three {
         this.initDragControls()
         const size = this.calculateGroupDimensions(this.wrapper, true)
         const number = 600
-        // console.log("size",size)
+        console.log("size",size)
         this.camera!.position.set(size.center.x, size.center.y - number, size.center.z)
         this.controls.target.set(size.center.x, size.center.y, size.center.z)
         //设置长宽高

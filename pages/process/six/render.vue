@@ -4,11 +4,24 @@
     <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div ref="threeContainer" class="three-container"></div>
       <div class="toolbar-container">
-        <el-button class="w-[120px]" type="primary" @click="addCube('model7')">物体1</el-button>
+        <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube1')">物体1</el-button> -->
         <el-button class="w-[120px]" type="primary" @click="addCube('cube2')">物体2</el-button>
         <el-button class="w-[120px]" type="primary" @click="addCube('cube3')">物体3</el-button>
         <el-button class="w-[120px]" type="primary" @click="addCube('cube4')">物体4</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube5')">物体5</el-button>
+        <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube5')">物体5</el-button> -->
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube6')">物体6</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube7')">物体7</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube8')">物体8</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube9')">物体9</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube10')">物体10</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube11')">物体11</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube12')">物体12</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube13')">物体13</el-button>
+        <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube14')">物体14</el-button> -->
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube15')">物体15</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube16')">物体16</el-button>
+        <el-button class="w-[120px]" type="primary" @click="addCube('cube17')">物体17</el-button>
+
         <el-button class="w-[120px]" type="primary" :plain="rotateEnabled" @click="toggleRotate">
           {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
         </el-button>
@@ -24,81 +37,224 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { DragControls } from 'three/examples/jsm/controls/DragControls.js'
-import { position } from "./sixPosition"
-
+import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js'
+import { position } from "./source"
 const threeContainer = ref(null)
 let scene, containerScene, camera, renderer, orbitControls, dragControls
-const containerSize = { x: 260, y: 60, z: 80 }
+const containerSize = { x: 96, y: 96, z: 480 }
 let rotateEnabled = ref(true)
-let selectedObject = null // 当前选中的物体
-
-// 选中物体的函数
-function selectObject(object) {
-  console.log('Object selected:', object)
-  // 如果之前有选中的物体，先取消其选中状态
-  if (selectedObject) {
-    selectedObject.material.emissive = new THREE.Color(0x000000)
-  }
-
-  // 设置新的选中物体
-  selectedObject = object
-
-  // 高亮新选中的物体
-  if (selectedObject) {
-    selectedObject.material.emissive = new THREE.Color(0x999999)
-    console.log('Object selected:', selectedObject)
-  }
-}
-
-const draggableObjects = [] // { mesh, size, prevPosition, enteredContainer }
+let selectedObject = null // 当前选中的 mesh（wrapper）
+const draggableObjects = [] // { mesh, size: THREE.Vector3, prevPosition, enteredContainer, initialPosition }
 
 onMounted(() => {
   initScene()
   animate()
   initPreGeometries()
-
-  // 添加键盘事件监听
   window.addEventListener('keydown', onKeyDown)
-})
+  handleLoadInitModel()
+  const data = []
+  // for(let i = )
+  let x = 7.874015808105469
+  let y = 7.874015808105469
+  let z = 228.34645080566406
+  let xPos = -44.062992095947266
+  let yPos = -44.062992095947266
+  let zPos = -125.82677459716797
 
+
+  for (let i = 0; i < 12; i++) {
+    for (let j = 0; j < 2; j++) {
+      for (let k = 0; k < 3; k++) {
+        data.push({
+          "x": xPos + i * x,
+          "y": yPos + k * y,
+          "z": zPos + z * j,
+          "code": "10664"
+        },)
+      }
+
+    }
+  }
+
+
+  let z1 = 110.23622131347656
+  let xPos1 = -44.062992095947266
+  let yPos1 = -20.25252802840201
+  let zPos1 = -185.17769140029236
+  for (let i = 0; i < 12; i++) {
+    for (let j = 0; j < 3; j++) {
+      for (let k = 0; k < 2; k++) {
+        data.push({
+          "x": xPos1 + i * x,
+          "y": yPos1 + k * y,
+          "z": zPos1 + z1 * j,
+          "code": "10675"
+        },)
+      }
+
+    }
+  }
+
+
+  let z2 = 15.748031616210938
+  let xPos2 =-44.062992095947266
+  let yPos2 =-44.062992095947266
+  let zPos2 = 221.65679950905394
+
+  for (let i = 0; i < 12; i++) {
+    for (let j = 0; j < 1; j++) {
+      for (let k = 0; k < 2; k++) {
+        data.push({
+          "x": xPos2 + i * x,
+          "y": yPos2 + k * y,
+          "z": zPos2 + z2 * j,
+          "code": "10662"
+        },)
+      }
+
+    }
+  }
+
+/*
+: 3.1496062278770296, y: 4.724409580230713, z: 110.23622131347656}
+*/ 
+
+  let x3 = 3.1496062278770296
+  let y3 =  4.724409580230713
+
+  let z3 = 110.23622131347656
+  let xPos3 = -46.425196886061485
+  let yPos3 =-21.842512493913432
+  let zPos3 = 145.6196798877915
+
+  for (let i = 0; i < 30; i++) {
+    for (let j = 0; j < 1; j++) {
+      for (let k = 0; k <3; k++) {
+        data.push({
+          "x": xPos3 + i * x3,
+          "y": yPos3 + k * y3,
+          "z": zPos3 + j*z3 ,
+          "code": "10629"
+        },)
+      }
+
+    }
+  }
+
+
+  let xPos4 = -46.425196886061485
+  let yPos4 =-6.0734851066986835
+  let zPos4 = -184.88188934326172
+   for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 4; j++) {
+      for (let k = 0; k <3; k++) {
+        data.push({
+          "x": xPos4 + i * x3,
+          "y": yPos4 + k * y3,
+          "z": zPos4 + j*z3 ,
+          "code": "10629"
+        },)
+      }
+
+    }
+  }
+
+
+    let xPos5 = 3.330709695783071
+  let yPos5 =  -3.3753340537627423
+  let zPos5 =  -185.17769140029236
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 3; j++) {
+      for (let k = 0; k < 2; k++) {
+        data.push({
+          "x": xPos5 + i * x,
+          "y": yPos5 + k * y,
+          "z": zPos5 + z1 * j,
+          "code": "10675"
+        },)
+      }
+
+    }
+  }
+
+
+  /**
+   * {
+  "x": 7.874015808105469,
+  "y": 7.874015808105469,
+  "z": 110.23622131347656
+}
+   * */
+  console.log("data", data)
+
+})
+function handleLoadInitModel() {
+  position.forEach(ele => {
+    const loader = new GLTFLoader()
+    loader.load(`/gltf/six/${ele.code}.gltf`, (gltf) => {
+      let originalModel = gltf.scene
+      if (gltf.scene) originalModel = gltf.scene
+      const model = SkeletonUtils.clone(originalModel)
+      const scale = 1
+      model.scale.setScalar(scale)
+      model.traverse((child) => {
+        if (child.isMesh) {
+          // 禁止拾取
+          child.raycast = () => null;
+
+          // 防止事件干扰
+          child.userData.isDraggable = false;
+        }
+      });
+      const box = new THREE.Box3().setFromObject(model)
+      const size = new THREE.Vector3()
+      box.getSize(size)
+      const modelClone = SkeletonUtils.clone(model)
+      const wrappedModel = createTransparentWrapper(modelClone, size.clone())
+      wrappedModel.position.copy(getNonOverlappingPosition(size.clone()))
+      wrappedModel.position.set(ele.x, ele.y, ele.z)
+      scene.add(wrappedModel)
+      draggableObjects.push({
+        code: ele.code,
+        mesh: wrappedModel,
+        size: size.clone(),
+        prevPosition: wrappedModel.position.clone(),
+        enteredContainer: true,
+        initialPosition: wrappedModel.position.clone()
+      })
+      initDragControls()
+    })
+
+  })
+
+
+}
 onUnmounted(() => {
-  // 组件卸载时移除事件监听器
   window.removeEventListener('keydown', onKeyDown)
-  // 移除窗口监听
   window.removeEventListener('resize', onResize)
 })
 
 function loadMianModel() {
-  // return
-  // ✅ 用 GLTFLoader 替换 BoxGeometry
   const loader = new GLTFLoader()
   loader.load('/models/tool6/tool_6-Group_1.gltf', (gltf) => {
     const containerMesh = gltf.scene
-    gltf.scene.position.set(0,0,0)
-    // 缩放到和 containerSize 一致
-    // const boxGeo = new THREE.Box3().setFromObject(containerMesh)
-    // const size = new THREE.Vector3()
-    // boxGeo.getSize(size)
-
-    // const scale = new THREE.Vector3(containerSize.x / size.x, containerSize.y / size.y, containerSize.z / size.z)
-    // containerMesh.scale.set(scale.x, scale.y, scale.z)
-
-    // // 保持中心对齐
-    // boxGeo.setFromObject(containerMesh)
-    // const center = new THREE.Vector3()
-    // boxGeo.getCenter(center)
-    // containerMesh.position.sub(center) // 移动到原点
-
-    scene.add(gltf.scene)
+    const boxGeo = new THREE.Box3().setFromObject(containerMesh)
+    const size = new THREE.Vector3()
+    boxGeo.getSize(size)
+    const scale = new THREE.Vector3(containerSize.x / size.x, containerSize.y / size.y, containerSize.z / size.z)
+    containerMesh.scale.set(scale.x, scale.y, scale.z)
+    boxGeo.setFromObject(containerMesh)
+    const center = new THREE.Vector3()
+    boxGeo.getCenter(center)
+    containerMesh.position.sub(center)
+    scene.add(containerMesh)
   })
 }
-const promiseFactories = [];
+
 function initScene() {
   scene = new THREE.Scene()
-  // 设置天空背景
-  scene.background = new THREE.Color(0x87ceeb) // 天空蓝颜色
+  scene.background = new THREE.Color(0x87ceeb)
 
-  // 创建独立的容器场景
   containerScene = new THREE.Scene()
 
   camera = new THREE.PerspectiveCamera(
@@ -107,13 +263,12 @@ function initScene() {
     0.1,
     2000
   )
-  camera.position.set(-57, 120, 115)
+  camera.position.set(-57, 20, 15)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
   threeContainer.value.appendChild(renderer.domElement)
 
-  // 全局光照只影响外部场景
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
   scene.add(ambientLight)
 
@@ -122,80 +277,30 @@ function initScene() {
   directionalLight.castShadow = true
   scene.add(directionalLight)
 
-  // 容器边框可视化
+  // 容器边框可视化（透明盒子）
   const boxGeo = new THREE.BoxGeometry(containerSize.x, containerSize.y, containerSize.z)
-  // 创建带有单独底部颜色的材质
   const boxMaterials = [
-    new THREE.MeshPhongMaterial({
-      // 右面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false
-    }),
-    new THREE.MeshPhongMaterial({
-      // 左面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false
-    }),
-    new THREE.MeshPhongMaterial({
-      // 上面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false
-    }),
-    new THREE.MeshPhongMaterial({
-      // 下面（底部）
-      color: 0x00ffff, // 单独设置底部颜色为青色
-      transparent: true,
-      opacity: 1,
-      side: THREE.BackSide,
-      depthWrite: false
-    }),
-    new THREE.MeshPhongMaterial({
-      // 前面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false
-    }),
-    new THREE.MeshPhongMaterial({
-      // 后面
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.2,
-      side: THREE.BackSide,
-      depthWrite: false
-    })
+    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
+    new THREE.MeshPhongMaterial({ color: 0x00ffff, transparent: true, opacity: 1, side: THREE.BackSide, depthWrite: false }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
+    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false })
   ]
   const containerMesh = new THREE.Mesh(boxGeo, boxMaterials)
   scene.add(containerMesh)
-  // 轮廓线
   const edges = new THREE.EdgesGeometry(boxGeo)
   const lineMat = new THREE.LineBasicMaterial({ color: 0x000000 })
   const lineMesh = new THREE.LineSegments(edges, lineMat)
   containerMesh.add(lineMesh)
 
-  // loadMianModel();
-
-  // 添加底部地面 (比容器更大)
-  const groundSize = containerSize.x * 3 // 让地面比容器大300%
+  // 地面
+  const groundSize = containerSize.x * 3
   const groundGeometry = new THREE.PlaneGeometry(groundSize, groundSize)
-
-  // 创建棋盘格纹理来模拟地面
   const canvas = document.createElement('canvas')
-  canvas.width = 512 *2
-  canvas.height = 512*2
+  canvas.width = 512
+  canvas.height = 512
   const ctx = canvas.getContext('2d')
-
-  // 绘制棋盘格纹理
   ctx.fillStyle = '#dddddd'
   ctx.fillRect(0, 0, 512, 512)
   ctx.fillStyle = '#aaaaaa'
@@ -206,117 +311,109 @@ function initScene() {
       }
     }
   }
-
   const texture = new THREE.CanvasTexture(canvas)
   texture.wrapS = THREE.RepeatWrapping
   texture.wrapT = THREE.RepeatWrapping
-  texture.repeat.set(4, 4) // 重复4次以适应更大的地面
-
-  const groundMaterial = new THREE.MeshBasicMaterial({
-    map: texture,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 1
-  })
+  texture.repeat.set(4, 4)
+  const groundMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true, opacity: 1 })
   const ground = new THREE.Mesh(groundGeometry, groundMaterial)
-  ground.rotation.x = Math.PI / 2 // 旋转至水平位置
-  ground.position.y = -containerSize.y / 2 - 1 // 定位在容器底部
-  scene.add(ground) // 将地面直接添加到场景中，而不是容器中
+  ground.rotation.x = Math.PI / 2
+  ground.position.y = -containerSize.y / 2 - 1
+  scene.add(ground)
 
   orbitControls = new OrbitControls(camera, renderer.domElement)
+  orbitControls.maxPolarAngle = Math.PI / 2 - 0.1
+  orbitControls.minDistance = 10
+  orbitControls.maxDistance = 3000
 
-  // 限制相机视角，防止移动到地面以下
-  orbitControls.maxPolarAngle = Math.PI / 2 - 0.1 // 限制垂直旋转角度，防止从下方看
-  orbitControls.minDistance = 10 // 最小距离
-  orbitControls.maxDistance = 200 // 最大距离
+  const axesHelper = new THREE.AxesHelper(1000)
+  scene.add(axesHelper)
+
   initDragControls()
 }
-function initDragControls() {
-  if (dragControls) dragControls.dispose()
-  const meshes = draggableObjects.map((o) => o.mesh)
-  dragControls = new DragControls(meshes, camera, renderer.domElement)
 
+function initDragControls() {
+  // 重新创建 DragControls（会解绑旧事件）
+  if (dragControls) {
+    try { dragControls.dispose() } catch (e) { /* ignore */ }
+  }
+
+  // ✅ 只允许拖拽 wrapper（即透明盒子）
+  const wrapperMeshes = draggableObjects
+    .filter(o => o.mesh.userData?.isWrapper)
+    .map(o => o.mesh)
+  dragControls = new DragControls(wrapperMeshes, camera, renderer.domElement)
+  // drag start
   dragControls.addEventListener('dragstart', (event) => {
-    orbitControls.enabled = false
     const obj = draggableObjects.find((o) => o.mesh === event.object)
-    if (obj) obj.prevPosition = event.object.position.clone()
+    if (!obj) return
+    orbitControls.enabled = false
+    obj.prevPosition = event.object.position.clone()
   })
 
+  // drag
   dragControls.addEventListener('drag', (event) => {
     const obj = draggableObjects.find((o) => o.mesh === event.object)
     if (!obj) return
+
+    // ✅ 防止不是 wrapper 的对象被拖动（多重保险）
+    if (!event.object.userData?.isWrapper) return
+
     const halfSize = {
       x: obj.size.x / 2,
       y: obj.size.y / 2,
       z: obj.size.z / 2
     }
     let targetPos = event.object.position.clone()
-    // 限制物体不能低于地面
+
+    // 限制不能低于地面
     const groundLevel = -containerSize.y / 2 + halfSize.y
     targetPos.y = Math.max(groundLevel, targetPos.y)
-    console.log(" targetPos.x", targetPos.x)
-    // 判断是否已经进入容器
+
+    // 判断是否进入容器
     const insideContainer =
-      targetPos.x - halfSize.x >= -containerSize.x / 2 &&
-      targetPos.x + halfSize.x <= containerSize.x / 2 &&
-      targetPos.y - halfSize.y >= -containerSize.y / 2 &&
-      targetPos.y + halfSize.y <= containerSize.y / 2 &&
-      targetPos.z - halfSize.z >= -containerSize.z / 2 &&
-      targetPos.z + halfSize.z <= containerSize.z / 2
-      console.log("insideContainer",insideContainer,halfSize)
+      (targetPos.x - halfSize.x) >= -containerSize.x / 2 &&
+      (targetPos.x + halfSize.x) <= containerSize.x / 2 &&
+      (targetPos.y - halfSize.y) >= -containerSize.y / 2 &&
+      (targetPos.y + halfSize.y) <= containerSize.y / 2 &&
+      (targetPos.z - halfSize.z) >= -containerSize.z / 2 &&
+      (targetPos.z + halfSize.z) <= containerSize.z / 2
+
     if (insideContainer) obj.enteredContainer = true
 
-    // 如果已经进入过容器，限制在容器内，否则允许在外面拖动
+    // 已进入容器 → 限制在容器内
     if (obj.enteredContainer) {
-      // debugger
-      targetPos.x = Math.max(-containerSize.x / 2 + halfSize.x, Math.min(containerSize.x / 2 - halfSize.x, targetPos.x))
-      targetPos.y = Math.min(containerSize.y / 2 - halfSize.y, Math.max(-containerSize.y / 2 + halfSize.y, targetPos.y))
-      targetPos.z = Math.max(-containerSize.z / 2 + halfSize.z, Math.min(containerSize.z / 2 - halfSize.z, targetPos.z))
+      const minX = -containerSize.x / 2 + halfSize.x
+      const maxX = containerSize.x / 2 - halfSize.x
+      const minY = -containerSize.y / 2 + halfSize.y
+      const maxY = containerSize.y / 2 - halfSize.y
+      const minZ = -containerSize.z / 2 + halfSize.z
+      const maxZ = containerSize.z / 2 - halfSize.z
+
+      targetPos.x = Math.max(minX, Math.min(maxX, targetPos.x))
+      targetPos.y = Math.max(minY, Math.min(maxY, targetPos.y))
+      targetPos.z = Math.max(minZ, Math.min(maxZ, targetPos.z))
     }
-    // 碰撞检测
-    const minA = new THREE.Vector3(targetPos.x - halfSize.x, targetPos.y - halfSize.y, targetPos.z - halfSize.z)
-    const maxA = new THREE.Vector3(targetPos.x + halfSize.x, targetPos.y + halfSize.y, targetPos.z + halfSize.z)
+
+    // 构建当前模型的 AABB
+    const sizeA = new THREE.Vector3(obj.size.x, obj.size.y, obj.size.z)
+    const boxA = new THREE.Box3().setFromCenterAndSize(targetPos.clone(), sizeA)
 
     let overlap = false
     for (let other of draggableObjects) {
       if (other.mesh === obj.mesh) continue
-      const halfOther = {
-        x: other.size.x / 2,
-        y: other.size.y / 2,
-        z: other.size.z / 2
-      }
-      const minB = new THREE.Vector3(
-        other.mesh.position.x - halfOther.x,
-        other.mesh.position.y - halfOther.y,
-        other.mesh.position.z - halfOther.z
-      )
-      const maxB = new THREE.Vector3(
-        other.mesh.position.x + halfOther.x,
-        other.mesh.position.y + halfOther.y,
-        other.mesh.position.z + halfOther.z
-      )
-
-      if (
-        minA.x < maxB.x &&
-        maxA.x > minB.x &&
-        minA.y < maxB.y &&
-        maxA.y > minB.y &&
-        minA.z < maxB.z &&
-        maxA.z > minB.z
-      ) {
+      const otherPos = other.mesh.position.clone()
+      const sizeB = new THREE.Vector3(other.size.x, other.size.y, other.size.z)
+      const boxB = new THREE.Box3().setFromCenterAndSize(otherPos, sizeB)
+      if (boxA.intersectsBox(boxB)) {
         overlap = true
         break
       }
     }
 
-    // 根据物体位置调整材质亮度
-    if (obj.enteredContainer) {
-      // 在容器内部，使用较暗的材质
-      obj.mesh.material.emissive = new THREE.Color(0x607897)
-    } else {
-      // 在容器外部，使用较亮的材质
-      obj.mesh.material.emissive = new THREE.Color(0x000000)
-    }
+    // 根据位置调整材质亮度
+    if (obj.enteredContainer) setMeshDim(obj.mesh)
+    else restoreMeshAppearance(obj.mesh)
 
     if (overlap) {
       event.object.position.copy(obj.prevPosition)
@@ -326,180 +423,188 @@ function initDragControls() {
     }
   })
 
+  // drag end
   dragControls.addEventListener('dragend', () => {
     orbitControls.enabled = rotateEnabled.value
-
-    // 拖拽完成后，检查是否所有物体都在容器内
+    const data = []
+    draggableObjects.forEach(ele => {
+      const position = ele.mesh.position.clone()
+      data.push({
+        x: position.x,
+        y: position.y,
+        z: position.z,
+        code: ele.code
+      })
+    })
+    console.log("data---", data)
     const allInside = draggableObjects.every((obj) => obj.enteredContainer)
-
     if (!allInside) {
-      // 有物体不在容器内，则回到初始位置
       draggableObjects.forEach((obj) => {
         if (!obj.enteredContainer) {
           obj.mesh.position.copy(obj.initialPosition)
           obj.prevPosition.copy(obj.initialPosition)
+          restoreMeshAppearance(obj.mesh)
         }
       })
     }
   })
-  // 添加点击选择物体的功能
+
+  // hover on
   dragControls.addEventListener('hoveron', (event) => {
+    if (!event.object.userData?.isWrapper) return
     selectedObject = event.object
-    // 高亮选中物体
-    selectObject(selectedObject)
+    highlightMesh(selectedObject)
   })
 
+  // hover off
   dragControls.addEventListener('hoveroff', (event) => {
+    if (!event.object.userData?.isWrapper) return
     if (selectedObject === event.object) {
-      selectedObject.material.emissive = new THREE.Color(0x000000)
+      restoreMeshAppearance(selectedObject)
       selectedObject = null
     }
   })
 }
 
-const preGeometries = [] // 预生成的几何体
+// 预加载几何 / 模型
+const preGeometries = []
 function initPreGeometries() {
-  // const sizes = [
-  //   { name: 'cube1', color: 0xff0000, x: 3, y: 3, z: 3 },
-  //   { name: 'cube2', color: 0x00ff00, x: 4, y: 2, z: 5 },
-  //   { name: 'cube3', color: 0x0000ff, x: 2, y: 6, z: 2 },
-  //   { name: 'cube4', color: 0xffff00, x: 5, y: 3, z: 3 },
-  //   { name: 'cube5', color: 0xff00ff, x: 6, y: 2, z: 4 }
-  // ]
   const sizes = [
-    { name: 'model7', color: 0xff0000, x: 39, y: 39, z: 19 },
-    { name: 'cube2', color: 0x00ff00, x: 4, y: 2, z: 5 },
-    { name: 'cube3', color: 0x0000ff, x: 2, y: 6, z: 2 },
-    { name: 'cube4', color: 0xffff00, x: 5, y: 3, z: 3 },
-    { name: 'cube5', color: 0xff00ff, x: 6, y: 2, z: 4 }
-  ]
+    // { name: 'cube1', color: 0xff0000, x: 3, y: 3, z: 3 ,code:"10605"},
+    { name: 'cube2', color: 0x00ff00, x: 4, y: 2, z: 5, code: "10607" },
+    { name: 'cube3', color: 0x0000ff, x: 2, y: 6, z: 2, code: "10609" },
+    { name: 'cube4', color: 0xffff00, x: 5, y: 3, z: 3, code: "10629" },
+    { name: 'cube5', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10637" },
+    { name: 'cube6', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10660" },
+    { name: 'cube7', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10661" },
+    { name: 'cube8', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10662" },
+    { name: 'cube9', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10664" },
+    { name: 'cube10', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10675" },
+    { name: 'cube11', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10677" },
+    { name: 'cube12', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10677" },
+    { name: 'cube13', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10678" },
+    { name: 'cube14', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10679" },
+    { name: 'cube15', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10680" },
+    { name: 'cube16', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10690" },
+    { name: 'cube17', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10691" },
 
-  sizes.forEach((size) => {
-    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z)
-    geometry.name = size.name // 给几何体命名
-    preGeometries.push({ geometry, size: { x: size.x, y: size.y, z: size.z }, name: size.name, color: size.color })
+  ]
+  const loader = new GLTFLoader()
+  sizes.forEach((item) => {
+    // loader.load(`/models/tool6/model7.gltf`, (gltf) => {
+    loader.load(`/gltf/six/${item.code}.gltf`, (gltf) => {
+
+      // 尽量从 gltf 找到实际的 mesh 节点（你项目中可能需要调整索引）
+      // 我保留你原本的索引路径（children[0].children[1]），如果 structure 不同请改这里
+      let originalModel = gltf.scene
+      if (gltf.scene) originalModel = gltf.scene
+
+      const model = SkeletonUtils.clone(originalModel)
+      const scale = 1
+      model.scale.setScalar(scale)
+
+      model.traverse((child) => {
+        if (child.isMesh) {
+          // 禁止拾取
+          child.raycast = () => null;
+
+          // 防止事件干扰
+          child.userData.isDraggable = false;
+        }
+      });
+
+
+      // 计算包围盒与尺寸（此处会拿到缩放后的尺寸）
+      const box = new THREE.Box3().setFromObject(model)
+      const size = new THREE.Vector3()
+      box.getSize(size)
+      console.log("size:", size.clone(), item.code)
+      // 保存 model 原型（我们在 addCube 时再 clone）
+      preGeometries.push({ name: item.name, modelPrototype: model, size: size.clone(), code: item.code })
+    })
   })
 }
 
-async function addCube(name = 'cube1') {
+// 将模型包到透明盒子里，并居中模型
+function createTransparentWrapper(model, size) {
+  // 让 model 居中（计算包围中心并偏移）
+  const box = new THREE.Box3().setFromObject(model)
+  const center = new THREE.Vector3()
+  box.getCenter(center)
+  model.position.sub(center)
+
+  // 创建半透明盒子（以 size 为长宽高）
+  const material = new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+    transparent: true,
+    opacity: 0,
+    depthTest: true
+  })
+  const geometry = new THREE.BoxGeometry(size.x * 1.001, size.y * 1.001, size.z * 1.001)
+  const wrapper = new THREE.Mesh(geometry, material)
+  wrapper.add(model) // 将模型作为子节点放入 wrapper
+
+  // ✅ 确保 wrapper 在 layer 0
+  wrapper.layers.set(0);
+
+  // userData 用于拖拽识别与恢复材质
+  wrapper.userData = {
+    isWrapper: true,
+    wrappedModel: model,
+    size: size.clone()
+  }
+
+  // 允许阴影（如果需要）
+  wrapper.castShadow = true
+  wrapper.receiveShadow = true
+
+  return wrapper
+}
+
+function addCube(name = 'cube1') {
   const allInside = draggableObjects.every((obj) => obj.enteredContainer)
   if (!allInside) {
-    ElMessage({
-      message: '请先将所有物体放入容器内，再添加新物体！',
-      type: 'warning'
-    })
+    ElMessage({ message: '请先将所有物体放入容器内，再添加新物体！', type: 'warning' })
     return
   }
-    const geomData = preGeometries.find((g) => g.name === name)
-  if (!geomData) return
-  const url = `/gltf/six/${name}.gltf`
-  const loader = new GLTFLoader()
-  loader.load(url,(gltf) =>{
-    console.log("mesh",gltf.scene)
-      const mesh = gltf.scene.children[0].children[1]
-  // 生成容器外位置
-  // mesh.position.copy(getNonOverlappingPosition(geomData.size))
-  //  mesh.position.copy(getNonOverlappingPosition(geomData.size))
-  //  const pivot = new THREE.Object3D();
-   mesh.rotation.set(90 * (Math.PI / 180),0,0)
-  //  const size =calculateGroupDimensions(mesh,true) 
-  //  pivot.position.set( size.width / 2,  size.height / 2, size.depth/2)
-  //  mesh.position.set( -size.width,  size.height / 2, size.depth/2)
-  // pivot.add(mesh)
-
-
-   const boxGeo = new THREE.Box3().setFromObject(mesh)
-    //  boxGeo.setFromObject(mesh)
-    const center = new THREE.Vector3()
-    boxGeo.getCenter(center)
-    mesh.position.sub(center) // 移动到原点
-   scene.add(mesh)
-      calculateGroupDimensions(mesh,true)
-
-   draggableObjects.push({
-    mesh,
-    size:geomData.size,
-    prevPosition:mesh.position.clone(),
-    enteredContainer:false,
-    initialPosition:mesh.position.clone(),
-   })
-
-   if (dragControls) {
-    dragControls.objects.push(mesh)
-  } else {
-    initDragControls()
+  const modelData = preGeometries.find((g) => g.name === name)
+  if (!modelData) {
+    ElMessage({ message: '模型尚未加载完成，请稍候再试。', type: 'warning' })
+    return
   }
+
+  // 克隆原型 model 并包裹
+  const modelClone = SkeletonUtils.clone(modelData.modelPrototype)
+  // 注意：modelClone 的 bbox 可能与 modelData.size 略有差异（如果模型内部有动态变化），
+  // createTransparentWrapper 内部会再次计算并居中 modelClone
+  const wrappedModel = createTransparentWrapper(modelClone, modelData.size)
+  wrappedModel.position.copy(getNonOverlappingPosition(modelData.size))
+
+  scene.add(wrappedModel)
+
+  // 注册 wrapper 到 draggableObjects —— 使用 size 的 clone，确保数据不被共享修改
+  draggableObjects.push({
+    code: modelData.code,
+    mesh: wrappedModel,
+    size: modelData.size.clone(),
+    prevPosition: wrappedModel.position.clone(),
+    enteredContainer: false,
+    initialPosition: wrappedModel.position.clone()
   })
-  // const material = new THREE.MeshPhongMaterial({
-  //   color: geomData.color
-  // })
-  // const mesh = new THREE.Mesh(geomData.geometry.clone(), material)
 
-  // // 生成容器外位置
-  // mesh.position.copy(getNonOverlappingPosition(geomData.size))
-
-  // scene.add(mesh)
-
-
-
-  // const loader = new GLTFLoader()
-  
-  // loader.load("/gltf/six/model901 .gltf",(gltf) =>{
-  //   console.log("gltf",gltf.scene)
-  //   // gltf.scene.scale.set(0.5,0.5,0.5)
-  //   // gltf.scene.position.set(0,-20,100)
-  //   const mesh = gltf.scene.children[0].children[1]
-  //   //  mesh.scale.set(0.5,0.5,0.5)
-  //   // mesh.position.set(0,-20,100)
-  // const size=  calculateGroupDimensions(mesh)
-  //   //  gltf.scene.copy(getNonOverlappingPosition(geomData.size))
-  //   scene.add(mesh)
-  //     draggableObjects.push({
-  //   mesh:mesh,
-  //   size: {
-  //     x:size.width,
-  //     y:size.height,
-  //     z:size.depth
-  //   },
-  //   prevPosition: mesh.position.clone(),
-  //   enteredContainer: false, // 新增标记
-  //   initialPosition: mesh.position.clone() // 新增
-  // })
-  // debugger
-
-  
-
-  // return
-  // const geomData = preGeometries.find((g) => g.name === name)
-  // if (!geomData) return
-
-  // const material = new THREE.MeshPhongMaterial({
-  //   color: geomData.color
-  // })
-  // const mesh = new THREE.Mesh(geomData.geometry.clone(), material)
-
-  // // 生成容器外位置
-  // mesh.position.copy(getNonOverlappingPosition(geomData.size))
-
-  // scene.add(mesh)
-
+  // 重新初始化 DragControls（确保事件绑定正确）
+  initDragControls()
 }
 
-// 生成容器外随机位置
+// 生成容器外初始位置（可改为随机且不重叠的逻辑）
 function getNonOverlappingPosition(size) {
-  // const distance = 15 // 容器外距离
-  // let pos = new THREE.Vector3()
-  // pos.z = containerSize.z / 2 + size.z / 2 + distance
-  // pos.x = Math.random() * containerSize.x - containerSize.x / 2
-  // pos.y = Math.random() * containerSize.y - containerSize.y / 2
-
-  return new THREE.Vector3(0, 0, 0)
+  // 简化：把新物体放在容器正前方 30 单位处
+  return new THREE.Vector3(0, 100, 500)
 }
 
 function toggleRotate() {
-  // 打印场景中所有部件的位置
   draggableObjects.forEach((obj) => {
-    console.log('Object position:', obj.mesh)
+    console.log('Object position:', obj.mesh.position)
   })
   rotateEnabled.value = !rotateEnabled.value
   orbitControls.enabled = rotateEnabled.value
@@ -507,148 +612,58 @@ function toggleRotate() {
 
 function animate() {
   requestAnimationFrame(animate)
-
-  // 渲染外部场景
-  renderer.render(scene, camera)
+  if (orbitControls) orbitControls.update()
+  if (renderer && camera) renderer.render(scene, camera)
 }
 
-// 添加键盘事件监听
+// --- 键盘微调移动（以 center 为基准） ---
 function onKeyDown(event) {
   if (!selectedObject) return
-  const obj = draggableObjects.find((o) => o.mesh === selectedObject)
-  if (!obj) return
+  const objEntry = draggableObjects.find((o) => o.mesh === selectedObject)
+  if (!objEntry) return
 
-  const moveDistance = 1 // 基础步长
+  const moveDistance = 1
   let direction = new THREE.Vector3()
-
   switch (event.key) {
-    case 'ArrowUp':
-      direction.set(0, 0, -1)
-      break
-    case 'ArrowDown':
-      direction.set(0, 0, 1)
-      break
-    case 'ArrowLeft':
-      direction.set(-1, 0, 0)
-      break
-    case 'ArrowRight':
-      direction.set(1, 0, 0)
-      break
-    case 'w':
-    case 'W':
-      direction.set(0, 1, 0)
-      break
-    case 's':
-    case 'S':
-      direction.set(0, -1, 0)
-      break
-    default:
-      return
+    case 'ArrowUp': direction.set(0, 0, -1); break
+    case 'ArrowDown': direction.set(0, 0, 1); break
+    case 'ArrowLeft': direction.set(-1, 0, 0); break
+    case 'ArrowRight': direction.set(1, 0, 0); break
+    case 'w': case 'W': direction.set(0, 1, 0); break
+    case 's': case 'S': direction.set(0, -1, 0); break
+    default: return
   }
 
-  const halfSize = {
-    x: obj.size.x / 2,
-    y: obj.size.y / 2,
-    z: obj.size.z / 2
-  }
-
+  const halfSize = { x: objEntry.size.x / 2, y: objEntry.size.y / 2, z: objEntry.size.z / 2 }
   let allowedMove = moveDistance
 
-  // === 1. 检查容器边界 ===
-  if (direction.x !== 0) {
+  // 计算 candidate position 并检测边界 + 碰撞（更直观）
+  const candidate = selectedObject.position.clone().addScaledVector(direction, moveDistance)
 
-    if (direction.x > 0) {
-      const dist = containerSize.x / 2 - halfSize.x - selectedObject.position.x
-      allowedMove = Math.min(allowedMove, dist)
-    } else {
-      const dist = -containerSize.x / 2 + halfSize.x - selectedObject.position.x
-      allowedMove = Math.min(allowedMove, -dist)
-    }
-  }
-  if (direction.y !== 0) {
-    if (direction.y > 0) {
-      const dist = containerSize.y / 2 - halfSize.y - selectedObject.position.y
-      allowedMove = Math.min(allowedMove, dist)
-    } else {
-      const dist = -containerSize.y / 2 + halfSize.y - selectedObject.position.y
-      allowedMove = Math.min(allowedMove, -dist)
-    }
-  }
-  if (direction.z !== 0) {
-    if (direction.z > 0) {
-      const dist = containerSize.z / 2 - halfSize.z - selectedObject.position.z
-      allowedMove = Math.min(allowedMove, dist)
-    } else {
-      const dist = -containerSize.z / 2 + halfSize.z - selectedObject.position.z
-      allowedMove = Math.min(allowedMove, -dist)
-    }
-  }
+  // 边界限制（center 方式）
+  const min = new THREE.Vector3(-containerSize.x / 2 + halfSize.x, -containerSize.y / 2 + halfSize.y, -containerSize.z / 2 + halfSize.z)
+  const max = new THREE.Vector3(containerSize.x / 2 - halfSize.x, containerSize.y / 2 - halfSize.y, containerSize.z / 2 - halfSize.z)
 
-  // === 2. 检查与其他物体的距离 ===
+  // clamp candidate to bounds
+  candidate.x = Math.max(min.x, Math.min(max.x, candidate.x))
+  candidate.y = Math.max(min.y, Math.min(max.y, candidate.y))
+  candidate.z = Math.max(min.z, Math.min(max.z, candidate.z))
+
+  // 检查与其他物体碰撞
+  const boxA = new THREE.Box3().setFromCenterAndSize(candidate.clone(), new THREE.Vector3(objEntry.size.x, objEntry.size.y, objEntry.size.z))
+  let blocked = false
   for (let other of draggableObjects) {
-    if (other.mesh === obj.mesh) continue
-    const halfOther = {
-      x: other.size.x / 2,
-      y: other.size.y / 2,
-      z: other.size.z / 2
-    }
-
-    // 方向 x
-    if (
-      direction.x !== 0 &&
-      Math.abs(selectedObject.position.y - other.mesh.position.y) < halfSize.y + halfOther.y &&
-      Math.abs(selectedObject.position.z - other.mesh.position.z) < halfSize.z + halfOther.z
-    ) {
-      if (direction.x > 0 && selectedObject.position.x < other.mesh.position.x) {
-        const dist = other.mesh.position.x - halfOther.x - (selectedObject.position.x + halfSize.x)
-        if (dist >= 0) allowedMove = Math.min(allowedMove, dist)
-      }
-      if (direction.x < 0 && selectedObject.position.x > other.mesh.position.x) {
-        const dist = selectedObject.position.x - halfSize.x - (other.mesh.position.x + halfOther.x)
-        if (dist >= 0) allowedMove = Math.min(allowedMove, dist)
-      }
-    }
-
-    // 方向 y
-    if (
-      direction.y !== 0 &&
-      Math.abs(selectedObject.position.x - other.mesh.position.x) < halfSize.x + halfOther.x &&
-      Math.abs(selectedObject.position.z - other.mesh.position.z) < halfSize.z + halfOther.z
-    ) {
-      if (direction.y > 0 && selectedObject.position.y < other.mesh.position.y) {
-        const dist = other.mesh.position.y - halfOther.y - (selectedObject.position.y + halfSize.y)
-        if (dist >= 0) allowedMove = Math.min(allowedMove, dist)
-      }
-      if (direction.y < 0 && selectedObject.position.y > other.mesh.position.y) {
-        const dist = selectedObject.position.y - halfSize.y - (other.mesh.position.y + halfOther.y)
-        if (dist >= 0) allowedMove = Math.min(allowedMove, dist)
-      }
-    }
-
-    // 方向 z
-    if (
-      direction.z !== 0 &&
-      Math.abs(selectedObject.position.x - other.mesh.position.x) < halfSize.x + halfOther.x &&
-      Math.abs(selectedObject.position.y - other.mesh.position.y) < halfSize.y + halfOther.y
-    ) {
-      if (direction.z > 0 && selectedObject.position.z < other.mesh.position.z) {
-        const dist = other.mesh.position.z - halfOther.z - (selectedObject.position.z + halfSize.z)
-        if (dist >= 0) allowedMove = Math.min(allowedMove, dist)
-      }
-      if (direction.z < 0 && selectedObject.position.z > other.mesh.position.z) {
-        const dist = selectedObject.position.z - halfSize.z - (other.mesh.position.z + halfOther.z)
-        if (dist >= 0) allowedMove = Math.min(allowedMove, dist)
-      }
-    }
+    if (other.mesh === objEntry.mesh) continue
+    const boxB = new THREE.Box3().setFromCenterAndSize(other.mesh.position.clone(), new THREE.Vector3(other.size.x, other.size.y, other.size.z))
+    if (boxA.intersectsBox(boxB)) { blocked = true; break }
   }
 
-  // === 3. 应用移动 ===
-  if (allowedMove > 0) {
-    selectedObject.position.addScaledVector(direction, allowedMove)
+  if (!blocked) {
+    selectedObject.position.copy(candidate)
   }
 }
 
-// 窗口变化刷新
+// 窗口尺寸变化
 window.addEventListener('resize', onResize)
 function onResize() {
   camera.aspect = threeContainer.value.clientWidth / threeContainer.value.clientHeight
@@ -656,56 +671,62 @@ function onResize() {
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
 }
 
-  function calculateGroupDimensions(group, isLoadBox = false) {
-        // 创建包围盒
-        const box = new THREE.Box3();
-
-        // 扩展包围盒以包含整个组
-        box.expandByObject(group);
-
-        // 计算尺寸（长宽高）
-        const size = new THREE.Vector3();
-        box.getSize(size);
-        // 计算中心点
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-        const rect = new THREE.Vector3()
-        box.getSize(rect)
-        const maxDim = Math.max(size.x, size.y, size.z);
-
-
-        const box1 = new THREE.Box3().setFromObject(group);
-        const size1 = box1.getSize(new THREE.Vector3());
-        const center1 = box1.getCenter(new THREE.Vector3());
-        // const min = new THREE.Vector3();
-
-        console.log("min", rect)
-        // 创建一个与边界匹配的立方体
-        const boundingGeometry = new THREE.BoxGeometry(size1.x, size1.y, size1.z);
-        // 使用EdgesGeometry提取边缘
-        const edgesGeometry = new THREE.EdgesGeometry(boundingGeometry);
-        const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 2 });
-
-        const boundingBox = new THREE.LineSegments(edgesGeometry, edgesMaterial);
-        // 定位到组的中心
-        boundingBox.position.copy(new THREE.Vector3(0, 0, 0));
-        if (isLoadBox) {
-              scene.add(boundingBox)
-
-
-        }
-        return {
-            width: size.x,    // X轴方向尺寸
-            height: size.y,   // Y轴方向尺寸
-            depth: size.z,    // Z轴方向尺寸
-            center: center,
-            size: rect,
-            maxDim,  // 大小
-            position: box1.min,
-
-        };
-    };
+// ---------- 材质高亮 / 恢复 辅助函数 ----------
+function saveMaterialState(mat) {
+  if (!mat) return null
+  return {
+    hasEmissive: ('emissive' in mat),
+    emissive: ('emissive' in mat && mat.emissive) ? mat.emissive.clone() : null,
+    opacity: (mat.opacity !== undefined) ? mat.opacity : null,
+    transparent: (mat.transparent !== undefined) ? mat.transparent : null,
+    color: (mat.color) ? mat.color.clone() : null
+  }
+}
+function saveMeshMaterialsState(mesh) {
+  const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+  return mats.map(m => saveMaterialState(m))
+}
+function restoreMeshAppearance(mesh) {
+  if (!mesh || !mesh.userData._matBackup) return
+  const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+  const backups = mesh.userData._matBackup
+  mats.forEach((m, i) => {
+    const b = backups[i]
+    if (!b) return
+    if (b.hasEmissive && 'emissive' in m && b.emissive) m.emissive.copy(b.emissive)
+    if (b.opacity !== null && b.opacity !== undefined) { m.opacity = b.opacity; m.transparent = !!b.transparent }
+    if (b.color && m.color) m.color.copy(b.color)
+  })
+  delete mesh.userData._matBackup
+}
+function setMeshDim(mesh) {
+  if (!mesh) return
+  if (!mesh.userData._matBackup) mesh.userData._matBackup = saveMeshMaterialsState(mesh)
+  const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+  mats.forEach((m) => {
+    if ('emissive' in m) {
+      m.emissive = new THREE.Color(0x607897)
+    } else {
+      m.transparent = true
+      m.opacity = Math.max(0.05, (m.opacity || 1) * 0.5)
+    }
+  })
+}
+function highlightMesh(mesh) {
+  if (!mesh) return
+  if (!mesh.userData._matBackup) mesh.userData._matBackup = saveMeshMaterialsState(mesh)
+  const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+  mats.forEach((m) => {
+    if ('emissive' in m) {
+      m.emissive = new THREE.Color(0x999999)
+    } else {
+      m.transparent = true
+      m.opacity = Math.max(0.15, (m.opacity || 1) * 0.4)
+    }
+  })
+}
 </script>
+
 
 <style>
 .three-container {

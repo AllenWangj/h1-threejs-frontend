@@ -17,6 +17,7 @@ class FiveExport extends Three {
             this.modeWrapp = root
             this.wrapper.add(root)
             const size = this.calculateGroupDimensions(this.wrapper)
+            console.log("size:------",size)
             const number = size.maxDim
             this.camera!.position.set(size.center.x, size.center.y - number, size.center.z + number)
             this.controls.target.set(size.center.x, size.center.y, size.center.z)

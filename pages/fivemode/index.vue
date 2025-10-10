@@ -461,7 +461,7 @@ onMounted(() =>{
   //  fiveObject.handleLoadMode("/a.glb")
 
   //  fiveObject.handleLoadMode("/gltf/5/three.skp.gltf")
-   fiveObject.handleLoadMode("/four/four.gltf")
+   fiveObject.handleLoadMode("/gltf/originsix/six.gltf")
 
 
    opt = fiveObject
