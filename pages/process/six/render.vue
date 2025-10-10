@@ -251,7 +251,6 @@ function initDragControls() {
       z: obj.size.z / 2
     }
     let targetPos = event.object.position.clone()
-
     // 限制物体不能低于地面
     const groundLevel = -containerSize.y / 2 + halfSize.y
     targetPos.y = Math.max(groundLevel, targetPos.y)
@@ -264,7 +263,6 @@ function initDragControls() {
       targetPos.y + halfSize.y <= containerSize.y / 2 &&
       targetPos.z - halfSize.z >= -containerSize.z / 2 &&
       targetPos.z + halfSize.z <= containerSize.z / 2
-
       console.log("insideContainer",insideContainer,halfSize)
     if (insideContainer) obj.enteredContainer = true
 
@@ -275,7 +273,6 @@ function initDragControls() {
       targetPos.y = Math.min(containerSize.y / 2 - halfSize.y, Math.max(-containerSize.y / 2 + halfSize.y, targetPos.y))
       targetPos.z = Math.max(-containerSize.z / 2 + halfSize.z, Math.min(containerSize.z / 2 - halfSize.z, targetPos.z))
     }
-
     // 碰撞检测
     const minA = new THREE.Vector3(targetPos.x - halfSize.x, targetPos.y - halfSize.y, targetPos.z - halfSize.z)
     const maxA = new THREE.Vector3(targetPos.x + halfSize.x, targetPos.y + halfSize.y, targetPos.z + halfSize.z)
@@ -345,7 +342,6 @@ function initDragControls() {
       })
     }
   })
-
   // 添加点击选择物体的功能
   dragControls.addEventListener('hoveron', (event) => {
     selectedObject = event.object

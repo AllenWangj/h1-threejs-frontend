@@ -1,14 +1,13 @@
 <template>
   <div class="flex h-full w-full bg-white rounded-[4px] process-page-container">
-    <SubMenuSidebar :active-tab="isActiveTab" @on-change="tabChange" />
+    <sub-menu-sidebar :active-tab="isActiveTab" @on-change="tabChange" />
     <div class="flex-1 mx-[20px] my-[20px]">
-      <NuxtPage />
+      <nuxt-page />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import SubMenuSidebar from '@/components/sub-mune-sidebar/index.vue'
 
 const router = useRouter()
 const route = useRoute()

@@ -3,6 +3,30 @@
     <div style="width: 100%;height: 100%;" ref="wrapper"></div>
     <div style="position: absolute;left: 0px;top:0px;z-index: 900;">
       <div style="display: grid;grid-template-columns:360px;gap: 20px;overflow-y: auto;">
+
+         <el-button  @click="handleExportFile('Group_1')">Group_1</el-button>
+      <el-button   @click="handleLoadShowMode('Group_1')">Group_1</el-button>
+
+
+
+       <el-button  @click="handleExportFile('IfcBuildingElementProxy_-_8mm钢板-006<2Q_NGBswqpI9xb7oSV4NH8>_2')">1</el-button>
+      <el-button   @click="handleLoadShowMode('IfcBuildingElementProxy_-_8mm钢板-006<2Q_NGBswqpI9xb7oSV4NH8>_2')">2</el-button>
+
+
+
+           <el-button  @click="handleExportFile('IfcBuildingElementProxy_-_100x150矩形管-1<33jZUxx0itOw__CId2E8Xz>_2')">2-1</el-button>
+      <el-button   @click="handleLoadShowMode('IfcBuildingElementProxy_-_100x150矩形管-1<33jZUxx0itOw__CId2E8Xz>_2')">2-2</el-button>
+
+
+           <el-button  @click="handleExportFile('Group_271')">Group_271</el-button>
+      <el-button   @click="handleLoadShowMode('Group_271')">Group_271</el-button>
+
+
+        
+
+
+         <!-- <el-button  @click="handleExportFile('<组件#73>')">74</el-button> -->
+          <!-- <el-button   @click="handleLoadShowMode('<组件#43>_1')">43</el-button> -->
         <!--  -->
           <!-- <el-button  @click="handleExportFile('IfcDoor_-_单嵌板木门_14D-04455344<3ID151naX4SP9QZfy4vvW9#1>_3')">men</el-button>
       <el-button   @click="handleLoadShowMode('IfcDoor_-_单嵌板木门_14D-04455344<3ID151naX4SP9QZfy4vvW9#1>_3')">men</el-button>
@@ -410,22 +434,23 @@ import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js'
 // ]))
 const set = Array.from(
   new Set([
-    "<组件#64>_1",
-    "<组件#19>_1",
-    "<组件#5>_1",
-    "<组件#61>_1",
-    "<组件#79>_1",
-    "<组件#62>_1",
-    "<组件#60>_1",
-    "<组件#75>_1",
+    "<组件#15>_1",
+    "<组件#16>_1",
+    "<组件#32>_1",
+    "<组件#31>_1",
+    "<组件#30>_1",
+    "<组件#33>_1",
+    "<组件#34>_1",
     "<组件#29>_1",
-    "<组件#78>_1",
-    "<组件#80>_1",
-    "<组件#77>_1",
-    "<组件#90>_1",
-    "<组件#91>_1",
-    "<组件#37>_1",
-    "<组件#7>_1"
+    "<组件#56>_1",
+    "<组件#23>_1",
+    "<组件#22>_1",
+    "<组件#55>_1",
+    "<组件#26>_1",
+    "<组件#27>_1",
+    "<组件#28>_1",
+    "<组件#35>_1",
+    "<组件#63>_1"
 ]))
 const wrapper = ref()
 let opt:FiveExport | null = null
@@ -436,7 +461,7 @@ onMounted(() =>{
   //  fiveObject.handleLoadMode("/a.glb")
 
   //  fiveObject.handleLoadMode("/gltf/5/three.skp.gltf")
-   fiveObject.handleLoadMode("/six/six.gltf")
+   fiveObject.handleLoadMode("/four/four.gltf")
 
 
    opt = fiveObject

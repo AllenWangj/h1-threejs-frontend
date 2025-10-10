@@ -1,0 +1,249 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "THREE.GLTFExporter r180"
+  },
+  "scenes": [
+    {
+      "name": "AuxScene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "scene": 0,
+  "nodes": [
+    {
+      "name": "Group_49",
+      "extras": {
+        "name": "Group",
+        "gltfExtensions": {
+          "always_face_camera": {
+            "Value": false
+          }
+        }
+      },
+      "children": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "mesh_39",
+      "extras": {
+        "name": "mesh_39",
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "kgjiwqyspsbrsojcgnsi_LINE"
+          }
+        }
+      },
+      "mesh": 0
+    },
+    {
+      "name": "mesh_39_1",
+      "extras": {
+        "name": "mesh_39_1",
+        "gltfExtensions": {
+          "uuid": {
+            "Value": "kgjiwqyspsbrsojcgnsi"
+          }
+        }
+      },
+      "mesh": 1
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 576,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 576,
+      "byteLength": 192,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 768,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1056,
+      "byteLength": 288,
+      "target": 34962,
+      "byteStride": 12
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1344,
+      "byteLength": 192,
+      "target": 34962,
+      "byteStride": 8
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 1536,
+      "byteLength": 144,
+      "target": 34963
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 1680,
+      "uri": "data:application/octet-stream;base64,AAAAAAAAAABVKrFDAAAAAHE47EJVKrFD9nodQwAAAABVKrFDAAAAAAAAAABVKrFD9nodQ3E47EJVKrFD9nodQwAAAABVKrFDAAAAAHE47EJVKrFD9nodQ3E47EJVKrFDAAAAAAAAAAAAAAAAAAAAAHE47EIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABVKrFDAAAAAAAAAABVKrFDAAAAAHE47EJVKrFDAAAAAHE47EIAAAAAAAAAAHE47EJVKrFDAAAAAHE47EIAAAAA9nodQ3E47EIAAAAAAAAAAHE47EIAAAAAAAAAAHE47EJVKrFDAAAAAHE47EJVKrFD9nodQ3E47EJVKrFD9nodQ3E47EIAAAAA9nodQ3E47EJVKrFD9nodQ3E47EIAAAAA9nodQwAAAAAAAAAA9nodQ3E47EIAAAAA9nodQ3E47EJVKrFD9nodQ3E47EJVKrFD9nodQwAAAABVKrFD9nodQwAAAAAAAAAA9nodQwAAAABVKrFDAAAAAAAAAAAAAAAAAAAAAHE47EIAAAAAAAAAAHE47EIAAAAA9nodQ3E47EIAAAAA9nodQ3E47EIAAAAA9nodQwAAAAAAAAAA9nodQwAAAAAAAAAAAAAAAAAAAAAAAAAA9nodQwAAAAAAAAAAAAAAAAAAAAAAAAAA9nodQwAAAAAAAAAA9nodQwAAAABVKrFD9nodQwAAAABVKrFDAAAAAAAAAABVKrFDAAAAAAAAAAAAAAAAAAAAAAAAAABVKrFDAAAAAAEAAAACAAAAAwAAAAQAAAAFAAAABgAAAAcAAAAIAAAACQAAAAoAAAALAAAADAAAAA0AAAAOAAAADwAAABAAAAARAAAAEgAAABMAAAAUAAAAFQAAABYAAAAXAAAAGAAAABkAAAAaAAAAGwAAABwAAAAdAAAAHgAAAB8AAAAgAAAAIQAAACIAAAAjAAAAJAAAACUAAAAmAAAAJwAAACgAAAApAAAAKgAAACsAAAAsAAAALQAAAC4AAAAvAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AAAAAAAAAAAAAIA/AACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAACAvwAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAAAAAAAAgD8AAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAACAPwAAAAAAAAAAAAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAAAAAAAAAAIC/AAAAgAAAgL8AAACAAAAAgAAAgL8AAACAAAAAgAAAgL8AAACAAAAAgAAAgL8AAACA9nodQwAAAABVKrFDAAAAAHE47EJVKrFDAAAAAAAAAABVKrFD9nodQ3E47EJVKrFDAAAAAHE47EJVKrFDAAAAAAAAAAAAAAAAAAAAAAAAAABVKrFDAAAAAHE47EIAAAAAAAAAAHE47EJVKrFD9nodQ3E47EIAAAAAAAAAAHE47EIAAAAA9nodQ3E47EJVKrFD9nodQ3E47EIAAAAA9nodQwAAAABVKrFD9nodQwAAAAAAAAAA9nodQ3E47EJVKrFD9nodQ3E47EIAAAAAAAAAAAAAAAAAAAAAAAAAAHE47EIAAAAA9nodQwAAAAAAAAAA9nodQwAAAABVKrFDAAAAAAAAAAAAAAAA9nodQwAAAAAAAAAAAAAAAAAAAABVKrFDAACAQAAAAIAAAAAAAABAwAAAAAAAAACAAACAQAAAQMAAAEDAAAAQwQAAAAAAAACAAAAAAAAAEMEAAEDAAAAAgAAAAAAAABDBAACAwAAAAIAAAAAAAAAAgAAAgMAAABDBAABAQAAAAIAAAAAAAAAQwQAAAAAAAACAAABAQAAAEMEAAIDAAABAwAAAAAAAAACAAAAAAAAAQMAAAIDAAAAAgAAAgEAAABDBAAAAAAAAAIAAAIBAAAAAgAAAAAAAABDBAAAAAAEAAAACAAAAAQAAAAAAAAADAAAABAAAAAUAAAAGAAAABQAAAAQAAAAHAAAACAAAAAkAAAAKAAAACQAAAAgAAAALAAAADAAAAA0AAAAOAAAADQAAAAwAAAAPAAAAEAAAABEAAAASAAAAEQAAABAAAAATAAAAFAAAABUAAAAWAAAAFQAAABQAAAAXAAAA"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 48,
+      "max": [
+        157.48031616210938,
+        118.11023712158203,
+        354.3307189941406
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5125,
+      "count": 48,
+      "max": [
+        47
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        1,
+        1,
+        1
+      ],
+      "min": [
+        -1,
+        -1,
+        -1
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        157.48031616210938,
+        118.11023712158203,
+        354.3307189941406
+      ],
+      "min": [
+        0,
+        0,
+        0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 24,
+      "max": [
+        4,
+        0
+      ],
+      "min": [
+        -4,
+        -9
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5125,
+      "count": 36,
+      "max": [
+        23
+      ],
+      "min": [
+        0
+      ],
+      "type": "SCALAR"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "name": "DefaultMaterialEdge"
+    },
+    {
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0,
+          0.4000000059604645,
+          0.4000000059604645,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 1
+      },
+      "doubleSided": true,
+      "name": "[Color H08]"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "mode": 1,
+          "attributes": {
+            "POSITION": 0
+          },
+          "indices": 1,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "primitives": [
+        {
+          "mode": 4,
+          "attributes": {
+            "NORMAL": 2,
+            "POSITION": 3,
+            "TEXCOORD_0": 4
+          },
+          "indices": 5,
+          "material": 1
+        }
+      ]
+    }
+  ]
+}

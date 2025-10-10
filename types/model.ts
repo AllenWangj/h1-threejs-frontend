@@ -2,8 +2,9 @@ import type { BaseItem } from './base'
 
 export interface ModelItem extends BaseItem {
   id: string
-  height: string
-  length: string
+  height: number
+  width: number
+  length: number
   name: string
   url: string
   sourceUrl: string
@@ -13,5 +14,4 @@ export interface ModelItem extends BaseItem {
   effect: string
   type: number
   code: string
-  width: string
 }

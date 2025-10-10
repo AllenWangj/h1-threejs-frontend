@@ -30,12 +30,12 @@
         <div class="w-[100%] flex item-center justify-center pt-[20px] border-r border-[#adcdf7]">
           <el-button type="info" text :icon="ArrowLeftBold" @click="pageState = 'list'">返回地块列表</el-button>
         </div>
-        <SubMenuSidebar class="flex-1" :active-tab="isActiveTab" @on-change="tabChange" />
+        <sub-menu-sidebar class="flex-1" :active-tab="isActiveTab" @on-change="tabChange" />
       </div>
       <div class="flex-1 mx-[20px] my-[20px]">
-        <KeepAlive>
-          <NuxtPage />
-        </KeepAlive>
+        <keep-alive>
+          <nuxt-page />
+        </keep-alive>
       </div>
     </div>
     <!-- 新增地块 -->
@@ -50,8 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import SubMenuSidebar from '@/components/sub-mune-sidebar/index.vue'
-import { ArrowLeftBold } from '@element-plus/icons-vue'
+import { ArrowLeftBold } from '@maxtan/ez-ui-icons'
 const router = useRouter()
 const route = useRoute()
 console.log('route', route)

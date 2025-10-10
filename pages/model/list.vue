@@ -1,7 +1,7 @@
 <template>
   <div>
     <ez-fast-table ref="tableRef" v-model:params="searchParams" v-model:loading="loading" :columns="columns"
-      :api="getModelList" :max-height="tableMaxHeight">
+      :api="getModelPage" :max-height="tableMaxHeight">
       <template #form>
         <el-form :model="searchParams" inline label-width="auto" @submit.prevent @keyup.enter="search">
           <el-form-item label="模型名称">
@@ -19,15 +19,12 @@
         <el-button type="primary" :icon="Plus" @click="addItem">新增</el-button>
       </template>
       <template #operation="{ row }">
-        <el-button link type="primary" @click="previewItem(row)">预览</el-button>
         <el-button link type="primary" @click="editItem(row)">编辑</el-button>
         <el-button link type="primary" @click="deleteItem(row)">删除</el-button>
       </template>
     </ez-fast-table>
-    <ez-dialog v-model="previewVisible" width="1200px" title="预览模型">
-      <model-preview v-if="previewVisible" :item="activeItem" />
-    </ez-dialog>
-    <ez-dialog v-model="recordVisible" :loading="submitLoading" width="400px" :title="recordId ? '编辑模型' : '新增模型'" @confirm="submit">
+    <ez-dialog v-model="recordVisible" :loading="submitLoading" width="1200px" :title="recordId ? '编辑模型' : '新增模型'"
+      @confirm="submit">
       <model-form v-if="recordVisible" ref="modelFormRef" :recordId="recordId" />
     </ez-dialog>
   </div>
@@ -35,19 +32,15 @@
 <script setup lang="ts">
 import { Plus } from '@maxtan/ez-ui-icons'
 import type { TableColumn } from '@maxtan/ez-ui'
-import { createModel, getModelList, updateModal } from '~/apis/model'
+import { createModel, getModelPage, updateModal, removeModel } from '~/apis/resource'
 import dayjs from 'dayjs';
-import { removeModel } from '~/apis/model'
 import type { ModelItem } from '~/types/model';
-import ModelPreview from './components/preview.vue';
 import ModelForm from './components/model-form.vue';
 definePageMeta({
   layout: 'management',
   permissions: 'model:list'
 })
-const previewVisible = ref(false)
 const recordVisible = ref(false)
-const activeItem = ref<ModelItem | null>(null)
 const modelFormRef = ref<InstanceType<typeof ModelForm>>(null)
 const recordId = ref('')
 const loading = ref(false)
@@ -92,14 +85,6 @@ const addItem = () => {
 }
 
 /**
- * 查看
- */
-const previewItem = (item: ModelItem) => {
-  activeItem.value = item
-  previewVisible.value = true
-}
-
-/**
  * 编辑
  */
 const editItem = (item: ModelItem) => {
@@ -124,7 +109,7 @@ const deleteItem = async (_item) => {
 const submit = async () => {
   try {
     const formData = await modelFormRef.value?.getFormData()
-    if(submitLoading.value === true) return
+    if (submitLoading.value === true) return
     submitLoading.value = true
     if (recordId.value) {
       await updateModal({ ...formData, id: recordId.value })
