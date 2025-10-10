@@ -275,7 +275,6 @@ function initDragControls() {
       targetPos.z + halfSize.z <= containerSize.z / 2
 
     if (insideContainer) obj.enteredContainer = true
-    console.log('Object inside container:', insideContainer, obj.enteredContainer)
 
     // 如果已经进入过容器，限制在容器内，否则允许在外面拖动
     if (obj.enteredContainer) {
@@ -283,8 +282,8 @@ function initDragControls() {
       // targetPos.y = Math.min(containerSize.y / 2 - halfSize.y, Math.max(-containerSize.y / 2 + halfSize.y, targetPos.y))
       // targetPos.z = Math.max(-containerSize.z / 2 + halfSize.z, Math.min(containerSize.z / 2 - halfSize.z, targetPos.z))
       // 模型缩放后有误差
-      const minX = -containerSize.x / 2 - 0.4
-      const maxX = containerSize.x / 2 - obj.size.x - 0.3
+      const minX = -containerSize.x / 2
+      const maxX = containerSize.x / 2 - obj.size.x
       const minY = -containerSize.y / 2
       const maxY = containerSize.y / 2 - obj.size.y
       const minZ = -containerSize.z / 2
@@ -311,9 +310,6 @@ function initDragControls() {
         break
       }
     }
-
-
-    console.log('==========================================')
 
     // 根据物体位置调整材质亮度
     if (obj.enteredContainer) {
@@ -381,9 +377,9 @@ function initPreGeometries() {
   // })
   const loader = new GLTFLoader()
   sizes.forEach((item) => {
-    loader.load(`/gltf/5/libary/model10.gltf`, (gltf) => {
+    loader.load(`/models/tool6/model7.gltf`, (gltf) => {
       console.log('Loaded GLTF:', gltf)
-      const originalModel = gltf.scene.children[0].children[0].children[1];
+      const originalModel = gltf.scene.children[0].children[1];
 
       // 克隆一份，避免破坏原模型
       const model = SkeletonUtils.clone(originalModel);
@@ -392,23 +388,10 @@ function initPreGeometries() {
       const scale = 0.1;
       model.scale.setScalar(scale);
 
-      // 创建一个空 group 来作为新 pivot
-      // const wrapper = new THREE.Group();
-      // wrapper.name = item.name;
-
       // // 计算包围盒
       const box = new THREE.Box3().setFromObject(model);
       const size = new THREE.Vector3();
       box.getSize(size);
-      // const center = new THREE.Vector3();
-      // box.getCenter(center);
-
-      // // 将模型内部移动，使中心在 group 中心
-      // model.position.sub(center);
-
-      // 添加到 wrapper
-      // wrapper.add(model);
-      console.log('Prepared model:', model.position);
 
       preGeometries.push({ name: item.name, model: model, size });
     })
