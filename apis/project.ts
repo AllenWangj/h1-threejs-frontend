@@ -96,3 +96,7 @@ export const updateAssemble = (params) => useBaseFetch().post(`${baseUrl}assembl
  * 获取工具7（现场组装）的详情
 */
 export const getAssembleDetail = (params) => useBaseFetch().get(`${baseUrl}assemble/v1/detail`, params)
+
+
+
+export const planDetail = (params) => useBaseFetch().get(`${baseUrl}record/v1/plan/detail`, params)
