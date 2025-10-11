@@ -38,7 +38,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { DragControls } from 'three/examples/jsm/controls/DragControls.js'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js'
-import { position } from "./source"
+import { position } from './source'
 const threeContainer = ref(null)
 let scene, containerScene, camera, renderer, orbitControls, dragControls
 const containerSize = { x: 96, y: 96, z: 480 }
@@ -61,21 +61,18 @@ onMounted(() => {
   let yPos = -44.062992095947266
   let zPos = -125.82677459716797
 
-
   for (let i = 0; i < 12; i++) {
     for (let j = 0; j < 2; j++) {
       for (let k = 0; k < 3; k++) {
         data.push({
-          "x": xPos + i * x,
-          "y": yPos + k * y,
-          "z": zPos + z * j,
-          "code": "10664"
-        },)
+          x: xPos + i * x,
+          y: yPos + k * y,
+          z: zPos + z * j,
+          code: '10664'
+        })
       }
-
     }
   }
-
 
   let z1 = 110.23622131347656
   let xPos1 = -44.062992095947266
@@ -85,16 +82,14 @@ onMounted(() => {
     for (let j = 0; j < 3; j++) {
       for (let k = 0; k < 2; k++) {
         data.push({
-          "x": xPos1 + i * x,
-          "y": yPos1 + k * y,
-          "z": zPos1 + z1 * j,
-          "code": "10675"
-        },)
+          x: xPos1 + i * x,
+          y: yPos1 + k * y,
+          z: zPos1 + z1 * j,
+          code: '10675'
+        })
       }
-
     }
   }
-
 
   let z2 = 15.748031616210938
   let xPos2 = -44.062992095947266
@@ -105,13 +100,12 @@ onMounted(() => {
     for (let j = 0; j < 1; j++) {
       for (let k = 0; k < 2; k++) {
         data.push({
-          "x": xPos2 + i * x,
-          "y": yPos2 + k * y,
-          "z": zPos2 + z2 * j,
-          "code": "10662"
-        },)
+          x: xPos2 + i * x,
+          y: yPos2 + k * y,
+          z: zPos2 + z2 * j,
+          code: '10662'
+        })
       }
-
     }
   }
 
@@ -131,16 +125,14 @@ onMounted(() => {
     for (let j = 0; j < 1; j++) {
       for (let k = 0; k < 3; k++) {
         data.push({
-          "x": xPos3 + i * x3,
-          "y": yPos3 + k * y3,
-          "z": zPos3 + j * z3,
-          "code": "10629"
-        },)
+          x: xPos3 + i * x3,
+          y: yPos3 + k * y3,
+          z: zPos3 + j * z3,
+          code: '10629'
+        })
       }
-
     }
   }
-
 
   let xPos4 = -46.425196886061485
   let yPos4 = -6.0734851066986835
@@ -149,16 +141,14 @@ onMounted(() => {
     for (let j = 0; j < 4; j++) {
       for (let k = 0; k < 3; k++) {
         data.push({
-          "x": xPos4 + i * x3,
-          "y": yPos4 + k * y3,
-          "z": zPos4 + j * z3,
-          "code": "10629"
-        },)
+          x: xPos4 + i * x3,
+          y: yPos4 + k * y3,
+          z: zPos4 + j * z3,
+          code: '10629'
+        })
       }
-
     }
   }
-
 
   let xPos5 = 3.330709695783071
   let yPos5 = -3.3753340537627423
@@ -167,16 +157,14 @@ onMounted(() => {
     for (let j = 0; j < 3; j++) {
       for (let k = 0; k < 2; k++) {
         data.push({
-          "x": xPos5 + i * x,
-          "y": yPos5 + k * y,
-          "z": zPos5 + z1 * j,
-          "code": "10675"
-        },)
+          x: xPos5 + i * x,
+          y: yPos5 + k * y,
+          z: zPos5 + z1 * j,
+          code: '10675'
+        })
       }
-
     }
   }
-
 
   /**
    * {
@@ -185,11 +173,10 @@ onMounted(() => {
   "z": 110.23622131347656
 }
    * */
-  console.log("data", data)
-
+  console.log('data', data)
 })
 function handleLoadInitModel() {
-  position.forEach(ele => {
+  position.forEach((ele) => {
     const loader = new GLTFLoader()
     loader.load(`/gltf/six/${ele.code}.gltf`, (gltf) => {
       let originalModel = gltf.scene
@@ -200,12 +187,12 @@ function handleLoadInitModel() {
       model.traverse((child) => {
         if (child.isMesh) {
           // 禁止拾取
-          child.raycast = () => null;
+          child.raycast = () => null
 
           // 防止事件干扰
-          child.userData.isDraggable = false;
+          child.userData.isDraggable = false
         }
-      });
+      })
       const box = new THREE.Box3().setFromObject(model)
       const size = new THREE.Vector3()
       box.getSize(size)
@@ -218,16 +205,14 @@ function handleLoadInitModel() {
         code: ele.code,
         mesh: wrappedModel,
         size: size.clone(),
+        originalSize: size.clone(), // 原始尺寸，永远不变
         prevPosition: wrappedModel.position.clone(),
         enteredContainer: true,
         initialPosition: wrappedModel.position.clone()
       })
       initDragControls()
     })
-
   })
-
-
 }
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeyDown)
@@ -280,12 +265,48 @@ function initScene() {
   // 容器边框可视化（透明盒子）
   const boxGeo = new THREE.BoxGeometry(containerSize.x, containerSize.y, containerSize.z)
   const boxMaterials = [
-    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
-    new THREE.MeshPhongMaterial({ color: 0x00ffff, transparent: true, opacity: 1, side: THREE.BackSide, depthWrite: false }),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false }),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.2, side: THREE.BackSide, depthWrite: false })
+    new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.2,
+      side: THREE.BackSide,
+      depthWrite: false
+    }),
+    new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.2,
+      side: THREE.BackSide,
+      depthWrite: false
+    }),
+    new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.2,
+      side: THREE.BackSide,
+      depthWrite: false
+    }),
+    new THREE.MeshPhongMaterial({
+      color: 0x00ffff,
+      transparent: true,
+      opacity: 1,
+      side: THREE.BackSide,
+      depthWrite: false
+    }),
+    new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.2,
+      side: THREE.BackSide,
+      depthWrite: false
+    }),
+    new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.2,
+      side: THREE.BackSide,
+      depthWrite: false
+    })
   ]
   const containerMesh = new THREE.Mesh(boxGeo, boxMaterials)
   scene.add(containerMesh)
@@ -315,7 +336,12 @@ function initScene() {
   texture.wrapS = THREE.RepeatWrapping
   texture.wrapT = THREE.RepeatWrapping
   texture.repeat.set(4, 4)
-  const groundMaterial = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true, opacity: 1 })
+  const groundMaterial = new THREE.MeshBasicMaterial({
+    map: texture,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 1
+  })
   const ground = new THREE.Mesh(groundGeometry, groundMaterial)
   ground.rotation.x = Math.PI / 2
   ground.position.y = -containerSize.y / 2 - 1
@@ -335,28 +361,30 @@ function initScene() {
 function initDragControls() {
   // 重新创建 DragControls（会解绑旧事件）
   if (dragControls) {
-    try { dragControls.dispose() } catch (e) { /* ignore */ }
+    try {
+      dragControls.dispose()
+    } catch (e) {
+      /* ignore */
+    }
   }
 
   // ✅ 只允许拖拽 wrapper（即透明盒子）
-  const wrapperMeshes = draggableObjects
-    .filter(o => o.mesh.userData?.isWrapper)
-    .map(o => o.mesh)
+  const wrapperMeshes = draggableObjects.filter((o) => o.mesh.userData?.isWrapper).map((o) => o.mesh)
   dragControls = new DragControls(wrapperMeshes, camera, renderer.domElement)
 
   // 🔹 禁用 wrapper 内部模型 raycast（保留 wrapper 可拖拽）
-  wrapperMeshes.forEach(wrapper => {
-    wrapper.children.forEach(child => {
-      child.traverse(mesh => {
+  wrapperMeshes.forEach((wrapper) => {
+    wrapper.children.forEach((child) => {
+      child.traverse((mesh) => {
         if (mesh.isMesh || mesh.isLine) {
           // 禁止内部模型被射线检测
-          mesh.raycast = () => { };
+          mesh.raycast = () => {}
           // 可以标记为不可拖拽
-          mesh.userData.isDraggable = false;
+          mesh.userData.isDraggable = false
         }
-      });
-    });
-  });
+      })
+    })
+  })
   // drag start
   dragControls.addEventListener('dragstart', (event) => {
     const obj = draggableObjects.find((o) => o.mesh === event.object)
@@ -386,12 +414,12 @@ function initDragControls() {
 
     // 判断是否进入容器
     const insideContainer =
-      (targetPos.x - halfSize.x) >= -containerSize.x / 2 &&
-      (targetPos.x + halfSize.x) <= containerSize.x / 2 &&
-      (targetPos.y - halfSize.y) >= -containerSize.y / 2 &&
-      (targetPos.y + halfSize.y) <= containerSize.y / 2 &&
-      (targetPos.z - halfSize.z) >= -containerSize.z / 2 &&
-      (targetPos.z + halfSize.z) <= containerSize.z / 2
+      targetPos.x - halfSize.x >= -containerSize.x / 2 &&
+      targetPos.x + halfSize.x <= containerSize.x / 2 &&
+      targetPos.y - halfSize.y >= -containerSize.y / 2 &&
+      targetPos.y + halfSize.y <= containerSize.y / 2 &&
+      targetPos.z - halfSize.z >= -containerSize.z / 2 &&
+      targetPos.z + halfSize.z <= containerSize.z / 2
 
     if (insideContainer) obj.enteredContainer = true
 
@@ -441,7 +469,7 @@ function initDragControls() {
   dragControls.addEventListener('dragend', () => {
     orbitControls.enabled = rotateEnabled.value
     const data = []
-    draggableObjects.forEach(ele => {
+    draggableObjects.forEach((ele) => {
       const position = ele.mesh.position.clone()
       data.push({
         x: position.x,
@@ -450,7 +478,7 @@ function initDragControls() {
         code: ele.code
       })
     })
-    console.log("data---", data)
+    console.log('data---', data)
     const allInside = draggableObjects.every((obj) => obj.enteredContainer)
     if (!allInside) {
       draggableObjects.forEach((obj) => {
@@ -478,6 +506,71 @@ function initDragControls() {
       selectedObject = null
     }
   })
+
+  // ======================================
+  // 🌀 右键旋转逻辑（仅旋转选中 wrapper）
+  // ======================================
+  let rotatingWrapper = null
+  let isRotating = false
+  let lastMouseX = 0
+
+  // 右键按下 → 判断是否选中了 wrapper
+  renderer.domElement.addEventListener('mousedown', (e) => {
+    if (e.button === 2 && selectedObject?.userData?.isWrapper) {
+      // 禁用默认右键菜单
+      e.preventDefault()
+      rotatingWrapper = selectedObject
+      isRotating = true
+      lastMouseX = e.clientX
+      orbitControls.enabled = false // 禁止相机旋转
+    }
+  })
+
+  // 鼠标移动 → 旋转当前选中 wrapper
+  renderer.domElement.addEventListener('mousemove', (e) => {
+    if (isRotating && rotatingWrapper) {
+      const deltaX = e.clientX - lastMouseX
+      lastMouseX = e.clientX
+      rotatingWrapper.rotation.y += deltaX * 0.0005 // 控制旋转灵敏度
+      // 保持 X、Z 不变
+      rotatingWrapper.rotation.x = 0
+      rotatingWrapper.rotation.z = 0
+    }
+  })
+
+  // 松开右键 → 自动对齐最近的 90 度
+  renderer.domElement.addEventListener('mouseup', (e) => {
+    if (e.button === 2 && rotatingWrapper) {
+      // 自动吸附到最近的 90°倍数
+      const snappedY = Math.round(rotatingWrapper.rotation.y / (Math.PI / 2)) * (Math.PI / 2)
+      rotatingWrapper.rotation.y = snappedY
+
+      // 修正 size
+      const obj = draggableObjects.find((o) => o.mesh === rotatingWrapper)
+      if (obj) fixSizeAfterRotation(obj)
+
+      rotatingWrapper = null
+      isRotating = false
+      orbitControls.enabled = true
+    }
+  })
+
+  // =====================
+  // Y 轴旋转修正 size
+  // =====================
+  function fixSizeAfterRotation(obj) {
+    const yRotDeg = THREE.MathUtils.radToDeg(obj.mesh.rotation.y) % 360
+    if (Math.abs(yRotDeg) === 90 || Math.abs(yRotDeg) === 270) {
+      // X、Z 互换
+      const tmp = obj.originalSize.x
+      obj.size.x = obj.originalSize.z
+      obj.size.z = tmp
+      obj.size.y = obj.originalSize.y
+    } else {
+      // 恢复原始尺寸
+      obj.size = obj.originalSize.clone()
+    }
+  }
 }
 
 // 预加载几何 / 模型
@@ -485,29 +578,27 @@ const preGeometries = []
 function initPreGeometries() {
   const sizes = [
     // { name: 'cube1', color: 0xff0000, x: 3, y: 3, z: 3 ,code:"10605"},
-    { name: 'cube2', color: 0x00ff00, x: 4, y: 2, z: 5, code: "10607" },
-    { name: 'cube3', color: 0x0000ff, x: 2, y: 6, z: 2, code: "10609" },
-    { name: 'cube4', color: 0xffff00, x: 5, y: 3, z: 3, code: "10629" },
-    { name: 'cube5', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10637" },
-    { name: 'cube6', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10660" },
-    { name: 'cube7', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10661" },
-    { name: 'cube8', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10662" },
-    { name: 'cube9', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10664" },
-    { name: 'cube10', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10675" },
-    { name: 'cube11', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10677" },
-    { name: 'cube12', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10677" },
-    { name: 'cube13', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10678" },
-    { name: 'cube14', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10679" },
-    { name: 'cube15', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10680" },
-    { name: 'cube16', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10690" },
-    { name: 'cube17', color: 0xff00ff, x: 6, y: 2, z: 4, code: "10691" },
-
+    { name: 'cube2', color: 0x00ff00, x: 4, y: 2, z: 5, code: '10607' },
+    { name: 'cube3', color: 0x0000ff, x: 2, y: 6, z: 2, code: '10609' },
+    { name: 'cube4', color: 0xffff00, x: 5, y: 3, z: 3, code: '10629' },
+    { name: 'cube5', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10637' },
+    { name: 'cube6', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10660' },
+    { name: 'cube7', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10661' },
+    { name: 'cube8', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10662' },
+    { name: 'cube9', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10664' },
+    { name: 'cube10', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10675' },
+    { name: 'cube11', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10677' },
+    { name: 'cube12', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10677' },
+    { name: 'cube13', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10678' },
+    { name: 'cube14', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10679' },
+    { name: 'cube15', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10680' },
+    { name: 'cube16', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10690' },
+    { name: 'cube17', color: 0xff00ff, x: 6, y: 2, z: 4, code: '10691' }
   ]
   const loader = new GLTFLoader()
   sizes.forEach((item) => {
     // loader.load(`/models/tool6/model7.gltf`, (gltf) => {
     loader.load(`/gltf/six/${item.code}.gltf`, (gltf) => {
-
       // 尽量从 gltf 找到实际的 mesh 节点（你项目中可能需要调整索引）
       // 我保留你原本的索引路径（children[0].children[1]），如果 structure 不同请改这里
       let originalModel = gltf.scene
@@ -520,19 +611,18 @@ function initPreGeometries() {
       model.traverse((child) => {
         if (child.isMesh || child.isLine) {
           // 禁止拾取
-          child.raycast = () => null;
+          child.raycast = () => null
 
           // 防止事件干扰
-          child.userData.isDraggable = false;
+          child.userData.isDraggable = false
         }
-      });
-
+      })
 
       // 计算包围盒与尺寸（此处会拿到缩放后的尺寸）
       const box = new THREE.Box3().setFromObject(model)
       const size = new THREE.Vector3()
       box.getSize(size)
-      console.log("size:", size.clone(), item.code)
+      console.log('size:', size.clone(), item.code)
       // 保存 model 原型（我们在 addCube 时再 clone）
       preGeometries.push({ name: item.name, modelPrototype: model, size: size.clone(), code: item.code })
     })
@@ -559,7 +649,7 @@ function createTransparentWrapper(model, size) {
   wrapper.add(model) // 将模型作为子节点放入 wrapper
 
   // ✅ 确保 wrapper 在 layer 0
-  wrapper.layers.set(0);
+  wrapper.layers.set(0)
 
   // userData 用于拖拽识别与恢复材质
   wrapper.userData = {
@@ -639,13 +729,28 @@ function onKeyDown(event) {
   const moveDistance = 1
   let direction = new THREE.Vector3()
   switch (event.key) {
-    case 'ArrowUp': direction.set(0, 0, -1); break
-    case 'ArrowDown': direction.set(0, 0, 1); break
-    case 'ArrowLeft': direction.set(-1, 0, 0); break
-    case 'ArrowRight': direction.set(1, 0, 0); break
-    case 'w': case 'W': direction.set(0, 1, 0); break
-    case 's': case 'S': direction.set(0, -1, 0); break
-    default: return
+    case 'ArrowUp':
+      direction.set(0, 0, -1)
+      break
+    case 'ArrowDown':
+      direction.set(0, 0, 1)
+      break
+    case 'ArrowLeft':
+      direction.set(-1, 0, 0)
+      break
+    case 'ArrowRight':
+      direction.set(1, 0, 0)
+      break
+    case 'w':
+    case 'W':
+      direction.set(0, 1, 0)
+      break
+    case 's':
+    case 'S':
+      direction.set(0, -1, 0)
+      break
+    default:
+      return
   }
 
   const halfSize = { x: objEntry.size.x / 2, y: objEntry.size.y / 2, z: objEntry.size.z / 2 }
@@ -655,8 +760,16 @@ function onKeyDown(event) {
   const candidate = selectedObject.position.clone().addScaledVector(direction, moveDistance)
 
   // 边界限制（center 方式）
-  const min = new THREE.Vector3(-containerSize.x / 2 + halfSize.x, -containerSize.y / 2 + halfSize.y, -containerSize.z / 2 + halfSize.z)
-  const max = new THREE.Vector3(containerSize.x / 2 - halfSize.x, containerSize.y / 2 - halfSize.y, containerSize.z / 2 - halfSize.z)
+  const min = new THREE.Vector3(
+    -containerSize.x / 2 + halfSize.x,
+    -containerSize.y / 2 + halfSize.y,
+    -containerSize.z / 2 + halfSize.z
+  )
+  const max = new THREE.Vector3(
+    containerSize.x / 2 - halfSize.x,
+    containerSize.y / 2 - halfSize.y,
+    containerSize.z / 2 - halfSize.z
+  )
 
   // clamp candidate to bounds
   candidate.x = Math.max(min.x, Math.min(max.x, candidate.x))
@@ -664,12 +777,21 @@ function onKeyDown(event) {
   candidate.z = Math.max(min.z, Math.min(max.z, candidate.z))
 
   // 检查与其他物体碰撞
-  const boxA = new THREE.Box3().setFromCenterAndSize(candidate.clone(), new THREE.Vector3(objEntry.size.x, objEntry.size.y, objEntry.size.z))
+  const boxA = new THREE.Box3().setFromCenterAndSize(
+    candidate.clone(),
+    new THREE.Vector3(objEntry.size.x, objEntry.size.y, objEntry.size.z)
+  )
   let blocked = false
   for (let other of draggableObjects) {
     if (other.mesh === objEntry.mesh) continue
-    const boxB = new THREE.Box3().setFromCenterAndSize(other.mesh.position.clone(), new THREE.Vector3(other.size.x, other.size.y, other.size.z))
-    if (boxA.intersectsBox(boxB)) { blocked = true; break }
+    const boxB = new THREE.Box3().setFromCenterAndSize(
+      other.mesh.position.clone(),
+      new THREE.Vector3(other.size.x, other.size.y, other.size.z)
+    )
+    if (boxA.intersectsBox(boxB)) {
+      blocked = true
+      break
+    }
   }
 
   if (!blocked) {
@@ -689,16 +811,16 @@ function onResize() {
 function saveMaterialState(mat) {
   if (!mat) return null
   return {
-    hasEmissive: ('emissive' in mat),
-    emissive: ('emissive' in mat && mat.emissive) ? mat.emissive.clone() : null,
-    opacity: (mat.opacity !== undefined) ? mat.opacity : null,
-    transparent: (mat.transparent !== undefined) ? mat.transparent : null,
-    color: (mat.color) ? mat.color.clone() : null
+    hasEmissive: 'emissive' in mat,
+    emissive: 'emissive' in mat && mat.emissive ? mat.emissive.clone() : null,
+    opacity: mat.opacity !== undefined ? mat.opacity : null,
+    transparent: mat.transparent !== undefined ? mat.transparent : null,
+    color: mat.color ? mat.color.clone() : null
   }
 }
 function saveMeshMaterialsState(mesh) {
   const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
-  return mats.map(m => saveMaterialState(m))
+  return mats.map((m) => saveMaterialState(m))
 }
 function restoreMeshAppearance(mesh) {
   if (!mesh || !mesh.userData._matBackup) return
@@ -708,7 +830,10 @@ function restoreMeshAppearance(mesh) {
     const b = backups[i]
     if (!b) return
     if (b.hasEmissive && 'emissive' in m && b.emissive) m.emissive.copy(b.emissive)
-    if (b.opacity !== null && b.opacity !== undefined) { m.opacity = b.opacity; m.transparent = !!b.transparent }
+    if (b.opacity !== null && b.opacity !== undefined) {
+      m.opacity = b.opacity
+      m.transparent = !!b.transparent
+    }
     if (b.color && m.color) m.color.copy(b.color)
   })
   delete mesh.userData._matBackup
@@ -740,7 +865,6 @@ function highlightMesh(mesh) {
   })
 }
 </script>
-
 
 <style>
 .three-container {
