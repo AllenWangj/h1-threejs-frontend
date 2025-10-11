@@ -161,9 +161,9 @@ async function fetchDetail() {
     projectForm.value.layout = (data.params?.layout || '').split(',')
     projectForm.value.moduleLibrary = (data.params?.moduleLibrary || '').split(',')
     projectForm.value.custom = (data.params?.custom || '').split(',')
-    console.log('获取运输保障详情', data)
+    console.log('获取内部布局详情', data)
   } catch (error) {
-    console.error('获取运输保障详情失败', error)
+    console.error('获取内部布局详情失败', error)
   } finally {
     pageLoading.value = false
   }

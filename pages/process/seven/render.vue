@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
-    <schemes-list></schemes-list>
+    <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
     <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div ref="threeContainer" class="three-container"></div>
       <div class="toolbar-container">
@@ -14,17 +14,51 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { getAssembleDetail } from '@/apis/project'
+
+const route = useRoute()
+const projectId = ref('')
+const schemeList = ref<any[]>([])
+// 当前激活得方案id
+const currentAcviteScheme = ref('')
+
+const tapScheme = (item) => {
+  console.log('点击了现场组装方案', item)
+}
+
+// 获取详情
+async function fetchDetail() {
+  try {
+    const { data } = await getAssembleDetail({
+      projectId: projectId.value
+    })
+    schemeList.value = data.plans || []
+    if (schemeList.value.length) {
+      currentAcviteScheme.value = schemeList.value[0].id
+    }
+    console.log('获取现场组装详情', data)
+  } catch (error) {
+    console.error('获取现场组装详情失败', error)
+  } finally {
+  }
+}
+
 
 const threeContainer = ref(null)
 let scene, camera, renderer, controls, animationId
 
 onMounted(() => {
+  if (route.query.projectId) {
+    projectId.value = route.query.projectId as string
+  }
+  fetchDetail();
+
   initThree()
   loadModel()
   animate()
@@ -335,7 +369,7 @@ function animateObject(object, endPosition, startZ = 500, duration = 1) {
       if (t < 1) {
         requestAnimationFrame(animateFrame)
       } else {
-        resolve()
+        resolve(true)
       }
     }
 

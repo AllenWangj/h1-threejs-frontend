@@ -1,11 +1,8 @@
 <template>
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
-    <schemes-list></schemes-list>
-    <div
-      v-loading="loading"
-      :element-loading-text="loadingText"
-      class="flex-1 relative border border-[1px] border-[#adcdf7]"
-    >
+    <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
+    <div v-loading="loading" :element-loading-text="loadingText"
+      class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div ref="threeContainer" class="three-container" />
       <div v-if="!loading" class="toolbar-container">
         <el-button class="w-[120px]" :type="hideModel.includes(1) ? 'info' : 'primary'" @click="playStepAnimation(1)">
@@ -46,7 +43,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
 import BuildInfo from './components/build-info.vue'
@@ -54,6 +51,35 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { modeService } from './composables/mode-service'
+import { getPartsProductionDetail } from '@/apis/project'
+
+const route = useRoute()
+const projectId = ref('')
+const schemeList = ref < any[] > ([])
+// 当前激活得方案id
+const currentAcviteScheme = ref('')
+
+const tapScheme = (item) => {
+  console.log('点击了部件生产方案', item)
+}
+
+// 获取详情
+async function fetchDetail() {
+  try {
+    const { data } = await getPartsProductionDetail({
+      projectId: projectId.value
+    })
+    schemeList.value = data.plans || []
+    if (schemeList.value.length) {
+      currentAcviteScheme.value = schemeList.value[0].id
+    }
+    console.log('获取部件生产详情', data)
+  } catch (error) {
+    console.error('获取部件生产详情失败', error)
+  } finally {
+  }
+}
+
 // 模型数据服务
 const serviceData = modeService()
 
@@ -66,6 +92,11 @@ const threeContainer = ref(null)
 let scene, camera, renderer, controls, animationId
 
 onMounted(() => {
+  if (route.query.projectId) {
+    projectId.value = route.query.projectId as string
+  }
+  fetchDetail();
+  
   initThree()
   loadModel()
   animate()

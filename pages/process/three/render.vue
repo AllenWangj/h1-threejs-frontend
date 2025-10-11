@@ -1,27 +1,59 @@
 <template>
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
-    <schemes-list></schemes-list>
+    <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
     <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
-       <div class="plan-and-plan_tree" ref="three"></div>
+      <div class="plan-and-plan_tree" ref="three"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from "vue"
 import SchemesList from '@/components/schemes-list/index.vue'
-import {ref,onMounted} from "vue"
+import Threeobject from "@/threejs/three/index"
+import { getInternalLayoutDetail } from '@/apis/project'
 const three = ref()
-import Threeobject from "~~/threejs/three/index.ts"
 let processTwo: Threeobject | null = null
-onMounted(()=>{
-    processTwo = new Threeobject(three.value,{
-      progress:() =>{}
+
+const route = useRoute()
+const projectId = ref('')
+const schemeList = ref<any[]>([])
+// 当前激活得方案id
+const currentAcviteScheme = ref('')
+
+const tapScheme = (item) => {
+  console.log('点击了内部布局方案', item)
+}
+
+// 获取详情
+async function fetchDetail() {
+  try {
+    const { data } = await getInternalLayoutDetail({
+      projectId: projectId.value
     })
+    schemeList.value = data.plans || []
+    if (schemeList.value.length) {
+      currentAcviteScheme.value = schemeList.value[0].id
+    }
+    console.log('获取内部布局详情', data)
+  } catch (error) {
+    console.error('获取内部布局详情失败', error)
+  } finally {
+  }
+}
+
+onMounted(() => {
+  if (route.query.projectId) {
+    projectId.value = route.query.projectId as string
+  }
+  fetchDetail();
+  processTwo = new Threeobject(three.value, {
+    progress: () => { }
+  })
 })
 </script>
 
 <style lang="less" scoped>
-
 .plan-and-plan_tree {
   width: 100%;
   height: 100%;

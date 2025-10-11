@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
-    <schemes-list></schemes-list>
+    <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
     <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div ref="threeContainer" class="three-container"></div>
       <div class="toolbar-container">
@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
 import * as THREE from 'three'
@@ -39,6 +39,36 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { DragControls } from 'three/examples/jsm/controls/DragControls.js'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js'
 import { position } from './source'
+import { getPackingDetail } from '@/apis/project'
+
+const route = useRoute()
+const projectId = ref('')
+const schemeList = ref<any[]>([])
+// 当前激活得方案id
+const currentAcviteScheme = ref('')
+
+const tapScheme = (item) => {
+  console.log('点击了运输保障方案', item)
+}
+
+// 获取详情
+async function fetchDetail() {
+  try {
+    const { data } = await getPackingDetail({
+      projectId: projectId.value
+    })
+    schemeList.value = data.plans || []
+    if (schemeList.value.length) {
+      currentAcviteScheme.value = schemeList.value[0].id
+    }
+    console.log('获取运输保障详情', data)
+  } catch (error) {
+    console.error('获取运输保障详情失败', error)
+  } finally {
+  }
+}
+
+
 const threeContainer = ref(null)
 let scene, containerScene, camera, renderer, orbitControls, dragControls
 const containerSize = { x: 96, y: 96, z: 480 }
@@ -47,6 +77,11 @@ let selectedObject = null // 当前选中的 mesh（wrapper）
 const draggableObjects = [] // { mesh, size: THREE.Vector3, prevPosition, enteredContainer, initialPosition }
 
 onMounted(() => {
+  if (route.query.projectId) {
+    projectId.value = route.query.projectId as string
+  }
+  fetchDetail();
+
   initScene()
   animate()
   initPreGeometries()
@@ -184,7 +219,7 @@ function handleLoadInitModel() {
       const model = SkeletonUtils.clone(originalModel)
       const scale = 1
       model.scale.setScalar(scale)
-      model.traverse((child) => {
+      model.traverse((child: any) => {
         if (child.isMesh) {
           // 禁止拾取
           child.raycast = () => null
@@ -616,7 +651,7 @@ function initPreGeometries() {
       const scale = 1
       model.scale.setScalar(scale)
 
-      model.traverse((child) => {
+      model.traverse((child: any) => {
         if (child.isMesh || child.isLine) {
           // 禁止拾取
           child.raycast = () => null

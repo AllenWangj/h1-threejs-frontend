@@ -107,9 +107,9 @@ async function fetchDetail() {
       projectId: projectId.value
     })
     fileList.value = data.files || []
-    console.log('获取部件生产详情', data)
+    console.log('获取运输保障详情', data)
   } catch (error) {
-    console.error('获取部件生产详情失败', error)
+    console.error('获取运输保障详情失败', error)
   } finally {
     pageLoading.value = false
   }
