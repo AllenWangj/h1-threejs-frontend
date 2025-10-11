@@ -594,10 +594,6 @@ function initDragControls() {
   // Y 轴旋转修正 size
   // =====================
   function fixSizeAfterRotation(obj) {
-    if(!obj.mesh){
-
-      debugger
-    }
     const yRotDeg = THREE.MathUtils.radToDeg(obj.mesh.rotation.y) % 360
     if (Math.abs(yRotDeg) === 90 || Math.abs(yRotDeg) === 270) {
       // X、Z 互换

@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import SchemesList from '@/components/schemes-list/index.vue'
 import { useRender } from './composables/use-render'
-import { getPlanLayout } from '@/apis/project'
+import { getPlanLayout, planDetail } from '@/apis/project'
 
 const route = useRoute()
 const projectId = ref('')
@@ -24,7 +24,10 @@ let renderPlanLayout: InstanceType<typeof RenderPlanLayout> | null = null
 
 
 const tapScheme = (item) => {
-  console.log('点击了规划方案', item)
+  planDetail({ planId: item.id }).then(res => {
+    const { data: { layouts } } = res
+    renderPlanLayout!.loadSceneModels(layouts)
+  })
 }
 
 // 获取详情
@@ -36,6 +39,13 @@ async function fetchDetail() {
     schemeList.value = data.plans || []
     if (schemeList.value.length) {
       currentAcviteScheme.value = schemeList.value[0].id
+      planDetail({ planId: currentAcviteScheme.value }).then(res => {
+        // console.log("res===", res)
+        const { data: { layouts } } = res
+        renderPlanLayout!.loadSceneModels(layouts)
+      })
+      // /project/record/v1/plan/detail
+      // console.log(" schemeList.value[0],", schemeList.value[0])
     }
     console.log('获取规划布局详情', data)
   } catch (error) {
