@@ -5,7 +5,7 @@ export const materialInfoService = (): any[] => {
             no: 'LT1',
             spec: '窗1210',
             length: 2900,
-            quantity: 20,
+            quantity: 23,
             material: 'Q235B',
             weight: 52.052
         }
@@ -16,7 +16,7 @@ export const materialInfoService = (): any[] => {
             no: 'LT1',
             spec: '门1021',
             length: 2900,
-            quantity: 20,
+            quantity: 19,
             material: 'Q235B',
             weight: 52.052
         }
