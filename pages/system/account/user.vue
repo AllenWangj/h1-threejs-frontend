@@ -20,7 +20,7 @@
       </template>
       <template #operation="{ row }">
         <el-button link type="primary" @click="editItem(row)">编辑</el-button>
-        <el-button v-if="row.id !== 'system'" link type="danger" @click="removeItem(row)">删除</el-button>
+        <el-button v-if="row.id !== 'system'" link type="primary" @click="removeItem(row)">删除</el-button>
       </template>
     </ez-fast-table>
     <ez-dialog
