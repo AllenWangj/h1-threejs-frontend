@@ -13,12 +13,14 @@
         <p class="progress-text">{{ loadingProgress }}%</p>
       </div>
     </div>
-    
-    <!-- 说明文字 -->
+      <!-- 说明文字 -->
     <div class="info-panel">
       <p>📍 坐标系统: EPSG:4326</p>
       <p>📊 DEM 数据: 106-107°E, 26-27°N</p>
       <p>🛰️ 卫星图: public/satellite.jpg</p>
+      <p style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd;">
+        <span style="color: #ff0000; font-weight: bold;">↑ N</span> 北方
+      </p>
     </div>
     
     <!-- 点位数据弹窗 -->
@@ -33,7 +35,7 @@
         <p><strong>海拔:</strong> {{ selectedPoint.elevation }}m</p>
         <p><strong>类型:</strong> {{ selectedPoint.type }}</p>
         <p><strong>描述:</strong> {{ selectedPoint.description }}</p>
-      </div>
+      </div>  
     </div>
   </div>
 </template>
@@ -57,6 +59,15 @@ const loading = ref(false)
 const loadingText = ref('初始化场景...')
 const loadingProgress = ref(0)
 
+// 地形配置参数
+const TERRAIN_SIZE = 8 // 地形尺寸 (世界坐标单位)
+const DEM_BOUNDS = {
+  lonMin: 106,
+  lonMax: 107,
+  latMin: 26,
+  latMax: 27
+}
+
 // 示例点位数据 (EPSG:4326 坐标系统)
 const pointsData = [
   {
@@ -64,7 +75,6 @@ const pointsData = [
     name: '观测站A',
     lon: 106.3,
     lat: 26.5,
-    elevation: 1200,
     type: '气象站',
     description: '主要观测温度、湿度、降雨量'
   },
@@ -73,7 +83,6 @@ const pointsData = [
     name: '观测站B',
     lon: 106.7,
     lat: 26.3,
-    elevation: 1500,
     type: '水文站',
     description: '监测河流水位和流量'
   },
@@ -82,8 +91,6 @@ const pointsData = [
     name: '观测站C',
     lon: 106.5,
     lat: 26.7,
-    elevation: 1800,
-    type: '地质站',
     description: '地质灾害监测点'
   }
 ]
@@ -125,15 +132,25 @@ function closePointInfo() {
 }
 
 // 将地理坐标转换为 3D 空间坐标
-function geoToWorld(lon, lat, elevation, demBounds, terrainSize, minElevation, maxElevation) {
+function geoToWorld(lon, lat, demBounds, terrainSize, rasterData, rasterWidth, rasterHeight, minElevation, maxElevation) {
   // 归一化到 0-1 范围
   const x = (lon - demBounds.lonMin) / (demBounds.lonMax - demBounds.lonMin)
   const y = (lat - demBounds.latMin) / (demBounds.latMax - demBounds.latMin)
   
+  // 从 DEM 栅格数据中查询该位置的高程
+  const rasterX = Math.floor(x * (rasterWidth - 1))
+  const rasterY = Math.floor(y * (rasterHeight - 1))
+  const rasterIndex = rasterY * rasterWidth + rasterX
+  const elevation = rasterData[rasterIndex] || minElevation
+  
+  // 归一化高程
+  const normalizedHeight = (elevation - minElevation) / (maxElevation - minElevation)
+  const heightValue = normalizedHeight * 1.0 // 与地形的 scale 一致
+  
   // 转换到世界坐标 (考虑地形旋转)
   return {
     x: (x - 0.5) * terrainSize,
-    y: 0.5, // 初始高度,后续会通过射线检测调整到地形表面
+    y: heightValue + 0.15, // DEM 高程 + 0.15 偏移,让标记浮在地形上
     z: -(y - 0.5) * terrainSize // 负号因为地形旋转了
   }
 }
@@ -198,6 +215,65 @@ function createPointMarker(pointData, worldPos) {
   group.userData = pointData
   
   return group
+}
+
+// 创建方位指示器 (指南针)
+function createCompass() {
+  const compassGroup = new THREE.Group()
+  
+  // 创建圆盘底座
+  const circleGeometry = new THREE.CircleGeometry(0.15, 32)
+  const circleMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.8,
+    side: THREE.DoubleSide
+  })
+  const circle = new THREE.Mesh(circleGeometry, circleMaterial)
+  circle.rotation.x = -Math.PI / 2
+  compassGroup.add(circle)
+  
+  // 创建北向箭头 (红色)
+  const arrowNorthGeometry = new THREE.ConeGeometry(0.05, 0.15, 8)
+  const arrowNorthMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  const arrowNorth = new THREE.Mesh(arrowNorthGeometry, arrowNorthMaterial)
+  arrowNorth.rotation.x = -Math.PI / 2
+  arrowNorth.position.z = 0.075
+  compassGroup.add(arrowNorth)
+  
+  // 创建南向箭头 (白色)
+  const arrowSouthGeometry = new THREE.ConeGeometry(0.05, 0.15, 8)
+  const arrowSouthMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc })
+  const arrowSouth = new THREE.Mesh(arrowSouthGeometry, arrowSouthMaterial)
+  arrowSouth.rotation.x = Math.PI / 2
+  arrowSouth.position.z = -0.075
+  compassGroup.add(arrowSouth)
+  
+  // 添加 N 标记 (使用文字精灵)
+  const canvas = document.createElement('canvas')
+  canvas.width = 64
+  canvas.height = 64
+  const ctx = canvas.getContext('2d')
+  ctx.fillStyle = '#000000'
+  ctx.font = 'bold 48px Arial'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('N', 32, 32)
+  
+  const texture = new THREE.CanvasTexture(canvas)
+  const spriteMaterial = new THREE.SpriteMaterial({ map: texture })
+  const sprite = new THREE.Sprite(spriteMaterial)
+  sprite.scale.set(0.12, 0.12, 1)
+  sprite.position.z = 0.15
+  sprite.position.y = 0.05
+  compassGroup.add(sprite)
+  
+  // 放置在地形右下角
+  compassGroup.position.set(3.5, 0.05, -3.5)
+  scene.add(compassGroup)
+  
+  // 保存引用以便后续更新
+  window.compassGroup = compassGroup
 }
 
 // 处理鼠标点击事件
@@ -368,11 +444,11 @@ async function init() {
   console.log(`最小高度: ${min}m`)
   console.log(`最大高度: ${max}m`)
   console.log(`高度差: ${max - min}m`)
-  console.log(`网格大小: ${finalWidth} x ${finalHeight}`)
+  console.log(`网格大小: ${finalWidth} x ${finalHeight}`)  
   console.log(`总顶点数: ${(finalWidth * finalHeight).toLocaleString()}`)
 
   // 创建PlaneGeometry并设置高度
-  const geometry = new THREE.PlaneGeometry(8, 8, finalWidth - 1, finalHeight - 1)
+  const geometry = new THREE.PlaneGeometry(TERRAIN_SIZE, TERRAIN_SIZE, finalWidth - 1, finalHeight - 1)
   const positions = geometry.attributes.position.array
 
   // 优化高度映射算法 - 简化计算
@@ -434,49 +510,45 @@ async function init() {
   
   loadingProgress.value = 90
   loadingText.value = '添加点位标记...'
-  
-  // 初始化射线投射器用于点击检测
+    // 初始化射线投射器用于点击检测
   raycaster = new THREE.Raycaster()
   mouse = new THREE.Vector2()
     // 添加点位标记
-  const demBounds = {
-    lonMin: 106,
-    lonMax: 107,
-    latMin: 26,
-    latMax: 27
-  }
-  
   pointsData.forEach(point => {
     const worldPos = geoToWorld(
       point.lon,
       point.lat,
-      point.elevation,
-      demBounds,
-      8, // 地形尺寸
+      DEM_BOUNDS,
+      TERRAIN_SIZE,
+      raster, // DEM 栅格数据
+      finalWidth,
+      finalHeight,
       min,
       max
     )
     
-    // 使用射线检测获取地形实际高度
-    const raycasterDown = new THREE.Raycaster()
-    const origin = new THREE.Vector3(worldPos.x, 10, worldPos.z) // 从上方发射射线
-    const direction = new THREE.Vector3(0, -1, 0) // 向下
-    raycasterDown.set(origin, direction)
+    // 计算该点的实际海拔高度(米)
+    const x = (point.lon - DEM_BOUNDS.lonMin) / (DEM_BOUNDS.lonMax - DEM_BOUNDS.lonMin)
+    const y = (point.lat - DEM_BOUNDS.latMin) / (DEM_BOUNDS.latMax - DEM_BOUNDS.latMin)
+    const rasterX = Math.floor(x * (finalWidth - 1))
+    const rasterY = Math.floor(y * (finalHeight - 1))
+    const rasterIndex = rasterY * finalWidth + rasterX
+    const elevation = Math.round(raster[rasterIndex] || min) // 实际海拔(米)
     
-    const intersects = raycasterDown.intersectObject(terrainMesh)
-    if (intersects.length > 0) {
-      // 使用地形实际高度 + 0.1 的偏移
-      worldPos.y = intersects[0].point.y + 0.1
-    }
+    // 将海拔数据保存到点位信息中
+    point.elevation = elevation
     
     const marker = createPointMarker(point, worldPos)
     scene.add(marker)
     pointMarkers.push(marker)
     
-    console.log(`添加点位: ${point.name} at (${point.lon}, ${point.lat}), 世界坐标: (${worldPos.x.toFixed(2)}, ${worldPos.y.toFixed(2)}, ${worldPos.z.toFixed(2)})`)
+    console.log(`添加点位: ${point.name} at (${point.lon}, ${point.lat}), DEM海拔: ${elevation}m, 世界坐标: (${worldPos.x.toFixed(2)}, ${worldPos.y.toFixed(2)}, ${worldPos.z.toFixed(2)})`)
   })
-    // 添加鼠标点击事件监听
+  // 添加鼠标点击事件监听
   renderer.domElement.addEventListener('click', onMouseClick)
+  
+  // 添加方位指示器 (指南针)
+  createCompass()
   
   loadingProgress.value = 100
   loadingText.value = '加载完成!'
