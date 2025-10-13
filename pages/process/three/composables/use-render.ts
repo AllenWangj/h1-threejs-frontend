@@ -1,6 +1,6 @@
 import { type GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import * as THREE from 'three';
-
+import {a} from "./a"
 const { BaseThree } = useThree()
 const { getModelUrl, getModelMap } = useModelMap()
 enum EGroupType {
@@ -16,6 +16,11 @@ class ProcessThree extends BaseThree {
     private innerGroup: THREE.Group[] = []
     private topGroup: THREE.Group[] = []
     private gltfCodes: string[] = []
+
+
+     // 射线投射
+      private raycaster: THREE.Raycaster
+      private mouse: THREE.Vector2
     public promiseFactories: (() => Promise<{
         wrapper: THREE.Group,
         object: GLTF,
@@ -31,8 +36,33 @@ class ProcessThree extends BaseThree {
 
         })
         this.scene.add(this.wrapper)
-        // this.handleOriginModel(position)
+           this.initRaycaster()
+    this.addEventListeners()
+        // this.handleOriginModel(a)
     }
+      private initRaycaster(): void {
+        this.raycaster = new THREE.Raycaster()
+        this.raycaster.far = 10000
+        this.raycaster.ray.direction.normalize()
+        this.mouse = new THREE.Vector2()
+      }
+       private addEventListeners(): void {
+    const element = this.renderer.domElement
+
+    element.addEventListener('mousedown', (event:MouseEvent) =>{
+        const ndc = this.convertToNDC(event.clientX, event.clientY)
+    this.mouse.set(ndc.x, ndc.y)
+
+    this.raycaster.setFromCamera(this.mouse, this.camera)
+    const intersects = this.raycaster.intersectObjects(this.wrapper.children, true)
+
+    if (intersects.length > 0) {
+        console.log("intersects",intersects)
+    }
+    })
+
+  }
+
     private setGroupOpacity(group, opacity) {
         // 遍历组内所有子对象
         group.traverse(function (child) {
@@ -56,15 +86,21 @@ class ProcessThree extends BaseThree {
         });
     }
     public async handleOriginModel(data: any) {
+
+
+        console.log("data",data)
         this.handleClearnJunk(this.wrapper)
  
             const base = new THREE.Group()
-            base.scale.set(
+            if( data.scale){
+                 base.scale.set(
                 data.scale.x,
                 data.scale.y,
                 data.scale.z,
             )
+            }
             this.wrapper.add(base)
+           
             this.gltfCodes = []
             this.handleLoadUrl(data, base)
             await getModelMap(this.gltfCodes)
@@ -114,6 +150,9 @@ class ProcessThree extends BaseThree {
             this.gltfCodes.push(code)
             this.promiseFactories.push(() => {
                 const modelUrl = getModelUrl(code)
+                if(!modelUrl){
+                    debugger
+                }
                 return new Promise((reslove) => {
                     this.loadGLTFResource(modelUrl).then(res => {
                         reslove({
@@ -201,7 +240,33 @@ class ProcessThree extends BaseThree {
     }
     private handleGroupType(name: string) {
         // 判断组件是不是墙
-        if (name.indexOf("组件#9") != -1) {
+        const out = [
+            "组件#13",
+            "组件#43",
+            "组件#70",
+            "组件#43",
+            "组件#18",
+            "组件#9",
+            "组件#55",
+            "组件#50",
+            "组件#17",
+            "组件#48",
+            "组件#49",
+            "组件#60",
+            "组件#106",
+            "组件#110",
+            "组件#108",
+            "组件#24",
+            "组件#89",
+            "组件#93",
+            "组件#91",
+            "组件#10",
+            "组件#47",
+        ]
+        const result2 = out.some(ele => {
+            return name.indexOf(ele) != -1
+        })
+        if (result2) {
             // 代表是外墙
             return EGroupType.OUT_GROUP
         }

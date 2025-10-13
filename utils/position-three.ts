@@ -1,5 +1,7 @@
 import Three from "./threejs";
 import * as THREE from 'three';
+
+
 import { position ,position1,position2} from "./utilsTwoSet/five-position"
 class PositionLayout extends Three {
     public wrapper = new THREE.Group()
@@ -154,7 +156,7 @@ class PositionLayout extends Three {
         // this.loadGLTFResource("/gltf/5/three.skp.gltf", (progress) => {
         // this.loadGLTFResource("/six/six.gltf", (progress) => {
         // this.loadGLTFResource("/gltf/originsix/six.gltf", (progress) => {
-        this.loadGLTFResource("/four/four.gltf", (progress) => {
+        this.loadGLTFResource("/three.gltf", (progress) => {
 
 
 
@@ -182,7 +184,6 @@ class PositionLayout extends Three {
                     }
                 }
             })
-            console.log("name",name)
             const size = this.calculateGroupDimensions(this.wrapper)
             const number = 3000
             this.camera!.position.set(size.center.x, size.center.y, size.center.z + number)

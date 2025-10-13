@@ -4,8 +4,8 @@
     <div style="position: absolute;left: 0px;top:0px;z-index: 900;">
       <div style="display: grid;grid-template-columns:360px;gap: 20px;overflow-y: auto;">
 
-         <el-button  @click="handleExportFile('Group_330')">Group_1</el-button>
-      <el-button   @click="handleLoadShowMode('Group_330')">Group_1</el-button>
+         <el-button  @click="handleExportFile('<组件#20>')">Group_1</el-button>
+      <el-button   @click="handleLoadShowMode('<组件#20>')">Group_1</el-button>
 
 
 
@@ -461,7 +461,7 @@ onMounted(() =>{
   //  fiveObject.handleLoadMode("/a.glb")
 
   //  fiveObject.handleLoadMode("/gltf/5/three.skp.gltf")
-   fiveObject.handleLoadMode("/four/four.gltf")
+   fiveObject.handleLoadMode("/three.gltf")
 
 
    opt = fiveObject
