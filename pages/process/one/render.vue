@@ -45,6 +45,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+
+declare global {
+  interface Window {
+    compassGroup?: THREE.Group;
+  }
+}
 import * as THREE from 'three'
 import { fromArrayBuffer } from 'geotiff'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -338,8 +344,8 @@ function createCompass() {
   compassGroup.position.set(3.5, 0.05, -3.5)
   scene.add(compassGroup)
 
-    // 保存引用以便后续更新
-    (window as any).compassGroup = compassGroup
+  // 保存引用以便后续更新
+  window.compassGroup = compassGroup
 }
 
 // 处理鼠标点击事件
