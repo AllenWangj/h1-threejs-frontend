@@ -18,11 +18,6 @@
       <span class="current-time mr-[20px]">{{ currentDateTime.ss }}</span>
       <el-dropdown placement="bottom-end" trigger="click" @command="selectMenu">
         <div class="flex items-center px-[12px] cursor-pointer">
-          <!-- <el-avatar class="mr-[8px]" size="small" src="https://www.bsbnk.com/cdn/image/maxtan.png">
-            <el-icon>
-              <UserFilled />
-            </el-icon>
-          </el-avatar> -->
           <img src="../../assets/images/home/touxiang.svg" alt="" class="w-[24px] h-[24px] mr-[8px]" />
           <span class="text-[14px]">{{ userInfo?.name }}</span>
         </div>

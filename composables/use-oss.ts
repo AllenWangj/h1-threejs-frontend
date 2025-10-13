@@ -5,7 +5,8 @@ export const useOss = () => {
   const ossConfig = useState('oss-config', () => ({
     expired: Date.now(),
     config: {
-      endpoint: 'https://cdn.spic.cc',
+      endpoint: '',
+      bucket: '',
       region: 'us-east-1',
       credentials: {
         accessKeyId: '',
@@ -28,7 +29,8 @@ export const useOss = () => {
       
       // token过期或不存在时,重新获取
       const { data } = await getOssAuth()
-      ossConfig.value.config.endpoint = data.endpoint || ossConfig.value.config.endpoint
+      ossConfig.value.config.endpoint = data.endpoint
+      ossConfig.value.config.bucket = data.bucket
       ossConfig.value.config.credentials = {
         accessKeyId: data.accessKeyId,
         secretAccessKey: data.secretAccessKey,
@@ -76,18 +78,18 @@ export const useOss = () => {
   const putFile = async (file: File) => {
     try {
       await getOssToken()
-      const s3Client = new S3Client(ossConfig.value.config)
+      const { config } = ossConfig.value
+      const s3Client = new S3Client(config)
       const fileArrayBuffer = await file.arrayBuffer()
       const key = getFilePath(file.name)
       const command = new PutObjectCommand({
-        Bucket: 'h1-static',
+        Bucket: config.bucket,
         Key: key,
         Body: new Uint8Array(fileArrayBuffer),
         ContentType: file.type
       })
       const s3Result = await s3Client.send(command)
-      console.log(file);
-      const url = `https://cdn.spic.cc/h1-static/${key}`
+      const url = `${config.endpoint}/${config.bucket}/${key}`
       const params = {
         name: file.name,
         url,
