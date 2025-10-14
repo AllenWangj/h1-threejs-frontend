@@ -1,7 +1,7 @@
 import * as Three from 'three'
 const { BaseThree } = useThree()
 const { getModelUrl, getModelMap } = useModelMap()
-
+import  {Set75} from "./set75"
 /**
  * 场景布局类型
  */
@@ -76,6 +76,8 @@ class RenderPlanLayout extends BaseThree {
     this.initializeScene()
     this.initRaycaster()
     this.addEventListeners()
+         // // 加载场景模型
+      //  this.loadSceneModels(Set75)
     // this.loadDefaultScene()
   }
 
@@ -128,8 +130,7 @@ class RenderPlanLayout extends BaseThree {
       // 设置相机位置
       this.setupCamera()
 
-      // 加载场景模型
-      // await this.loadSceneModels()
+ 
 
       this.isCompleteLoadScene = true
     } catch (error) {

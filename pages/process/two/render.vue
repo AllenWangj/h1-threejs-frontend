@@ -1,8 +1,13 @@
 <template>
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
     <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
-    <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
+    <div v-loading="loading" class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div class="plan-and-plan_tree" ref="renderRef"></div>
+      <div class="opt">
+        <el-button type="primary" style="width:100px" @click="handllePlanRoatationEvt">移动</el-button>
+        <el-button type="primary" style="width:100px" @click="handllePlanScaleEvt">旋转</el-button>
+        <el-button type="primary" style="width:100px" @click="handllePlanRestEvt">复位</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -21,13 +26,26 @@ const currentAcviteScheme = ref('')
 const renderRef = ref<HTMLDivElement | null>(null)
 const { RenderPlanLayout } = useRender()
 let renderPlanLayout: InstanceType<typeof RenderPlanLayout> | null = null
-
-
+const loading = ref(true)
 const tapScheme = (item) => {
-  planDetail({ planId: item.id }).then(res => {
+  planDetail({ planId: item.id }).then(async (res) => {
     const { data: { layouts } } = res
-    renderPlanLayout!.loadSceneModels(layouts)
+  loading.value = true
+   await renderPlanLayout!.loadSceneModels(layouts)
+  loading.value = false
+
   })
+}
+function handllePlanRoatationEvt(){
+  renderPlanLayout!.setMoveMode()
+}
+function handllePlanScaleEvt(){
+  renderPlanLayout!.setRotateMode()
+
+}
+function handllePlanRestEvt(){
+  renderPlanLayout!.resetObjectTransform()
+
 }
 
 // 获取详情
@@ -39,10 +57,13 @@ async function fetchDetail() {
     schemeList.value = data.plans || []
     if (schemeList.value.length) {
       currentAcviteScheme.value = schemeList.value[0].id
-      planDetail({ planId: currentAcviteScheme.value }).then(res => {
+      planDetail({ planId: currentAcviteScheme.value }).then(async (res) => {
         // console.log("res===", res)
         const { data: { layouts } } = res
-        renderPlanLayout!.loadSceneModels(layouts)
+        loading.value = true
+
+       await renderPlanLayout!.loadSceneModels(layouts)
+        loading.value = false
       })
       // /project/record/v1/plan/detail
       // console.log(" schemeList.value[0],", schemeList.value[0])
@@ -68,5 +89,11 @@ onMounted(() => {
 .plan-and-plan_tree {
   width: 100%;
   height: 100%;
+}
+
+.opt {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 </style>

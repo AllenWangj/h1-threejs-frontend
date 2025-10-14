@@ -2,6 +2,9 @@
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
     <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
     <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
+      <div>
+        
+      </div>
       <div ref="threeContainer" class="three-container"></div>
       <div class="toolbar-container">
         <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube1')">物体1</el-button> -->
@@ -21,7 +24,6 @@
         <el-button class="w-[120px]" type="primary" @click="addCube('cube15')">物体15</el-button>
         <el-button class="w-[120px]" type="primary" @click="addCube('cube16')">物体16</el-button>
         <el-button class="w-[120px]" type="primary" @click="addCube('cube17')">物体17</el-button>
-
         <el-button class="w-[120px]" type="primary" :plain="rotateEnabled" @click="toggleRotate">
           {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
         </el-button>
@@ -29,7 +31,6 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
@@ -56,7 +57,6 @@ const tapScheme = (item) => {
     // renderPlanLayout!.loadSceneModels(layouts)
   })
 }
-
 // 获取详情
 async function fetchDetail() {
   try {
@@ -78,15 +78,12 @@ async function fetchDetail() {
   } finally {
   }
 }
-
-
 const threeContainer = ref(null)
 let scene, containerScene, camera, renderer, orbitControls, dragControls
-const containerSize = { x: 96*1, y: 96*1, z: 480*1 }
+const containerSize = { x: 96*0.025, y: 96*0.025, z: 480*0.025 }
 let rotateEnabled = ref(true)
 let selectedObject = null // 当前选中的 mesh（wrapper）
 const draggableObjects = [] // { mesh, size: THREE.Vector3, prevPosition, enteredContainer, initialPosition }
-
 onMounted(() => {
   if (route.query.projectId) {
     projectId.value = route.query.projectId as string
@@ -97,121 +94,122 @@ onMounted(() => {
   animate()
   initPreGeometries()
   window.addEventListener('keydown', onKeyDown)
-  // handleLoadInitModel()
-  // const data = []
-  // // for(let i = )
-  // let x = 7.874015808105469
-  // let y = 7.874015808105469
-  // let z = 228.34645080566406
-  // let xPos = -44.062992095947266
-  // let yPos = -44.062992095947266
-  // let zPos = -125.82677459716797
+  // 
+  const data = []
+  // for(let i = )
+  let x = 7.874015808105469
+  let y = 7.874015808105469
+  let z = 228.34645080566406
+  let xPos = -44.062992095947266
+  let yPos = -44.062992095947266
+  let zPos = -125.82677459716797
 
-//   for (let i = 0; i < 12; i++) {
-//     for (let j = 0; j < 2; j++) {
-//       for (let k = 0; k < 3; k++) {
-//         data.push({
-//           x: xPos + i * x,
-//           y: yPos + k * y,
-//           z: zPos + z * j,
-//           code: '10664'
-//         })
-//       }
-//     }
-//   }
+  for (let i = 0; i < 12; i++) {
+    for (let j = 0; j < 2; j++) {
+      for (let k = 0; k < 3; k++) {
+        data.push({
+          x: xPos + i * x,
+          y: yPos + k * y,
+          z: zPos + z * j,
+          code: '10664'
+        })
+      }
+    }
+  }
 
-//   let z1 = 110.23622131347656
-//   let xPos1 = -44.062992095947266
-//   let yPos1 = -20.25252802840201
-//   let zPos1 = -185.17769140029236
-//   for (let i = 0; i < 12; i++) {
-//     for (let j = 0; j < 3; j++) {
-//       for (let k = 0; k < 2; k++) {
-//         data.push({
-//           x: xPos1 + i * x,
-//           y: yPos1 + k * y,
-//           z: zPos1 + z1 * j,
-//           code: '10675'
-//         })
-//       }
-//     }
-//   }
+  let z1 = 110.23622131347656
+  let xPos1 = -44.062992095947266
+  let yPos1 = -20.25252802840201
+  let zPos1 = -185.17769140029236
+  for (let i = 0; i < 12; i++) {
+    for (let j = 0; j < 3; j++) {
+      for (let k = 0; k < 2; k++) {
+        data.push({
+          x: xPos1 + i * x,
+          y: yPos1 + k * y,
+          z: zPos1 + z1 * j,
+          code: '10675'
+        })
+      }
+    }
+  }
 
-//   let z2 = 15.748031616210938
-//   let xPos2 = -44.062992095947266
-//   let yPos2 = -44.062992095947266
-//   let zPos2 = 221.65679950905394
+  let z2 = 15.748031616210938
+  let xPos2 = -44.062992095947266
+  let yPos2 = -44.062992095947266
+  let zPos2 = 221.65679950905394
 
-//   for (let i = 0; i < 12; i++) {
-//     for (let j = 0; j < 1; j++) {
-//       for (let k = 0; k < 2; k++) {
-//         data.push({
-//           x: xPos2 + i * x,
-//           y: yPos2 + k * y,
-//           z: zPos2 + z2 * j,
-//           code: '10662'
-//         })
-//       }
-//     }
-//   }
+  for (let i = 0; i < 12; i++) {
+    for (let j = 0; j < 1; j++) {
+      for (let k = 0; k < 2; k++) {
+        data.push({
+          x: xPos2 + i * x,
+          y: yPos2 + k * y,
+          z: zPos2 + z2 * j,
+          code: '10662'
+        })
+      }
+    }
+  }
 
-//   /*
-//   : 3.1496062278770296, y: 4.724409580230713, z: 110.23622131347656}
-//   */
+  /*
+  : 3.1496062278770296, y: 4.724409580230713, z: 110.23622131347656}
+  */
 
-//   let x3 = 3.1496062278770296
-//   let y3 = 4.724409580230713
+  let x3 = 3.1496062278770296
+  let y3 = 4.724409580230713
 
-//   let z3 = 110.23622131347656
-//   let xPos3 = -46.425196886061485
-//   let yPos3 = -21.842512493913432
-//   let zPos3 = 145.6196798877915
+  let z3 = 110.23622131347656
+  let xPos3 = -46.425196886061485
+  let yPos3 = -21.842512493913432
+  let zPos3 = 145.6196798877915
 
-//   for (let i = 0; i < 30; i++) {
-//     for (let j = 0; j < 1; j++) {
-//       for (let k = 0; k < 3; k++) {
-//         data.push({
-//           x: xPos3 + i * x3,
-//           y: yPos3 + k * y3,
-//           z: zPos3 + j * z3,
-//           code: '10629'
-//         })
-//       }
-//     }
-//   }
+  for (let i = 0; i < 30; i++) {
+    for (let j = 0; j < 1; j++) {
+      for (let k = 0; k < 3; k++) {
+        data.push({
+          x: xPos3 + i * x3,
+          y: yPos3 + k * y3,
+          z: zPos3 + j * z3,
+          code: '10629'
+        })
+      }
+    }
+  }
 
-//   let xPos4 = -46.425196886061485
-//   let yPos4 = -6.0734851066986835
-//   let zPos4 = -184.88188934326172
-//   for (let i = 0; i < 15; i++) {
-//     for (let j = 0; j < 4; j++) {
-//       for (let k = 0; k < 3; k++) {
-//         data.push({
-//           x: xPos4 + i * x3,
-//           y: yPos4 + k * y3,
-//           z: zPos4 + j * z3,
-//           code: '10629'
-//         })
-//       }
-//     }
-//   }
+  let xPos4 = -46.425196886061485
+  let yPos4 = -6.0734851066986835
+  let zPos4 = -184.88188934326172
+  for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 4; j++) {
+      for (let k = 0; k < 3; k++) {
+        data.push({
+          x: xPos4 + i * x3,
+          y: yPos4 + k * y3,
+          z: zPos4 + j * z3,
+          code: '10629'
+        })
+      }
+    }
+  }
 
-//   let xPos5 = 3.330709695783071
-//   let yPos5 = -3.3753340537627423
-//   let zPos5 = -185.17769140029236
-//   for (let i = 0; i < 6; i++) {
-//     for (let j = 0; j < 3; j++) {
-//       for (let k = 0; k < 2; k++) {
-//         data.push({
-//           x: xPos5 + i * x,
-//           y: yPos5 + k * y,
-//           z: zPos5 + z1 * j,
-//           code: '10675'
-//         })
-//       }
-//     }
-//   }
-
+  // let xPos5 = 3.330709695783071
+  // let yPos5 = -3.3753340537627423
+  // let zPos5 = -185.17769140029236
+  // for (let i = 0; i < 6; i++) {
+  //   for (let j = 0; j < 3; j++) {
+  //     for (let k = 0; k < 2; k++) {
+  //       data.push({
+  //         x: xPos5 + i * x,
+  //         y: yPos5 + k * y,
+  //         z: zPos5 + z1 * j,
+  //         code: '10675'
+  //       })
+  //     }
+  //   }
+  // }
+// console.log("data",data)
+// handleLoadInitModel(data)
 //   /**
 //    * {
 //   "x": 7.874015808105469,
@@ -237,11 +235,12 @@ async function handleLoadInitModel(position:any) {
     const loader = new GLTFLoader()
       // 2. 获取场景模型 URL
       const scenePath = getModelUrl(ele.code)
+    // loader.load(`/gltf/six/${ele.code}.gltf`, (gltf) => {
     loader.load(scenePath, (gltf) => {
       let originalModel = gltf.scene
       if (gltf.scene) originalModel = gltf.scene
       const model = SkeletonUtils.clone(originalModel)
-      const scale = 1
+      const scale = 0.025
       model.scale.setScalar(scale)
       model.traverse((child: any) => {
         if (child.isMesh) {
@@ -258,7 +257,7 @@ async function handleLoadInitModel(position:any) {
       const modelClone = SkeletonUtils.clone(model)
       const wrappedModel = createTransparentWrapper(modelClone, size.clone())
       wrappedModel.position.copy(getNonOverlappingPosition(size.clone()))
-      wrappedModel.position.set(ele.x, ele.y, ele.z)
+      wrappedModel.position.set(ele.x *0.025, ele.y *0.025, ele.z *0.025)
       scene.add(wrappedModel)
       gltfModels.push(wrappedModel)
       draggableObjects.push({
@@ -310,7 +309,7 @@ function initScene() {
     0.1,
     2000
   )
-  camera.position.set(-157, 120, 115)
+  camera.position.set(10, 0, 0)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
@@ -411,11 +410,11 @@ function initScene() {
 
   orbitControls = new OrbitControls(camera, renderer.domElement)
   orbitControls.maxPolarAngle = Math.PI / 2 - 0.1
-  orbitControls.minDistance = 10
-  orbitControls.maxDistance = 3000
+  orbitControls.minDistance = 0
+  orbitControls.maxDistance = 300
 
   const axesHelper = new THREE.AxesHelper(1000)
-  scene.add(axesHelper)
+  // scene.add(axesHelper)
 
   initDragControls()
 }
@@ -687,7 +686,7 @@ function initPreGeometries() {
       if (gltf.scene) originalModel = gltf.scene
 
       const model = SkeletonUtils.clone(originalModel)
-      const scale = 1
+      const scale = 0.025
       model.scale.setScalar(scale)
 
       model.traverse((child: any) => {
@@ -784,7 +783,7 @@ function addCube(name = 'cube1') {
 // 生成容器外初始位置（可改为随机且不重叠的逻辑）
 function getNonOverlappingPosition(size) {
   // 简化：把新物体放在容器正前方 30 单位处
-  return new THREE.Vector3(0, 100, 500)
+  return new THREE.Vector3(5, 0, 0)
 }
 
 function toggleRotate() {
@@ -947,7 +946,7 @@ function highlightMesh(mesh) {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 .three-container {
   width: 100%;
   height: 100%;

@@ -86,11 +86,7 @@ class ProcessThree extends BaseThree {
         });
     }
     public async handleOriginModel(data: any) {
-
-
-        console.log("data",data)
         this.handleClearnJunk(this.wrapper)
- 
             const base = new THREE.Group()
             if( data.scale){
                  base.scale.set(

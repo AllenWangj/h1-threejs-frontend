@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
     <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
-    <div class="flex-1 relative border border-[1px] border-[#adcdf7]">
+    <div  v-loading="loading"  class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div class="plan-and-plan_tree" ref="three"></div>
     </div>
   </div>
@@ -16,7 +16,7 @@ import {useRender} from "./composables/use-render"
 const three = ref()
 const { ProcessThree } = useRender()
 let processThree: InstanceType<typeof ProcessThree> | null = null
-
+const loading = ref(false)
 // let processTwo: Threeobject | null = null
 
 const route = useRoute()
@@ -26,9 +26,12 @@ const schemeList = ref<any[]>([])
 const currentAcviteScheme = ref('')
 
 const tapScheme = (item) => {
-    planDetail({ planId: currentAcviteScheme.value }).then(res => {
+    planDetail({ planId: currentAcviteScheme.value }).then(async (res) => {
         const { data: { layouts } } = res
+        loading.value = true
+
         processThree!.handleOriginModel(layouts)
+        loading.value = false
       })
   // console.log('点击了内部布局方案', item)
 }
@@ -44,9 +47,12 @@ async function fetchDetail() {
       currentAcviteScheme.value = schemeList.value[0].id
     }
     // console.log('获取内部布局详情', data)
-     planDetail({ planId: currentAcviteScheme.value }).then(res => {
+     planDetail({ planId: currentAcviteScheme.value }).then(async (res) => {
         const { data: { layouts } } = res
-        processThree!.handleOriginModel(layouts)
+        loading.value = true
+       await processThree!.handleOriginModel(layouts)
+        loading.value = false
+
       })
   } catch (error) {
     console.error('获取内部布局详情失败', error)
