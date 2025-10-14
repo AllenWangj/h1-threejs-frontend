@@ -156,6 +156,20 @@ function initDragControls() {
 
   dragControls = new DragControls(wrapperMeshes, camera, renderer.domElement)
 
+  // 🔹 禁用 wrapper 内部模型 raycast（保留 wrapper 可拖拽）
+  wrapperMeshes.forEach((wrapper) => {
+    wrapper.children.forEach((child) => {
+      child.traverse((mesh) => {
+        if (mesh.isMesh || mesh.isLine) {
+          // 禁止内部模型被射线检测
+          mesh.raycast = () => { }
+          // 可以标记为不可拖拽
+          mesh.userData.isDraggable = false
+        }
+      })
+    })
+  })
+
   // drag start
   dragControls.addEventListener('dragstart', (event) => {
     const obj = draggableObjects.find((o) => o.mesh === event.object)
@@ -295,7 +309,7 @@ function initPreGeometries() {
           // 禁止拾取
           child.raycast = () => null;
 
-           // 防止事件干扰
+          // 防止事件干扰
           child.userData.isDraggable = false;
         }
       });
