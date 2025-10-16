@@ -72,12 +72,13 @@
       <div class="flex items-center justify-center mt-[14px]">
         <el-button type="primary" :disabled="saveLoading" plain @click="handleReset">重置</el-button>
         <el-button type="primary" :loading="saveLoading" @click="handleSave">保存</el-button>
+        <el-button type="primary" :loading="saveLoading" @click="handleGenerateSolution">生成方案</el-button>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { getInternalLayoutDetail, updateInternalLayout } from '@/apis/project'
+import { getInternalLayoutDetail, updateInternalLayoutParams, generateInternalLayoutPlan } from '@/apis/project'
 
 const route = useRoute()
 
@@ -114,16 +115,10 @@ const projectForm = ref({
   /** 自定义参数 */
   custom: []
 })
+const initProjectForm = ref({})
 
 const handleReset = () => {
-  projectForm.value = {
-    functional: [],
-    boundary: [],
-    scale: [],
-    layout: [],
-    moduleLibrary: [],
-    custom: []
-  }
+  projectForm.value = JSON.parse(JSON.stringify(initProjectForm.value))
 }
 
 const handleSave = async () => {
@@ -136,13 +131,37 @@ const handleSave = async () => {
     params.layout = params.layout.join(',')
     params.moduleLibrary = params.moduleLibrary.join(',')
     params.custom = params.custom.join(',')
-    await updateInternalLayout({
+    await updateInternalLayoutParams({
       projectId: projectId.value,
       params
     })
     ElMessage.success('保存成功')
   } catch (error) {
     ElMessage.error('保存失败')
+  } finally {
+    saveLoading.value = false
+  }
+}
+
+const handleGenerateSolution = async () => {
+  try {
+    saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(projectForm.value))
+    params.functional = params.functional.join(',')
+    params.boundary = params.boundary.join(',')
+    params.scale = params.scale.join(',')
+    params.layout = params.layout.join(',')
+    params.moduleLibrary = params.moduleLibrary.join(',')
+    params.custom = params.custom.join(',')
+    await generateInternalLayoutPlan({
+      projectId: projectId.value,
+      params
+    })
+    ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
+      confirmButtonText: '知道了'
+    })
+  } catch (error) {
+    ElMessage.error('方案生成失败')
   } finally {
     saveLoading.value = false
   }
@@ -155,13 +174,14 @@ async function fetchDetail() {
     const { data } = await getInternalLayoutDetail({
       projectId: projectId.value
     })
-    projectForm.value.functional = (data.params?.functional || '').split(',')
-    projectForm.value.boundary = (data.params?.boundary || '').split(',')
-    projectForm.value.scale = (data.params?.scale || '').split(',')
-    projectForm.value.layout = (data.params?.layout || '').split(',')
-    projectForm.value.moduleLibrary = (data.params?.moduleLibrary || '').split(',')
-    projectForm.value.custom = (data.params?.custom || '').split(',')
+    projectForm.value.functional = (data.params?.functional || '').split(',').filter(Boolean)
+    projectForm.value.boundary = (data.params?.boundary || '').split(',').filter(Boolean)
+    projectForm.value.scale = (data.params?.scale || '').split(',').filter(Boolean)
+    projectForm.value.layout = (data.params?.layout || '').split(',').filter(Boolean)
+    projectForm.value.moduleLibrary = (data.params?.moduleLibrary || '').split(',').filter(Boolean)
+    projectForm.value.custom = (data.params?.custom || '').split(',').filter(Boolean)
     console.log('获取内部布局详情', data)
+    initProjectForm.value = JSON.parse(JSON.stringify(projectForm.value))
   } catch (error) {
     console.error('获取内部布局详情失败', error)
   } finally {

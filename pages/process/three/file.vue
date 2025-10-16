@@ -18,7 +18,7 @@
           accept=".pdf,.dwg,.dxf"
           action=""
           :drag="true"
-          :auto-upload="true"
+          :auto-upload="false"
           :on-change="uploadFile"
           :show-file-list="false"
           class="w-[100%] h-[100%]"
@@ -65,7 +65,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { getInternalLayoutDetail, updateInternalLayout } from '@/apis/project'
+import { getInternalLayoutDetail, updateInternalLayoutFiles } from '@/apis/project'
 import { genFileId } from 'element-plus'
 
 const route = useRoute()
@@ -88,7 +88,7 @@ const handleRemoveFile = async (file) => {
       type: 'warning'
     })
     const fileIdList = fileList.value.filter((item) => item.id !== file.id).map((item) => item.id)
-    await updateInternalLayout({
+    await updateInternalLayoutFiles({
       projectId: projectId.value,
       fileIds: fileIdList
     })
@@ -153,7 +153,7 @@ function createdUploadFile() {
       console.log('上传成功', data)
       const fileIdList = fileList.value.map((item) => item.id)
       fileIdList.push(data.id)
-      await updateInternalLayout({
+      await updateInternalLayoutFiles({
         projectId: projectId.value,
         fileIds: fileIdList
       })

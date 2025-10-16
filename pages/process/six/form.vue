@@ -50,12 +50,13 @@
       <div class="flex items-center justify-center mt-[14px]">
         <el-button type="primary" :disabled="saveLoading" plain @click="handleReset">重置</el-button>
         <el-button type="primary" :loading="saveLoading" @click="handleSave">保存</el-button>
+        <el-button type="primary" :disabled="saveLoading" @click="handleGenerateSolution">生成方案</el-button>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { getPackingDetail, updatePacking } from '@/apis/project'
+import { getPackingDetail, updatePackingParams, generatePackingPlan } from '@/apis/project'
 
 const route = useRoute()
 
@@ -82,14 +83,10 @@ const projectForm = ref({
   /** 自定义参数 */
   custom: []
 })
+const initProjectForm = ref({})
 
 const handleReset = () => {
-  projectForm.value = {
-    transportation: '',
-    loadingCapacity: '',
-    shippingTime: [],
-    custom: []
-  }
+  projectForm.value = JSON.parse(JSON.stringify(initProjectForm.value))
 }
 
 const handleSave = async () => {
@@ -98,13 +95,33 @@ const handleSave = async () => {
     const params = JSON.parse(JSON.stringify(projectForm.value))
     params.shippingTime = params.shippingTime.join(',')
     params.custom = params.custom.join(',')
-    await updatePacking({
+    await updatePackingParams({
       projectId: projectId.value,
       params
     })
     ElMessage.success('保存成功')
   } catch (error) {
     ElMessage.error('保存失败')
+  } finally {
+    saveLoading.value = false
+  }
+}
+
+const handleGenerateSolution = async () => {
+  try {
+    saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(projectForm.value))
+    params.shippingTime = params.shippingTime.join(',')
+    params.custom = params.custom.join(',')
+    await generatePackingPlan({
+      projectId: projectId.value,
+      params
+    })
+    ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
+      confirmButtonText: '知道了'
+    })
+  } catch (error) {
+    ElMessage.error('方案生成失败')
   } finally {
     saveLoading.value = false
   }
@@ -119,9 +136,10 @@ async function fetchDetail() {
     })
     projectForm.value.transportation = data.params?.transportation || ''
     projectForm.value.loadingCapacity = data.params?.loadingCapacity || ''
-    projectForm.value.shippingTime = (data.params?.shippingTime || '').split(',')
-    projectForm.value.custom = (data.params?.custom || '').split(',')
+    projectForm.value.shippingTime = (data.params?.shippingTime || '').split(',').filter(Boolean)
+    projectForm.value.custom = (data.params?.custom || '').split(',').filter(Boolean)
     console.log('获取运输保障详情', data)
+    initProjectForm.value = JSON.parse(JSON.stringify(projectForm.value))
   } catch (error) {
     console.error('获取运输保障详情失败', error)
   } finally {

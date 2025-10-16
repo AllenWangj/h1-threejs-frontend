@@ -59,12 +59,13 @@
       <div class="flex items-center justify-center mt-[14px]">
         <el-button type="primary" :disabled="saveLoading" plain @click="handleReset">重置</el-button>
         <el-button type="primary" :loading="saveLoading" @click="handleSave">保存</el-button>
+        <el-button type="primary" :disabled="saveLoading" @click="handleGenerateSolution">生成方案</el-button>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { getPartsProductionDetail, updatePartsProduction } from '@/apis/project'
+import { getPartsProductionDetail, updatePartsProductionParams, generatePartsProductionPlan } from '@/apis/project'
 
 const route = useRoute()
 
@@ -98,15 +99,10 @@ const projectForm = ref({
   /** 自定义参数 */
   custom: []
 })
+const initProjectForm = ref({})
 
 const handleReset = () => {
-  projectForm.value = {
-    layout: '',
-    structuralPlan: '',
-    componentLocation: '',
-    componentSpecifications: [],
-    custom: []
-  }
+  projectForm.value = JSON.parse(JSON.stringify(initProjectForm.value))
 }
 
 const handleSave = async () => {
@@ -115,13 +111,33 @@ const handleSave = async () => {
     const params = JSON.parse(JSON.stringify(projectForm.value))
     params.componentSpecifications = params.componentSpecifications.join(',')
     params.custom = params.custom.join(',')
-    await updatePartsProduction({
+    await updatePartsProductionParams({
       projectId: projectId.value,
       params
     })
     ElMessage.success('保存成功')
   } catch (error) {
     ElMessage.error('保存失败')
+  } finally {
+    saveLoading.value = false
+  }
+}
+
+const handleGenerateSolution = async () => {
+  try {
+    saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(projectForm.value))
+    params.componentSpecifications = params.componentSpecifications.join(',')
+    params.custom = params.custom.join(',')
+    await generatePartsProductionPlan({
+      projectId: projectId.value,
+      params
+    })
+    ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
+      confirmButtonText: '知道了'
+    })
+  } catch (error) {
+    ElMessage.error('方案生成失败')
   } finally {
     saveLoading.value = false
   }
@@ -137,9 +153,10 @@ async function fetchDetail() {
     projectForm.value.layout = data.params?.layout || ''
     projectForm.value.structuralPlan = data.params?.structuralPlan || ''
     projectForm.value.componentLocation = data.params?.componentLocation || ''
-    projectForm.value.componentSpecifications = (data.params?.componentSpecifications || '').split(',')
-    projectForm.value.custom = (data.params?.custom || '').split(',')
+    projectForm.value.componentSpecifications = (data.params?.componentSpecifications || '').split(',').filter(Boolean)
+    projectForm.value.custom = (data.params?.custom || '').split(',').filter(Boolean)
     console.log('获取部件生产详情', data)
+    initProjectForm.value = JSON.parse(JSON.stringify(projectForm.value))
   } catch (error) {
     console.error('获取部件生产详情失败', error)
   } finally {
