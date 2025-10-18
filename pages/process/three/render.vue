@@ -30,7 +30,7 @@ const tapScheme = (item) => {
         const { data: { layouts } } = res
         loading.value = true
 
-        processThree!.handleOriginModel(layouts)
+       await processThree!.handleOriginModel(layouts)
         loading.value = false
       })
   // console.log('点击了内部布局方案', item)

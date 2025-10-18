@@ -67,7 +67,7 @@ class RenderPlanLayout extends BaseThree {
       enableShadow: true,
       enableDamping: true
     })
-
+    console.log("Set75",Set75)
     // 绑定事件处理函数
     this.handleMouseDownBound = this.handleMouseDown.bind(this)
     this.handleMouseMoveBound = this.handleMouseMove.bind(this)
@@ -196,13 +196,7 @@ class RenderPlanLayout extends BaseThree {
 
       // 使用获取到的 URL 加载实际的 GLTF 模型文件
       const gltf = await this.loadGLTFResource(modelUrl)
-
-      // if (index === 0) {
-      //   this.addBaseModel(gltf, config)
-      // } else {
       this.addInteractiveModel(gltf, config)
-      // }
-
       console.log(`✅ 模型加载成功: ${config.code} -> ${modelUrl}`)
     } catch (error) {
       console.error(`❌ 加载模型失败 [${config.code}]:`, error)
@@ -232,13 +226,25 @@ class RenderPlanLayout extends BaseThree {
 
     // 创建枢轴点
     const pivot = new Three.Object3D()
-    pivot.position.set(
+    pivot.name = config.groupName
+    pivot.userData.data = config //原始数据位置 q
+    if(config.isSave) {
+          pivot.position.set(
+      config.newPosition.x,
+      config.newPosition.y,
+      config.newPosition.z,
+    )
+    pivot.rotation.set(0,0,config.z) 
+    }else {
+        pivot.position.set(
       config.position.x + size.width / 2,
       config.position.y + size.height / 2,
       config.position.z
     )
+   
+    }
+  
     pivot.add(group)
-
     this.wrapper.add(pivot)
     this.interactiveObjects.push(pivot)
   }
@@ -304,6 +310,7 @@ class RenderPlanLayout extends BaseThree {
     const parent = object.parent as Three.Object3D
     parent.userData = {
       position: parent.position.clone(),
+      data: parent.userData.data,
       rotation: new Three.Vector3().copy(parent.rotation as any)
     } as ObjectUserData
 
@@ -509,6 +516,29 @@ class RenderPlanLayout extends BaseThree {
 
     // 调用父类销毁方法
     super.destory()
+  }
+  public handlleSaveEvt(){
+    const position = this.interactiveObjects.map(ele =>{
+      const {userData} = ele
+      return {
+        groupName:ele.name,
+        deg:userData.data.deg,
+        code:userData.data.code,
+        position:{
+          x:userData.data.position.x,
+          y:userData.data.position.y,
+          z:userData.data.position.z,
+        },
+        isSave:true,
+        z:ele.rotation.z,
+        newPosition:{
+          x:ele.position.x,
+          y:ele.position.y,
+          z:ele.position.z,
+        }
+       }
+    })
+    return position
   }
 }
 

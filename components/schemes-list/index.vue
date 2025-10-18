@@ -15,6 +15,7 @@
         @click="handleTapScheme(item)">
         <div class="flex-1 mr-[20px]">
           <span class="text-[14px] text-[#1e1e1e]">{{ item.name }}</span>
+          <slot name="opt" :record="item"></slot>
           <div class="flex items-center justify-between mt-[8px]">
             <span class="text-[12px] text-[#8999b8]">评分：{{ Number(item.score) }}分</span>
             <span class="text-[12px] text-[#8999b8]">{{ formatTime(item.updateTime, 'YYYY-MM-DD HH:mm:ss') }}</span>

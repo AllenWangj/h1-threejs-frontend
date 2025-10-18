@@ -1,12 +1,17 @@
 <template>
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
-    <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
+    <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme">
+      <template #opt="{record}">
+        <el-button @click.stop="handleDeleteItem(record)" style="margin-left: 126px;" type="primary" link>删除</el-button>
+      </template>
+    </schemes-list>
     <div v-loading="loading" class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div class="plan-and-plan_tree" ref="renderRef"></div>
       <div class="opt">
         <el-button type="primary" style="width:100px" @click="handllePlanRoatationEvt">移动</el-button>
         <el-button type="primary" style="width:100px" @click="handllePlanScaleEvt">旋转</el-button>
         <el-button type="primary" style="width:100px" @click="handllePlanRestEvt">复位</el-button>
+        <el-button type="primary" style="width:100px" @click="handlleSaveEvt">保存</el-button>
       </div>
     </div>
   </div>
@@ -83,6 +88,39 @@ onMounted(() => {
   fetchDetail();
   renderPlanLayout = new RenderPlanLayout(renderRef.value)
 })
+function handlleSaveEvt() {
+   ElMessageBox.prompt('请输入方案名称', '方案确认', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    inputErrorMessage: '',
+  })
+    .then(({ value }) => {
+       const position = renderPlanLayout!.handlleSaveEvt()
+ console.log("positionn:",position)
+
+      // ElMessage({
+      //   type: 'success',
+      //   message: `Your email is:${value}`,
+      // })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: 'Input canceled',
+      })
+    })
+//  const position = renderPlanLayout!.handlleSaveEvt()
+//  console.log("positionn:",position)
+}
+function handleDeleteItem(record:any){
+  ElMessageBox.confirm('确定删除该方案？', {
+    confirmButtonText: '确定',
+    cancelButtonText:"取消",
+    callback: (action: any) => {
+     
+    },
+  })
+}
 </script>
 
 <style lang="less" scoped>

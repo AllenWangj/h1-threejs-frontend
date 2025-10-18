@@ -1,28 +1,110 @@
 <template>
-   <div ref="fullscreenContainer" class="w-[100%] h-[100%] ">
-      <div ref="threeContainer" class="three-container"></div>
-      <div class="toolbar-container">
-        <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube1')">物体1</el-button> -->
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube2')">物体2</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube3')">物体3</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube4')">物体4</el-button>
-        <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube5')">物体5</el-button> -->
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube6')">物体6</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube7')">物体7</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube8')">物体8</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube9')">物体9</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube10')">物体10</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube11')">物体11</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube12')">物体12</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube13')">物体13</el-button>
-        <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube14')">物体14</el-button> -->
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube15')">物体15</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube16')">物体16</el-button>
-        <el-button class="w-[120px]" type="primary" @click="addCube('cube17')">物体17</el-button>
-        <el-button class="w-[120px]" type="primary" :plain="rotateEnabled" @click="toggleRotate">
-          {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
-        </el-button>
-        </div>
+  <div ref="fullscreenContainer" class="w-[100%] h-[100%] ">
+    <div ref="threeContainer" class="three-container"></div>
+    <div class="toolbar-container">
+
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube2')">物体2</el-button>
+        </template>
+        <img src="/assets/material2.png" />
+      </el-popover>
+
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube3')">物体3</el-button>
+        </template>
+        <img src="/assets/material3.png" />
+      </el-popover>
+
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube4')">物体4</el-button>
+
+        </template>
+        <img src="/assets/material4.png" />
+      </el-popover>
+
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube6')">物体6</el-button>
+
+        </template>
+        <img src="/assets/material6.png" />
+      </el-popover>
+
+      <!-- <el-button class="w-[120px]" type="primary" @click="addCube('cube6')">物体6</el-button> -->
+
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube7')">物体7</el-button>
+
+
+        </template>
+        <img src="/assets/material7.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube8')">物体8</el-button>
+        </template>
+        <img src="/assets/material8.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube9')">物体9</el-button>
+        </template>
+        <img src="/assets/material9.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube10')">物体10</el-button>
+
+        </template>
+        <img src="/assets/material10.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube11')">物体11</el-button>
+        </template>
+        <img src="/assets/material11.png" />
+      </el-popover>
+      <!-- <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube12')">物体12</el-button>
+        </template>
+        <img src="/assets/material12.png" />
+      </el-popover> -->
+
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube13')">物体13</el-button>
+        </template>
+        <img src="/assets/material13.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube15')">物体15</el-button>
+        </template>
+        <img src="/assets/material15.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube16')">物体16</el-button>
+
+        </template>
+        <img src="/assets/material16.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube17')">物体17</el-button>
+        </template>
+        <img src="/assets/material17.png" />
+      </el-popover>
+
+      <el-button class="w-[120px]" type="primary" :plain="rotateEnabled" @click="toggleRotate">
+        {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
+      </el-button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -33,10 +115,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { DragControls } from 'three/examples/jsm/controls/DragControls.js'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js'
-import { getPackingDetail ,planDetail} from '@/apis/project'
+import { getPackingDetail, planDetail } from '@/apis/project'
 const { getModelUrl, getModelMap } = useModelMap()
 const props = defineProps<{
- planId:any
+  planId: any
 }>()
 // 全屏相关
 const fullscreenContainer = ref<HTMLElement | null>(null)
@@ -48,9 +130,9 @@ const projectId = ref('')
 const schemeList = ref<any[]>([])
 // 当前激活得方案id
 // const currentAcviteScheme = ref('')
-watch(() =>props.planId,(newValue) =>{
-    console.log("newValue",newValue)
-    planDetail({ planId:  newValue }).then(res => {
+watch(() => props.planId, (newValue) => {
+  console.log("newValue", newValue)
+  planDetail({ planId: newValue }).then(res => {
     const { data: { layouts } } = res
     handleLoadInitModel(layouts)
     // renderPlanLayout!.loadSceneModels(layouts)
@@ -87,7 +169,7 @@ watch(() =>props.planId,(newValue) =>{
 // }
 const threeContainer = ref(null)
 let scene, containerScene, camera, renderer, orbitControls, dragControls
-const containerSize = { x: 96*0.025, y: 96*0.025, z: 480*0.025 }
+const containerSize = { x: 96 * 0.025, y: 96 * 0.025, z: 480 * 0.025 }
 let rotateEnabled = ref(true)
 let selectedObject = null // 当前选中的 mesh（wrapper）
 const draggableObjects = [] // { mesh, size: THREE.Vector3, prevPosition, enteredContainer, initialPosition }
@@ -100,7 +182,7 @@ onMounted(() => {
   initScene()
   animate()
   initPreGeometries()
-  
+
   // 窗口尺寸变化
   window.addEventListener('resize', onResize)
 
@@ -219,40 +301,40 @@ onMounted(() => {
   //     }
   //   }
   // }
-// console.log("data",data)
-// handleLoadInitModel(data)
-//   /**
-//    * {
-//   "x": 7.874015808105469,
-//   "y": 7.874015808105469,
-//   "z": 110.23622131347656
-// }
-//    * */
-//   console.log('data', data)
-if(props.planId !=-1){
-  planDetail({ planId:  props.planId }).then(res => {
-    const { data: { layouts } } = res
-    handleLoadInitModel(layouts)
-    // renderPlanLayout!.loadSceneModels(layouts)
-  })
-}
+  // console.log("data",data)
+  // handleLoadInitModel(data)
+  //   /**
+  //    * {
+  //   "x": 7.874015808105469,
+  //   "y": 7.874015808105469,
+  //   "z": 110.23622131347656
+  // }
+  //    * */
+  //   console.log('data', data)
+  if (props.planId != -1) {
+    planDetail({ planId: props.planId }).then(res => {
+      const { data: { layouts } } = res
+      handleLoadInitModel(layouts)
+      // renderPlanLayout!.loadSceneModels(layouts)
+    })
+  }
 })
-let gltfModels:any[] = []
+let gltfModels: any[] = []
 
-async function handleLoadInitModel(position:any) {
+async function handleLoadInitModel(position: any) {
   for (let index = 0; index < gltfModels.length; index++) {
     const element = gltfModels[index];
     handleClearnJunk(element)
     element.parent.remove(element)
   }
-     const modelCodes = position.map(config => config.code)
+  const modelCodes = position.map(config => config.code)
   await getModelMap(modelCodes)
 
   gltfModels = []
   position.forEach((ele) => {
     const loader = new GLTFLoader()
-      // 2. 获取场景模型 URL
-      const scenePath = getModelUrl(ele.code)
+    // 2. 获取场景模型 URL
+    const scenePath = getModelUrl(ele.code)
     // loader.load(`/gltf/six/${ele.code}.gltf`, (gltf) => {
     loader.load(scenePath, (gltf) => {
       let originalModel = gltf.scene
@@ -275,7 +357,7 @@ async function handleLoadInitModel(position:any) {
       const modelClone = SkeletonUtils.clone(model)
       const wrappedModel = createTransparentWrapper(modelClone, size.clone())
       wrappedModel.position.copy(getNonOverlappingPosition(size.clone()))
-      wrappedModel.position.set(ele.x *0.025, ele.y *0.025, ele.z *0.025)
+      wrappedModel.position.set(ele.x * 0.025, ele.y * 0.025, ele.z * 0.025)
       scene.add(wrappedModel)
       gltfModels.push(wrappedModel)
       draggableObjects.push({
@@ -288,9 +370,9 @@ async function handleLoadInitModel(position:any) {
         initialPosition: wrappedModel.position.clone()
       })
       initDragControls()
-    },(err)=>{
-    console.log("err---",`《${ele.code}》`)
-  })
+    }, (err) => {
+      console.log("err---", `《${ele.code}》`)
+    })
   })
 }
 onUnmounted(() => {
@@ -424,7 +506,7 @@ function initScene() {
   const ground = new THREE.Mesh(groundGeometry, groundMaterial)
   ground.rotation.x = Math.PI / 2
   ground.position.y = -containerSize.y / 2 - 1
-  scene.add(ground)
+  // scene.add(ground)
 
   orbitControls = new OrbitControls(camera, renderer.domElement)
   orbitControls.maxPolarAngle = Math.PI / 2 - 0.1
@@ -438,22 +520,22 @@ function initScene() {
 }
 
 function handleClearnJunk(group: any): void {
-      if (!group || !group.parent) {
-        console.warn('⚠️ 尝试释放无效的组')
-        return
-      }
-      // 递归释放所有资源
-      group.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          // 释放几何体
-          object.geometry?.dispose()
-        }
-      })
-  
-      // 清空引用
-      group.clear()
-      // group.parent = null
+  if (!group || !group.parent) {
+    console.warn('⚠️ 尝试释放无效的组')
+    return
+  }
+  // 递归释放所有资源
+  group.traverse((object) => {
+    if (object instanceof THREE.Mesh) {
+      // 释放几何体
+      object.geometry?.dispose()
     }
+  })
+
+  // 清空引用
+  group.clear()
+  // group.parent = null
+}
 function initDragControls() {
   // 重新创建 DragControls（会解绑旧事件）
   if (dragControls) {
@@ -474,7 +556,7 @@ function initDragControls() {
       child.traverse((mesh) => {
         if (mesh.isMesh || mesh.isLine) {
           // 禁止内部模型被射线检测
-          mesh.raycast = () => {}
+          mesh.raycast = () => { }
           // 可以标记为不可拖拽
           mesh.userData.isDraggable = false
         }
@@ -628,7 +710,7 @@ function initDragControls() {
       lastMouseX = e.clientX
       rotatingWrapper.rotation.y += 0 // 控制旋转灵敏度
       // 保持 X、Z 不变
-      rotatingWrapper.rotation.x += deltaX * 0.0005 
+      rotatingWrapper.rotation.x += deltaX * 0.0005
       rotatingWrapper.rotation.z = 0
     }
   })
@@ -663,9 +745,9 @@ function initDragControls() {
       obj.size.y = obj.originalSize.y
     } else {
       // 恢复原始尺寸
-      console.log("obj.originalSize",obj.originalSize)
-      if(obj.originalSize) {
-      obj.size = obj.originalSize.clone()
+      console.log("obj.originalSize", obj.originalSize)
+      if (obj.originalSize) {
+        obj.size = obj.originalSize.clone()
 
       }
     }
@@ -687,7 +769,6 @@ async function initPreGeometries() {
     { name: 'cube9', color: 0xff00ff, x: 6, y: 2, z: 4, code: '06_01_10664' },
     { name: 'cube10', color: 0xff00ff, x: 6, y: 2, z: 4, code: '06_01_10675' },
     { name: 'cube11', color: 0xff00ff, x: 6, y: 2, z: 4, code: '06_01_10677' },
-    { name: 'cube12', color: 0xff00ff, x: 6, y: 2, z: 4, code: '06_01_10677' },
     { name: 'cube13', color: 0xff00ff, x: 6, y: 2, z: 4, code: '06_01_10678' },
     { name: 'cube14', color: 0xff00ff, x: 6, y: 2, z: 4, code: '06_01_10679' },
     { name: 'cube15', color: 0xff00ff, x: 6, y: 2, z: 4, code: '06_01_10680' },
@@ -696,8 +777,8 @@ async function initPreGeometries() {
   ]
   const loader = new GLTFLoader()
   // getModelMap
-  const   modelCodes = sizes.map(ele=>ele.code)
-   await getModelMap(modelCodes)
+  const modelCodes = sizes.map(ele => ele.code)
+  await getModelMap(modelCodes)
   sizes.forEach((item) => {
     const url = getModelUrl(item.code)
     // loader.load(`/models/tool6/model7.gltf`, (gltf) => {
@@ -787,7 +868,7 @@ function addCube(name = 'cube1') {
   wrappedModel.position.copy(getNonOverlappingPosition(modelData.size))
 
   scene.add(wrappedModel)
-    gltfModels.push(wrappedModel)
+  gltfModels.push(wrappedModel)
   // 注册 wrapper 到 draggableObjects —— 使用 size 的 clone，确保数据不被共享修改
   draggableObjects.push({
     code: modelData.code,
@@ -984,7 +1065,8 @@ function highlightMesh(mesh) {
   flex-direction: column;
   align-items: center;
   padding: 10px;
-
+  overflow: auto;
+  height: 100%;
   .el-button {
     margin: 0;
     margin-bottom: 10px;

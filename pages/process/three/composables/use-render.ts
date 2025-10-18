@@ -131,7 +131,6 @@ class ProcessThree extends BaseThree {
             const number = 600
             this.camera!.position.set(size.center.x, size.center.y - number, size.center.z)
             this.controls.target.set(size.center.x, size.center.y, size.center.z)
-            // debugger
             this.outLineGroup.forEach(ele => {
                 ele.visible = false
             })
@@ -146,9 +145,6 @@ class ProcessThree extends BaseThree {
             this.gltfCodes.push(code)
             this.promiseFactories.push(() => {
                 const modelUrl = getModelUrl(code)
-                if(!modelUrl){
-                    debugger
-                }
                 return new Promise((reslove) => {
                     this.loadGLTFResource(modelUrl).then(res => {
                         reslove({
