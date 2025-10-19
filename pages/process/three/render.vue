@@ -11,8 +11,11 @@
 import { ref, onMounted } from "vue"
 import SchemesList from '@/components/schemes-list/index.vue'
 // import Threeobject from "@/threejs/three/index"
-import { getInternalLayoutDetail,planDetail } from '@/apis/project'
+import { getInternalLayoutDetail,planDetailInfo,planList ,createPlan} from '@/apis/project'
 import {useRender} from "./composables/use-render"
+import {plan} from "./composables/plan1.ts"
+// import {plan} from "./composables/plan2"
+
 const three = ref()
 const { ProcessThree } = useRender()
 let processThree: InstanceType<typeof ProcessThree> | null = null
@@ -26,7 +29,8 @@ const schemeList = ref<any[]>([])
 const currentAcviteScheme = ref('')
 
 const tapScheme = (item) => {
-    planDetail({ planId: currentAcviteScheme.value }).then(async (res) => {
+  currentAcviteScheme.value  = item.id
+    planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         const { data: { layouts } } = res
         loading.value = true
 
@@ -39,15 +43,24 @@ const tapScheme = (item) => {
 // 获取详情
 async function fetchDetail() {
   try {
-    const { data } = await getInternalLayoutDetail({
-      projectId: projectId.value
+    const { data } = await planList({
+      projectId: projectId.value,
+      type:3
     })
-    schemeList.value = data.plans || []
+    schemeList.value = data || []
     if (schemeList.value.length) {
       currentAcviteScheme.value = schemeList.value[0].id
     }
+    // createPlan({
+    //   projectId:projectId.value,
+    //   type:3,
+    //   name:"方案二",
+    //   layouts:JSON.stringify(plan)
+    // })
+
+
     // console.log('获取内部布局详情', data)
-     planDetail({ planId: currentAcviteScheme.value }).then(async (res) => {
+     planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         const { data: { layouts } } = res
         loading.value = true
        await processThree!.handleOriginModel(layouts)

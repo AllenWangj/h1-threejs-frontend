@@ -5,10 +5,23 @@
       <div ref="threeContainer" class="three-container"></div>
       <div class="toolbar-container">
         <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep1Animation">步骤1</el-button>
-        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep2Animation">步骤2</el-button>
-        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep3Animation">步骤3</el-button>
-        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep4Animation">步骤4</el-button>
-        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep5Animation">步骤5</el-button>
+        <!-- <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep2Animation">步骤2</el-button> -->
+         <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStepNew2Animation">步骤2</el-button> 
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep2Animation">步骤3</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStepNew21Animation">步骤4</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStepNew22Animation">步骤5</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep3Animation">步骤6</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep41Animation">步骤7</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep42Animation">步骤8</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep43Animation">步骤9</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep44Animation">步骤10</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep51Animation">步骤11</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep52Animation">步骤12</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep53Animation">步骤13</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep54Animation">步骤14</el-button>
+        <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep55Animation">步骤15</el-button>
+        <!-- <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep4Animation">步骤4</el-button> -->
+        <!-- <el-button :disabled="btnLoading" class="w-[120px]" type="primary" @click="playStep5Animation">步骤5</el-button> -->
       </div>
     </div>
   </div>
@@ -237,8 +250,8 @@ async function playStep2Animation() {
     '次梁',
     '密封钢板',
     '地板',
-    '柱',
-    '角件',
+    // '柱',
+    // '角件',
     '梁',
     '地板托架（顶）',
     '次梁（顶）',
@@ -257,17 +270,110 @@ async function playStep2Animation() {
   await animateObjects(['底柱'], 0)
   // 执行当前步骤的动画
   await animateObjects(['地板托架'])
+  // await animateObjects(['次梁'])
+  // await animateObjects(['密封钢板', '地板'])
+  btnLoading.value = false
+}
+async function playStepNew21Animation() {
+  btnLoading.value = true
+  hiddenModel([
+    // '地板托架',
+    '次梁',
+    '密封钢板',
+    '地板',
+    // '柱',
+    // '角件',
+    '梁',
+    '地板托架（顶）',
+    '次梁（顶）',
+    '密封钢板（顶）',
+    '吊顶板',
+    '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(['底柱'], 0)
+  // 执行当前步骤的动画
+  await animateObjects(['地板托架'],0)
   await animateObjects(['次梁'])
+  // await animateObjects(['密封钢板', '地板'])
+  btnLoading.value = false
+}
+async function playStepNew22Animation() {
+  btnLoading.value = true
+  hiddenModel([
+    // '地板托架',
+    // '次梁',
+    '密封钢板',
+    '地板',
+    // '柱',
+    // '角件',
+    '梁',
+    '地板托架（顶）',
+    '次梁（顶）',
+    '密封钢板（顶）',
+    '吊顶板',
+    '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(['底柱'], 0)
+  // 执行当前步骤的动画
+  await animateObjects(['地板托架'],0)
+  await animateObjects(['次梁'],0)
   await animateObjects(['密封钢板', '地板'])
+  btnLoading.value = false
+}
+
+
+async function playStepNew2Animation() {
+  btnLoading.value = true
+  hiddenModel([
+    // '柱',
+    // '角件',
+    '梁',
+    '地板托架（顶）',
+    '次梁（顶）',
+    '密封钢板（顶）',
+    '吊顶板',
+    '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // 需要先显示上一步的部件以免未执行第上一步
+  // await animateObjects(['底柱', '地板托架', '次梁', '密封钢板', '地板'], 0)
+  // // 执行当前步骤的动画
+   await animateObjects(['底柱'], 0)
+    await animateObjects(['角件'])
+   await animateObjects(['柱'])
+
+  // await animateObjects(['梁'])
   btnLoading.value = false
 }
 
 async function playStep3Animation() {
   btnLoading.value = true
   hiddenModel([
-    '柱',
-    '角件',
-    '梁',
+    // '柱',
+    // '角件',
+    // '梁',
     '地板托架（顶）',
     '次梁（顶）',
     '密封钢板（顶）',
@@ -284,13 +390,13 @@ async function playStep3Animation() {
   // 需要先显示上一步的部件以免未执行第上一步
   await animateObjects(['底柱', '地板托架', '次梁', '密封钢板', '地板'], 0)
   // 执行当前步骤的动画
-  await animateObjects(['柱'])
-  await animateObjects(['角件'])
+  // await animateObjects(['柱'])
+  // await animateObjects(['角件'])
   await animateObjects(['梁'])
   btnLoading.value = false
 }
 
-async function playStep4Animation() {
+async function playStep41Animation() {
   btnLoading.value = true
   hiddenModel([
     '地板托架（顶）',
@@ -310,12 +416,271 @@ async function playStep4Animation() {
   await animateObjects(['底柱', '地板托架', '次梁', '密封钢板', '地板', '柱', '角件', '梁'], 0)
   // 执行当前步骤的动画
   await animateObjects(['地板托架（顶）'])
+  // await animateObjects(['次梁（顶）'])
+  // await animateObjects(['密封钢板（顶）', '吊顶板', '地板(顶）'])
+  // await animateObjects(['屋架'])
+  btnLoading.value = false
+}
+
+async function playStep42Animation() {
+  btnLoading.value = true
+  hiddenModel([
+    // '地板托架（顶）',
+    '次梁（顶）',
+    '密封钢板（顶）',
+    '吊顶板',
+    '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(['底柱', '地板托架', '次梁', '密封钢板', '地板', '柱', '角件', '梁'], 0)
+  // 执行当前步骤的动画
+  await animateObjects(['地板托架（顶）'],0)
   await animateObjects(['次梁（顶）'])
+  // await animateObjects(['密封钢板（顶）', '吊顶板', '地板(顶）'])
+  // await animateObjects(['屋架'])
+  btnLoading.value = false
+}
+async function playStep43Animation() {
+  btnLoading.value = true
+  hiddenModel([
+    // '地板托架（顶）',
+    // '次梁（顶）',
+    // '密封钢板（顶）',
+    // '吊顶板',
+    // '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(['底柱', '地板托架', '次梁', '密封钢板', '地板', '柱', '角件', '梁'], 0)
+  // 执行当前步骤的动画
+  await animateObjects(['地板托架（顶）'],0)
+  await animateObjects(['次梁（顶）'],0)
   await animateObjects(['密封钢板（顶）', '吊顶板', '地板(顶）'])
+  // await animateObjects(['屋架'])
+  btnLoading.value = false
+}
+async function playStep44Animation() {
+  btnLoading.value = true
+  hiddenModel([
+    // '地板托架（顶）',
+    // '次梁（顶）',
+    // '密封钢板（顶）',
+    // '吊顶板',
+    // '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(['底柱', '地板托架', '次梁', '密封钢板', '地板', '柱', '角件', '梁'], 0)
+  // 执行当前步骤的动画
+  await animateObjects(['地板托架（顶）'],0)
+  await animateObjects(['次梁（顶）'],0)
+  await animateObjects(['密封钢板（顶）', '吊顶板', '地板(顶）'],0)
   await animateObjects(['屋架'])
   btnLoading.value = false
 }
 
+
+async function playStep45Animation() {
+  btnLoading.value = true
+  hiddenModel([
+    '地板托架（顶）',
+    '次梁（顶）',
+    '密封钢板（顶）',
+    '吊顶板',
+    '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(['底柱', '地板托架', '次梁', '密封钢板', '地板', '柱', '角件', '梁'], 0)
+  // 执行当前步骤的动画
+  await animateObjects(['地板托架（顶）'],0)
+  await animateObjects(['次梁（顶）'],0)
+  await animateObjects(['密封钢板（顶）', '吊顶板', '地板(顶）'],0)
+  await animateObjects(['屋架'])
+  btnLoading.value = false
+}
+
+
+async function playStep51Animation() {
+  btnLoading.value = true
+  hiddenModel(['内装饰墙板', '门窗', '外墙板檩条', '外墙面板', '柱装饰板', '屋面板'])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(
+    [
+      '屋架',
+      '底柱',
+      '地板托架',
+      '次梁',
+      '密封钢板',
+      '地板',
+      '柱',
+      '角件',
+      '梁',
+      '地板托架（顶）',
+      '次梁（顶）',
+      '密封钢板（顶）',
+      '吊顶板',
+      '地板(顶）'
+    ],
+    0
+  )
+  // 执行当前步骤的动画
+  await animateObjects(['内装饰墙板', '门窗'])
+  // await animateObjects(['外墙板檩条'])
+  // await animateObjects(['外墙面板'])
+  // await animateObjects(['柱装饰板'])
+  // await animateObjects(['屋面板'])
+  btnLoading.value = false
+}
+async function playStep52Animation() {
+  btnLoading.value = true
+  hiddenModel([ '外墙板檩条', '外墙面板', '柱装饰板', '屋面板'])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(
+    [
+      '屋架',
+      '底柱',
+      '地板托架',
+      '次梁',
+      '密封钢板',
+      '地板',
+      '柱',
+      '角件',
+      '梁',
+      '地板托架（顶）',
+      '次梁（顶）',
+      '密封钢板（顶）',
+      '吊顶板',
+      '地板(顶）'
+    ],
+    0
+  )
+  // 执行当前步骤的动画
+  await animateObjects(['内装饰墙板', '门窗'],0)
+  await animateObjects(['外墙板檩条'])
+  // await animateObjects(['外墙面板'])
+  // await animateObjects(['柱装饰板'])
+  // await animateObjects(['屋面板'])
+  btnLoading.value = false
+}
+async function playStep53Animation() {
+  btnLoading.value = true
+  hiddenModel([  '外墙面板', '柱装饰板', '屋面板'])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(
+    [
+      '屋架',
+      '底柱',
+      '地板托架',
+      '次梁',
+      '密封钢板',
+      '地板',
+      '柱',
+      '角件',
+      '梁',
+      '地板托架（顶）',
+      '次梁（顶）',
+      '密封钢板（顶）',
+      '吊顶板',
+      '地板(顶）'
+    ],
+    0
+  )
+  // 执行当前步骤的动画
+  await animateObjects(['内装饰墙板', '门窗'],0)
+  await animateObjects(['外墙板檩条'],0)
+  await animateObjects(['外墙面板'])
+  // await animateObjects(['柱装饰板'])
+  // await animateObjects(['屋面板'])
+  btnLoading.value = false
+}
+async function playStep54Animation() {
+  btnLoading.value = true
+  hiddenModel([  '柱装饰板', '屋面板'])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(
+    [
+      '屋架',
+      '底柱',
+      '地板托架',
+      '次梁',
+      '密封钢板',
+      '地板',
+      '柱',
+      '角件',
+      '梁',
+      '地板托架（顶）',
+      '次梁（顶）',
+      '密封钢板（顶）',
+      '吊顶板',
+      '地板(顶）'
+    ],
+    0
+  )
+  // 执行当前步骤的动画
+  await animateObjects(['内装饰墙板', '门窗'],0)
+  await animateObjects(['外墙板檩条'],0)
+  await animateObjects(['外墙面板'],0)
+  await animateObjects(['柱装饰板'])
+  // await animateObjects(['屋面板'])
+  btnLoading.value = false
+}
+async function playStep55Animation() {
+  btnLoading.value = true
+  hiddenModel([  '屋面板'])
+  // 需要先显示上一步的部件以免未执行第上一步
+  await animateObjects(
+    [
+      '屋架',
+      '底柱',
+      '地板托架',
+      '次梁',
+      '密封钢板',
+      '地板',
+      '柱',
+      '角件',
+      '梁',
+      '地板托架（顶）',
+      '次梁（顶）',
+      '密封钢板（顶）',
+      '吊顶板',
+      '地板(顶）'
+    ],
+    0
+  )
+  // 执行当前步骤的动画
+  await animateObjects(['内装饰墙板', '门窗'],0)
+  await animateObjects(['外墙板檩条'],0)
+  await animateObjects(['外墙面板'],0)
+  await animateObjects(['柱装饰板'],0)
+  await animateObjects(['屋面板'])
+  btnLoading.value = false
+}
 async function playStep5Animation() {
   btnLoading.value = true
   hiddenModel(['内装饰墙板', '门窗', '外墙板檩条', '外墙面板', '柱装饰板', '屋面板'])

@@ -11,7 +11,7 @@
 import { ref } from "vue"
 import SchemesList from '@/components/schemes-list/index.vue'
 // import FourObject from "~~/threejs/four/index"
-import { getStructuralDesignDetail, planDetail } from '@/apis/project'
+import { planList, planDetailInfo } from '@/apis/project'
 import { useRender } from "./composables/use-render"
 const loading = ref(true)
 const four = ref()
@@ -28,7 +28,7 @@ const tapScheme = (item) => {
    currentAcviteScheme.value =item.id
   try {
     loading.value = true
-    planDetail({ planId: item.id }).then(async (res:any) => {
+    planDetailInfo({ id: item.id }).then(async (res:any) => {
       const { data: { layouts } } = res
       await processFour!.handleOriginModel(layouts)
       loading.value = false
@@ -43,15 +43,15 @@ const tapScheme = (item) => {
 // 获取详情
 async function fetchDetail() {
   try {
-    const { data } = await getStructuralDesignDetail({
-      projectId: projectId.value
+    const { data } = await planList({
+      projectId: projectId.value,
+      type:4
     })
-    schemeList.value = data.plans || []
+    schemeList.value = data || []
     if (schemeList.value.length) {
       currentAcviteScheme.value = schemeList.value[0].id
       loading.value = true
-
-      planDetail({ planId: currentAcviteScheme.value }).then(async (res) => {
+      planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         const { data: { layouts } } = res
         loading.value = true
         await processFour!.handleOriginModel(layouts)

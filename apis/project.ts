@@ -142,3 +142,15 @@ export const generateAssemblePlan = (params) => useBaseFetch().post(`${baseUrl}a
 
 
 export const planDetail = (params) => useBaseFetch().get(`${baseUrl}record/v1/plan/detail`, params)
+export const removePlan = (data) => useBaseFetch().post(`${baseUrl}/plan/v1/remove`, data)
+export const createPlan = (data) => useBaseFetch().post(`${baseUrl}/plan/v1/create`, data)
+export const updatePlan = (data) => useBaseFetch().post(`${baseUrl}/plan/v1/update`, data)
+
+
+/**
+ * 方案
+*/
+export const planList = (params) => useBaseFetch().get(`${baseUrl}plan/v1/list`, params)
+export const planDetailInfo = (params) => useBaseFetch().get(`${baseUrl}plan/v1/detail`, params)
+
+// /project/plan/v1/detail
