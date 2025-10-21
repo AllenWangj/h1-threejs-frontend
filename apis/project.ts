@@ -43,7 +43,7 @@ export const getProjectSiteDetail = (params) => useBaseFetch().get(`${baseUrl}si
 /**
  * 工具1（选址决策）生产方案
 */
-export const generateProjectSitePlan = (params) => useBaseFetch().post(`${baseUrl}site/v1/generate-plans`, params)
+export const generateProjectSitePlan = (params) => useBaseFetch().post(`${baseUrl}site/v1/plan/generate`, params)
 /**
  * 获取工具1（选址决策）中的规划布局数据方案详情
 */
@@ -61,7 +61,7 @@ export const getPlanLayout = (params) => useBaseFetch().get(`${baseUrl}record/v1
 /**
  * 工具2（规划布局）方案生成
 */
-export const generatePlanLayoutPlan = (params) => useBaseFetch().post(`${baseUrl}plan-layout/v1/generate-plans`, params)
+export const generatePlanLayoutPlan = (params) => useBaseFetch().post(`${baseUrl}plan/v1/generate`, params)
 
 /**
  * 更新工具3（内部布局）的数据
@@ -76,7 +76,7 @@ export const getInternalLayoutDetail = (params) => useBaseFetch().get(`${baseUrl
 /**
  * 工具3（内部布局）方案生成
 */
-export const generateInternalLayoutPlan = (params) => useBaseFetch().post(`${baseUrl}internal-layout/v1/generate-plans`, params)
+export const generateInternalLayoutPlan = (params) => useBaseFetch().post(`${baseUrl}plan/v1/generate`, params)
 
 /**
  * 更新工具4（结构设计）的数据
@@ -91,7 +91,7 @@ export const getStructuralDesignDetail = (params) => useBaseFetch().get(`${baseU
 /**
  * 工具4（结构设计）方案生成
  */
-export const generateStructuralDesignPlan = (params) => useBaseFetch().post(`${baseUrl}structural-design/v1/generate-plans`, params)
+export const generateStructuralDesignPlan = (params) => useBaseFetch().post(`${baseUrl}plan/v1/generate`, params)
 
 /**
  * 更新工具5（部件生产）的生产数据
@@ -108,7 +108,7 @@ export const getPartsProductionDetail = (params) => useBaseFetch().get(`${baseUr
 /**
  * 工具5（部件生产）方案生成
 */
-export const generatePartsProductionPlan = (params) => useBaseFetch().post(`${baseUrl}parts-production/v1/generate-plans`, params)
+export const generatePartsProductionPlan = (params) => useBaseFetch().post(`${baseUrl}plan/v1/generate`, params)
 
 
 
@@ -126,7 +126,7 @@ export const getPackingDetail = (params) => useBaseFetch().get(`${baseUrl}packin
 /**
  * 工具6（运输保障）方案生成
 */
-export const generatePackingPlan = (params) => useBaseFetch().post(`${baseUrl}packing/v1/generate-plans`, params)
+export const generatePackingPlan = (params) => useBaseFetch().post(`${baseUrl}plan/v1/generate`, params)
 
 
 
@@ -142,7 +142,7 @@ export const getAssembleDetail = (params) => useBaseFetch().get(`${baseUrl}assem
 /**
  * 工具7（现场组装）方案生成
 */
-export const generateAssemblePlan = (params) => useBaseFetch().post(`${baseUrl}assemble/v1/generate-plans`, params)
+export const generateAssemblePlan = (params) => useBaseFetch().post(`${baseUrl}plan/v1/generate`, params)
 
 
 
