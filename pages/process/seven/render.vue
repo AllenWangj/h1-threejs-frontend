@@ -135,7 +135,7 @@ function initThree() {
   const axesHelper = new THREE.AxesHelper(350)
 
   // 添加到场景
-  scene.add(axesHelper)
+  // scene.add(axesHelper)
 
   controls = new OrbitControls(camera, renderer.domElement)
   controls.enableDamping = true
