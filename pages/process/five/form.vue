@@ -198,7 +198,7 @@ const handleGenerateSolution = async () => {
     params.custom = params.custom.join(',')
     await generatePartsProductionPlan({
       projectId: projectId.value,
-      params
+      type:5
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'

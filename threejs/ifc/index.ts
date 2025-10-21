@@ -44,6 +44,7 @@ class LibaryModal extends Three {
             this.wrapper.add(clone)
             const item = position_and_rotation[index]
             const [x, y, z] = item.rotation
+
             scene.rotation.set
               (
                 parseFloat(x) * Math.PI / 180,
@@ -51,8 +52,6 @@ class LibaryModal extends Three {
                 parseFloat(z) * Math.PI / 180,
               )
             scene.position.set(item.position[0], item.position[1], item.position[2])
-
-
           }
 
          this.number+=component_count

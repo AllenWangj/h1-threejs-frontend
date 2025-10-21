@@ -233,7 +233,7 @@ const initProjectForm = ref({})
 const handleReset = () => {
   projectForm.value = JSON.parse(JSON.stringify(initProjectForm.value))
 }
-
+let params = []
 
 
 const handleGenerateSolution = async () => {

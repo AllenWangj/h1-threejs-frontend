@@ -292,7 +292,7 @@ const handleGenerateSolution = async () => {
     params.custom = params.custom.join(',')
     await generateInternalLayoutPlan({
       projectId: projectId.value,
-      params
+      type:3
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -342,6 +342,9 @@ moduleLibraryList.value = dictMap.value.get(ModuleLibrary)
     const { data: {
       params
     } } = res
+      if(!params || params.length ==0){
+      return 
+    }
      const functionalFieldRes = params.find(ele => ele.field === functionalField)
     if (functionalFieldRes) {
       functional.value = true

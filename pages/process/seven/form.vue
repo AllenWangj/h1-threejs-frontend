@@ -289,7 +289,7 @@ const handleGenerateSolution = async () => {
     params.custom = params.custom.join(',')
     await generateAssemblePlan({
       projectId: projectId.value,
-      params
+      type:7
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -359,6 +359,10 @@ machineryList.value = dictMap.value.get(Machinery)
     const { data: {
       params
     } } = res
+
+    if(!params || params.length ==0){
+      return 
+    }
    const overallSizeFieldRes = params.find(ele => ele.field === overallSizeField)
    if (overallSizeFieldRes) {
       overallSize.value = true

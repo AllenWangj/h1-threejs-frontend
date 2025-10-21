@@ -299,7 +299,7 @@ const handleGenerateSolution = async () => {
     params.custom = params.custom.join(',')
     await generatePlanLayoutPlan({
       projectId: projectId.value,
-      params
+      type:2
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -350,6 +350,9 @@ onMounted(async () => {
     const { data: {
       params
     } } = res
+      if(!params || params.length ==0){
+      return 
+    }
     const climateRegionRes = params.find(ele => ele.field === climateRegionField)
     if (climateRegionRes) {
       climateRegion.value = true
