@@ -2,17 +2,23 @@
   <div class="flex flex-shrink-0 w-[100%] h-[100%] relative">
     <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme">
       <template #opt="{ record }">
-        <el-button @click.stop="handleDeleteItem(record)" style="margin-left: 126px;" type="primary" link>删除</el-button>
+        <img
+          class="ml-[15px] w-[20px] h-[20px] cursor-pointer"
+          src="../../../assets/images/icon-plot-delete.svg"
+          alt=""
+          title="删除"
+          @click.stop="handleDeleteItem(record)"
+        />
       </template>
     </schemes-list>
     <div v-loading="loading" class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div class="plan-and-plan_tree" ref="renderRef"></div>
       <div class="opt">
-        <el-button type="primary" style="width:100px" @click="handllePlanRoatationEvt">移动</el-button>
-        <el-button type="primary" style="width:100px" @click="handllePlanScaleEvt">旋转</el-button>
-        <el-button type="primary" style="width:100px" @click="handllePlanRestEvt">复位</el-button>
-        <el-button type="primary" style="width:100px" @click="handlleSaveEvt">保存</el-button>
-        <el-button type="primary" style="width:100px" @click="handlleOtherSaveEvt">另保存</el-button>
+        <el-button type="primary" style="width: 100px" @click="handllePlanRoatationEvt">移动</el-button>
+        <el-button type="primary" style="width: 100px" @click="handllePlanScaleEvt">旋转</el-button>
+        <el-button type="primary" style="width: 100px" @click="handllePlanRestEvt">复位</el-button>
+        <el-button type="primary" style="width: 100px" @click="handlleSaveEvt">保存</el-button>
+        <el-button type="primary" style="width: 100px" @click="handlleOtherSaveEvt">另保存</el-button>
       </div>
     </div>
   </div>
@@ -36,11 +42,12 @@ const loading = ref(false)
 const tapScheme = (item) => {
   currentAcviteScheme.value = item.id
   planDetailInfo({ id: item.id }).then(async (res) => {
-    const { data: { layouts } } = res
+    const {
+      data: { layouts }
+    } = res
     loading.value = true
     await renderPlanLayout!.loadSceneModels(layouts)
     loading.value = false
-
   })
 }
 function handllePlanRoatationEvt() {
@@ -48,25 +55,25 @@ function handllePlanRoatationEvt() {
 }
 function handllePlanScaleEvt() {
   renderPlanLayout!.setRotateMode()
-
 }
 function handllePlanRestEvt() {
   renderPlanLayout!.resetObjectTransform()
-
 }
 
 // 获取详情
 async function fetchDetail(isLoadFirst = true) {
   try {
-    const {data} = await planList({
+    const { data } = await planList({
       projectId: projectId.value,
-      type:"2"
+      type: '2'
     })
     schemeList.value = data || []
     if (schemeList.value.length && isLoadFirst) {
       currentAcviteScheme.value = schemeList.value[0].id
       planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
-        const { data: { layouts } } = res
+        const {
+          data: { layouts }
+        } = res
         loading.value = true
         await renderPlanLayout!.loadSceneModels(layouts)
         loading.value = false
@@ -79,12 +86,11 @@ async function fetchDetail(isLoadFirst = true) {
   }
 }
 
-
 onMounted(() => {
   if (route.query.projectId) {
     projectId.value = route.query.projectId as string
   }
-  fetchDetail();
+  fetchDetail()
   renderPlanLayout = new RenderPlanLayout(renderRef.value)
 })
 function handlleSaveEvt() {
@@ -93,7 +99,7 @@ function handlleSaveEvt() {
     id: currentAcviteScheme.value,
     layouts: JSON.stringify(position)
   }
-  updatePlan(data).then(res => {
+  updatePlan(data).then((res) => {
     ElMessage({ message: '保存成功', type: 'success' })
   })
 }
@@ -101,20 +107,20 @@ function handlleOtherSaveEvt() {
   ElMessageBox.prompt('请输入方案名称', '方案确认', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    inputErrorMessage: '',
+    inputErrorMessage: ''
   })
     .then(({ value }) => {
-      console.log("value",value)
+      console.log('value', value)
       const position = renderPlanLayout!.handlleSaveEvt()
-      const result = schemeList.value.find(ele => (ele.id === currentAcviteScheme.value))!
+      const result = schemeList.value.find((ele) => ele.id === currentAcviteScheme.value)!
       const data = {
         id: result.id,
-        type: "2",
-        projectId:projectId.value,
+        type: '2',
+        projectId: projectId.value,
         name: value,
         layouts: JSON.stringify(position)
       }
-      createPlan(data).then(res => {
+      createPlan(data).then((res) => {
         ElMessage({ message: '保存成功', type: 'success' })
         fetchDetail(false)
       })
@@ -122,26 +128,26 @@ function handlleOtherSaveEvt() {
     .catch(() => {
       ElMessage({
         type: 'info',
-        message: 'Input canceled',
+        message: 'Input canceled'
       })
     })
 }
 function handleDeleteItem(record: any) {
   ElMessageBox.confirm('确定删除该方案？', {
     confirmButtonText: '确定',
-    cancelButtonText: "取消",
+    cancelButtonText: '取消',
     callback: (action: any) => {
-      removePlan(record).then(res => {
+      removePlan(record).then((res) => {
         ElMessage({
           type: 'info',
-          message: '删除成功',
+          message: '删除成功'
         })
         const result = record.id === currentAcviteScheme.value
         fetchDetail(result)
       })
 
       //fetchDetail
-    },
+    }
   })
 }
 </script>

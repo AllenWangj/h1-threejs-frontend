@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="pageLoading" class="h-full w-full flex flex-col border border-[1px] border-[#adcdf7]">
+  <div v-loading="pageLoading" class="h-full w-full flex flex-col border border-[1px] border-[#adcdf7] overflow-y-auto">
     <div class="flex-shrink-0 flex items-center h-[56px] px-[14px] border-b border-[#e4ecfd]">
       <span class="text-[16px] text-[#333] ml-[8px]">结构设计</span>
     </div>
@@ -155,7 +155,7 @@
           />
         </el-form-item>
       </el-form> -->
-      <div class="flex items-center justify-center mt-[14px]">
+      <div class="flex items-center justify-center mt-[14px] sticky bottom-0 h-[44px]">
         <el-button type="primary" :disabled="saveLoading" plain @click="handleReset">重置</el-button>
         <el-button type="primary" :loading="saveLoading" @click="handleSave">保存</el-button>
         <el-button type="primary" :disabled="saveLoading" @click="handleGenerateSolution">生成方案</el-button>

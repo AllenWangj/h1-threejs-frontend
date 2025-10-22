@@ -6,16 +6,23 @@
       <span class="flex-1"></span>
       <span class="text-[12px] text-[#94a3c0]">
         已生成
-        <span class="text-[#3a83fc]">{{props.list.length}}</span>
+        <span class="text-[#3a83fc]">{{ props.list.length }}</span>
         个方案
       </span>
     </div>
     <div class="schemes-list-wrapper">
-      <div class="scheme-item" v-for="item in props.list" :key="item.id" :class="item.id === current ? 'is-active' : ''"
-        @click="handleTapScheme(item)">
+      <div
+        class="scheme-item"
+        v-for="item in props.list"
+        :key="item.id"
+        :class="item.id === current ? 'is-active' : ''"
+        @click="handleTapScheme(item)"
+      >
         <div class="flex-1 mr-[20px]">
-          <span class="text-[14px] text-[#1e1e1e]">{{ item.name }}</span>
-          <slot name="opt" :record="item"></slot>
+          <div class="flex items-center justify-between">
+            <span class="text-[14px] text-[#1e1e1e]">{{ item.name }}</span>
+            <slot name="opt" :record="item"></slot>
+          </div>
           <div class="flex items-center justify-between mt-[8px]">
             <span class="text-[12px] text-[#8999b8]">评分：{{ Number(item.score) }}分</span>
             <span class="text-[12px] text-[#8999b8]">{{ formatTime(item.updateTime, 'YYYY-MM-DD HH:mm:ss') }}</span>
@@ -28,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-
 const { formatTime } = useUtils()
 
 const emits = defineEmits<{
@@ -36,7 +42,7 @@ const emits = defineEmits<{
 }>()
 
 const props = defineProps<{
-  list: any[],
+  list: any[]
   current: string
 }>()
 
