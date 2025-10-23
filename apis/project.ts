@@ -44,6 +44,9 @@ export const getProjectSiteDetail = (params) => useBaseFetch().get(`${baseUrl}si
  * 工具1（选址决策）生产方案
 */
 export const generateProjectSitePlan = (params) => useBaseFetch().post(`${baseUrl}site/v1/plan/generate`, params)
+// 获取工具1方案列表
+export const getProjectSitePlanList = (params) => useBaseFetch().get(`${baseUrl}site/v1/plan/list`, params)
+
 /**
  * 获取工具1（选址决策）中的规划布局数据方案详情
 */

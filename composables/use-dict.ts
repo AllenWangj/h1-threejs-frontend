@@ -31,5 +31,15 @@ export const useDict = () => {
       }
     } catch (error) {}
   }
-  return { dictMap, getLabel, getDictMap }
+  /**
+   * 获取字典标签
+   * @param key 字典key
+   * @param array 字段数据
+   * @returns 标签label
+  */
+  const getArrayLabel = (key: string, array: any[]): string => {
+    const findItem = array.find((i: any) => i.value === key)
+    return findItem?.label || ''
+  }
+  return { dictMap, getLabel, getDictMap, getArrayLabel }
 }

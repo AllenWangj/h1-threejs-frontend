@@ -54,7 +54,7 @@ declare global {
 import * as THREE from 'three'
 import { fromArrayBuffer } from 'geotiff'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { getProjectSiteDetail, getProjectSitePlanDetail } from '@/apis/project'
+import { getProjectSitePlanList, getProjectSitePlanDetail } from '@/apis/project'
 
 const route = useRoute()
 const projectId = ref('')
@@ -77,11 +77,11 @@ const tapScheme = (item) => {
 // 获取详情
 async function fetchDetail() {
   try {
-    const { data } = await getProjectSiteDetail({
+    const { data } = await getProjectSitePlanList({
       projectId: projectId.value
     })
     console.log('获取部件生产详情', data)
-    schemeList.value = data.plans || []
+    schemeList.value = data || []
     if (schemeList.value.length) {
       currentAcviteScheme.value = schemeList.value[0].id
 
