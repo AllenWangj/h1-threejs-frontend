@@ -482,25 +482,22 @@ async function init() {
     loadingText.value = '加载 DEM 高程数据...'
 
     // 加载 DEM 小片
-    const dem = await loadDEM(gis.value.url ||
+    const dem = await loadDEM(
       'https://support.maxtan.cn/geoserver/h1/wcs?' +
-      'service=WCS&version=2.0.1&request=GetCoverage&coverageId=h1:dem_103651411094409222' +
-      '&format=image/tiff&subset=Long(106,107)&subset=Lat(26,27)&resx=0.001&resy=0.001'
+      'service=WCS&version=2.0.1&request=GetCoverage&coverageId=h1:dem_107252456638910473' +
+      '&format=image/tiff&subset=Long(106.2,106.3)&subset=Lat(26.1,26.2)&resx=0.001&resy=0.001'
     )  // 降采样（减少降采样步长获得更高分辨率）
-    const step = 8 // 大幅增加降采样,减少顶点数量避免 CPU 过载 (原来是 4)
-    const width = Math.floor(dem.width / step)
-    const height = Math.floor(dem.height / step)
 
     // 限制最大网格尺寸,防止 CPU 过载
-    const maxGridSize = 150 // 降低到 150x150 网格
-    if (width > maxGridSize || height > maxGridSize) {
-      console.warn(`网格过大 (${width}x${height}),强制限制`)
-      alert(`为优化性能,自动调整网格尺寸`)
-    }
-
-    const raster = new Float32Array(Math.min(width, maxGridSize) * Math.min(height, maxGridSize))
-    const finalWidth = Math.min(width, maxGridSize)
-    const finalHeight = Math.min(height, maxGridSize)
+    const maxVertices = 150 * 150;
+    const totalVertices = dem.width * dem.height;
+    const step = Math.ceil(Math.sqrt(totalVertices / maxVertices));
+    const width = Math.floor(dem.width / step)
+    const height = Math.floor(dem.height / step)
+    console.log(`DEM 原始尺寸: ${dem.width} x ${dem.height}, 降采样步长: ${step}, 最终尺寸: ${width} x ${height}`);
+    const raster = new Float32Array(Math.min(width, totalVertices) * Math.min(height, totalVertices))
+    const finalWidth = Math.min(width, totalVertices)
+    const finalHeight = Math.min(height, totalVertices)
 
     for (let y = 0; y < finalHeight; y++) {
       for (let x = 0; x < finalWidth; x++) {
@@ -565,7 +562,7 @@ async function init() {
       })
     }
     // 加载离线卫星纹理
-    satelliteTexture = await loadOfflineSatelliteTexture(gis.value.satelliteUrl || 'https://static.maxtan.cn/h1-static/uploads/20251014/486dbfda30c535f25d8404c0.jpg')
+    satelliteTexture = await loadOfflineSatelliteTexture('https://static.maxtan.cn/h1-static/uploads/20251023/90f6842eff314ee4f3c52fc4.jpg')
 
     loadingProgress.value = 80
     loadingText.value = '创建地形模型...'

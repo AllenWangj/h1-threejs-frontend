@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 <style scoped>
 .login {
-  background: url('@/assets/images/login.png');
+  background: url('@/assets/images/login.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
