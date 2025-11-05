@@ -12,9 +12,13 @@
           class="plot-item cursor-pointer flex px-[14px] py-[10px] bg-[#f8f9fd] border border-[#e8e9ef] rounded-[2px] mb-[10px]"
           v-for="(item, index) in plotList" :key="index" :class="{ 'is-active': currentPlot === item.id }"
           @click="handlePlotClick(item)">
-          <div class="flex flex-col flex-1">
-            <span class="text-[14px] text-[#1e1e1e]">{{ item.name }}</span>
-            <span class="text-[12px] text-[#a7aebb] mt-[5px]">
+          <img :src="item.satelliteUrl" alt="" class="w-[80px] h-[100%] object-cover rounded-[4px]" />
+          <div class="flex flex-col flex-1 ml-[10px]">
+            <span class="text-[16px] text-[#1e1e1e] font-black">{{ item.name }}</span>
+            <span class="text-[14px] text-[#666] mt-[6px]]">经度: {{item.minX}} ~ {{ item.maxX }}</span>
+            <span class="text-[14px] text-[#666]">纬度: {{item.minY}} ~ {{ item.maxY }}</span>
+            <span class="text-[14px] text-[#666]">总面积: {{item.area}}平方公里</span>
+            <span class="text-[12px] text-[#a7aebb] mt-[8px]">
               {{ formatTime(item.updateTime, 'YYYY-MM-DD HH:mm:ss') }}
             </span>
           </div>
@@ -274,6 +278,7 @@ function createdUploadFile() {
 
   .plot-item {
     width: calc(25% - 20px);
+    min-width: 360px;
     margin: 0 20px 20px 0;
 
     &:hover {
