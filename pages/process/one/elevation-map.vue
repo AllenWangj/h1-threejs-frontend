@@ -1,5 +1,13 @@
 <template>
     <div ref="container" class="w-full h-full relative">
+        <div style="position: absolute; top: 10px;left: 220px;">
+             <el-button type="primary" @click="handleScenePane(false)">禁止拖动</el-button>
+        <el-button type="primary" @click="handleScenePane(true)">允许拖动</el-button>
+        <el-button type="primary" @click="handleSceneEnable(false)">关闭场景</el-button>
+        <el-button type="primary" @click="handleSceneEnable(true)">开启场景</el-button>
+        <el-button type="primary" @click="handleSceneScale(true)">允许缩放</el-button>
+        <el-button type="primary"  @click="handleSceneScale(false)">禁止缩放</el-button>
+        </div>
         <!-- 加载进度提示 -->
         <div v-if="loading" class="loading-overlay">
             <div class="loading-content">
@@ -707,6 +715,18 @@ onUnmounted(() => {
     }
     if (scene) scene.clear()
 })
+function handleScenePane(state:boolean) {
+  controls!.enablePan = state
+}
+function handleSceneEnable(state:boolean) {
+  // processFour!.handleSceneEnable(state)
+  controls!.enabled = state
+
+}
+function handleSceneScale(state:boolean) {
+  controls!.enableZoom =state
+
+}
 </script>
 
 <style scoped lang="less">
