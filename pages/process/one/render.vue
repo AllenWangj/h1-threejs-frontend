@@ -19,6 +19,7 @@
         <!-- 下载方案 -->
         <el-button @click="downloadSolution" type="primary">导出方案</el-button>
       </div>
+      
     </div>
   </div>
 </template>
@@ -391,11 +392,12 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .terrain-toggle-btn {
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 9999;
 }
+
 </style>

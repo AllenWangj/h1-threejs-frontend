@@ -147,10 +147,11 @@ function handleSceneScale(state:boolean) {
 
 .plan-detail {
   position: absolute;
-  // top: 380px;
-  right: 20px;
+  // top: 30px;
+  left: 20px;
   bottom: 20px;
   width: 380px;
+  max-height: calc(100% - 70px);
   overflow-y: auto;
   display: flex;
   flex-direction: column;

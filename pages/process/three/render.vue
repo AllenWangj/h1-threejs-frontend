@@ -151,7 +151,7 @@ function handleSceneScale(state:boolean) {
 .plan-detail {
   position: absolute;
   // top: 380px;
-  right: 20px;
+  left: 20px;
   bottom: 20px;
   width: 380px;
   overflow-y: auto;

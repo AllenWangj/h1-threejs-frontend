@@ -166,7 +166,7 @@ function initThree() {
   const width = threeContainer.value.clientWidth
   const height = threeContainer.value.clientHeight
   camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 2000)
-  camera.position.set(100, 100, 300)
+  camera.position.set(150, 150, 450)
   renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true,
@@ -899,8 +899,8 @@ function handleSceneScale(state:boolean) {
 }
 .toolbar-content {
   position: absolute;
-  top: 380px;
-  right: 20px;
+  bottom: 20px;
+  left: 20px;
   width: 380px;
   overflow-y: auto;
   display: flex;

@@ -40,6 +40,19 @@
                 </div>
             </div>
         </div>
+           <div class="plan-detail">
+ <el-descriptions title="位置信息" :column="2" >
+          <el-descriptions-item label="栅格坐标" :span="1">({{ areaRef.centerX }},{{ areaRef.centerY }})</el-descriptions-item>
+          <el-descriptions-item label="经纬度" :span="1">({{ areaRef.lon.toFixed(6) }},{{ areaRef.lat.toFixed(6) }})</el-descriptions-item>
+          <el-descriptions-item label="海拔" :span="1">{{ areaRef.elevation }}</el-descriptions-item>
+          <el-descriptions-item label="坡度" :span="1">{{ areaRef.slope.toFixed(3) }}</el-descriptions-item>
+          <el-descriptions-item label="方差" :span="1">{{ areaRef.variance.toFixed(3) }}</el-descriptions-item>
+          <el-descriptions-item label="最大坡度" :span="1">30</el-descriptions-item>
+          <el-descriptions-item label="最大方差" :span="1">13.75m</el-descriptions-item>
+          <el-descriptions-item label="平缓区域" :span="1">22个</el-descriptions-item>
+       
+        </el-descriptions>
+         </div>
     </div>
 </template>
 
@@ -53,7 +66,20 @@ const props = defineProps<{
     demUrl: string
     satelliteUrl: string
 }>()
+const areaRef = ref<any>({
+    centerX:"",
+    centerY:"",
+    lon:0,
+    lat:0,
+    worldPos:{
+        x:0,
+        y:0,
 
+    },
+    elevation:0,
+    slope:0,
+    variance:0
+})
 const container = ref<HTMLElement | null>(null)
 const loading = ref(true)
 const loadingText = ref('正在初始化...')
@@ -548,7 +574,7 @@ async function init() {
             坡度: `${area.slope.toFixed(3)}m`,
             方差: `${area.variance.toFixed(3)}m`
         })
-        
+            areaRef.value = area
         const marker = createAreaMarker(areaData)
         marker.position.set(area.worldPos.x, area.worldPos.y + 0.05, area.worldPos.z)
         marker.userData = { clickable: true, areaData }
@@ -683,7 +709,8 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
+
 .loading-overlay {
     position: absolute;
     top: 0;
@@ -826,5 +853,30 @@ onUnmounted(() => {
     font-size: 14px;
     color: #333;
     font-weight: 500;
+}
+.plan-detail {
+  position: absolute;
+  // top: 30px;
+  left: 20px;
+  bottom: 20px;
+  width: 450px;
+  max-height: calc(100% - 70px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  & ::v-deep {
+    .el-descriptions__body {
+      background: transparent !important;
+    }
+    .el-descriptions__label,
+    .el-descriptions__content,.el-descriptions__title {
+      color: #fff;
+    }
+  }
 }
 </style>

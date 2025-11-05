@@ -113,6 +113,22 @@
         {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
       </el-button>
     </div>
+    <div class="plan-detail">
+          <el-descriptions title="集装箱信息" :column="2" >
+          <el-descriptions-item label="8x8梁" :span="1">100根</el-descriptions-item>
+          <el-descriptions-item label="8x12梁" :span="1">20根</el-descriptions-item>
+          <el-descriptions-item label="连接器" :span="1">100个</el-descriptions-item>
+          <el-descriptions-item label="门" :span="1">3扇</el-descriptions-item>
+          <el-descriptions-item label="窗" :span="1">3个</el-descriptions-item>
+          <el-descriptions-item label="板材" :span="1">20个</el-descriptions-item>
+          <el-descriptions-item label="钢材" :span="1">100根</el-descriptions-item>
+          <el-descriptions-item label="柱" :span="1">120根</el-descriptions-item>
+          <el-descriptions-item label="集装箱长度" :span="1">4米</el-descriptions-item>
+          <el-descriptions-item label="集装箱宽度" :span="1">2米</el-descriptions-item>
+          <el-descriptions-item label="集装箱高度" :span="1">3米</el-descriptions-item>
+
+        </el-descriptions>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -132,14 +148,13 @@ const props = defineProps<{
 const fullscreenContainer = ref<HTMLElement | null>(null)
 useFullScreenResize(fullscreenContainer, onResize)
 
-
+const currentPlan =ref<any>({})
 const route = useRoute()
 const projectId = ref('')
 const schemeList = ref<any[]>([])
 // 当前激活得方案id
 // const currentAcviteScheme = ref('')
 watch(() => props.planId, (newValue) => {
-  debugger
   planDetail({ id: newValue,type:6 }).then(res => {
     const { data: { layouts } } = res
     handleLoadInitModel(layouts)
@@ -1090,6 +1105,30 @@ function handleSceneScale(state:boolean) {
   .el-button {
     margin: 0;
     margin-bottom: 10px;
+  }
+}
+.plan-detail {
+  position: absolute;
+  // top: 30px;
+  left: 20px;
+  bottom: 20px;
+  width: 380px;
+  max-height: calc(100% - 70px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+    & ::v-deep {
+    .el-descriptions__body {
+      background: transparent !important;
+    }
+    .el-descriptions__label,
+    .el-descriptions__content,.el-descriptions__title {
+      color: #fff;
+    }
   }
 }
 </style>

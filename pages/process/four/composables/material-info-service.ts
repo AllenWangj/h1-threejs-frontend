@@ -114,12 +114,6 @@ export const materialInfoService = (): any[] => {
 
     return [
 
- 
-    {
-        name: '墙',
-        value: 5,
-        infoList: wallData
-    },
     {
         name: '地板',
         value: 6,
@@ -131,11 +125,7 @@ export const materialInfoService = (): any[] => {
         value: 8,
         infoList: columnData
     },
-    {
-        name: '梁',
-        value: 9,
-        infoList: beamData
-    },
+  
     {
         name: '连接器',
         value: 10,
