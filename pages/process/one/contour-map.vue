@@ -64,6 +64,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 
 const props = defineProps<{
   demUrl: string
+  demBounds: any
   analyzedAreas?: Array<{
     centerX: number
     centerY: number
@@ -98,12 +99,14 @@ const TERRAIN_SIZE = 8
 let demMinHeight = 0
 let demMaxHeight = 0
 
-const DEM_BOUNDS = {
-  lonMin: 106.2,
-  lonMax: 106.3,
-  latMin: 26.1,
-  latMax: 26.2
-}
+const DEM_BOUNDS = computed(() => {
+  return props.demBounds || {
+    lonMin: 106.2,
+    lonMax: 106.3,
+    latMin: 26.1,
+    latMax: 26.2
+  }
+})
 
 // 选址区域数据
 const areasData = [
@@ -300,7 +303,7 @@ function addAreaMarkers(raster: Float32Array, width: number, height: number, min
 }
 
 async function init() {
-  if (!container.value) return
+  if (!container.value || !props.demUrl) return
 
   try {
     loading.value = true
@@ -492,7 +495,15 @@ function onWindowResize() {
   renderer.setSize(container.value.clientWidth, container.value.clientHeight)
   labelRenderer.setSize(container.value.clientWidth, container.value.clientHeight)
 }
-
+watch(
+  () => props.demUrl,
+  (newUrl) => {
+    if (newUrl && props.analyzedAreas) {
+      init()
+    }
+  },
+  { immediate: true }
+)
 onMounted(() => {
   init()
 })
