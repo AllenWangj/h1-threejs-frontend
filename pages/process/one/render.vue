@@ -6,11 +6,11 @@
       <elevation-map
         v-if="terrainMode === 'elevation'"
         :dem-url="demUrl"
+        :demBounds="DEM_BOUNDS"
         :satellite-url="satelliteUrl"
         :analyzed-areas="analyzedAreas"
       />
-      <contour-map v-else-if="terrainMode === 'contour'" :dem-url="demUrl" :analyzed-areas="analyzedAreas" />
-
+      <contour-map v-else-if="terrainMode === 'contour'" :dem-url="demUrl" :demBounds="DEM_BOUNDS" :analyzed-areas="analyzedAreas" />
       <!-- 新增切换按钮 -->
       <div class="terrain-toggle-btn">
         <el-button @click="toggleTerrainMode" type="primary">
@@ -47,23 +47,20 @@ const terrainMode = ref('elevation')
 // 分析结果数据
 const analyzedAreas = ref<any[]>([])
 const isAnalyzing = ref(false)
-const defaultDemUrl =
-  'https://support.maxtan.cn/geoserver/h1/wcs?service=WCS&version=2.0.1&request=GetCoverage&coverageId=h1:dem_107252456638910473&format=image/tiff&subset=Long(106.2,106.3)&subset=Lat(26.1,26.2)&resx=0.001&resy=0.001'
-const defaultSatelliteUrl = 'https://static.maxtan.cn/h1-static/uploads/20251023/90f6842eff314ee4f3c52fc4.jpg'
 const demUrl = computed(() => {
-  return gis.value?.url || defaultDemUrl
+  return gis.value?.url || ''
 })
 
 const satelliteUrl = computed(() => {
-  return gis.value?.satelliteUrl || defaultSatelliteUrl
+  return gis.value?.satelliteUrl || ''
 })
 
-const DEM_BOUNDS = {
+const DEM_BOUNDS = ref({
   lonMin: 106.2,
   lonMax: 106.3,
   latMin: 26.1,
   latMax: 26.2
-}
+})
 
 const TERRAIN_SIZE = 8
 
@@ -109,8 +106,8 @@ function geoToWorld(
   min: number,
   max: number
 ) {
-  const x = (lon - DEM_BOUNDS.lonMin) / (DEM_BOUNDS.lonMax - DEM_BOUNDS.lonMin)
-  const y = (lat - DEM_BOUNDS.latMin) / (DEM_BOUNDS.latMax - DEM_BOUNDS.latMin)
+  const x = (lon - DEM_BOUNDS.value.lonMin) / (DEM_BOUNDS.value.lonMax - DEM_BOUNDS.value.lonMin)
+  const y = (lat - DEM_BOUNDS.value.latMin) / (DEM_BOUNDS.value.latMax - DEM_BOUNDS.value.latMin)
 
   const worldX = (x - 0.5) * TERRAIN_SIZE
   const worldZ = (y - 0.5) * TERRAIN_SIZE
@@ -278,8 +275,8 @@ function analyzeFlatAreas(
   return selectedAreas.map((area) => {
     const lonFraction = area.x / (width - 1)
     const latFraction = area.y / (height - 1)
-    const lon = DEM_BOUNDS.lonMin + lonFraction * (DEM_BOUNDS.lonMax - DEM_BOUNDS.lonMin)
-    const lat = DEM_BOUNDS.latMin + latFraction * (DEM_BOUNDS.latMax - DEM_BOUNDS.latMin)
+    const lon = DEM_BOUNDS.value.lonMin + lonFraction * (DEM_BOUNDS.value.lonMax - DEM_BOUNDS.value.lonMin)
+    const lat = DEM_BOUNDS.value.latMin + latFraction * (DEM_BOUNDS.value.latMax - DEM_BOUNDS.value.latMin)
 
     const worldPos = geoToWorld(lon, lat, raster, width, height, min, max)
     const radiusWorld = (area.radius / width) * TERRAIN_SIZE
@@ -376,7 +373,12 @@ async function fetchPlanDetail(planId) {
       planId
     })
     gis.value = plan.gis || {}
-    console.log('获取方案详情', plan)
+    DEM_BOUNDS.value.lonMin = +plan.gis?.minX || DEM_BOUNDS.value.lonMin
+    DEM_BOUNDS.value.lonMax = +plan.gis?.maxX || DEM_BOUNDS.value.lonMax
+    DEM_BOUNDS.value.latMin = +plan.gis?.minY || DEM_BOUNDS.value.latMin
+    DEM_BOUNDS.value.latMax = +plan.gis?.maxY || DEM_BOUNDS.value.latMax
+    // 自动分析地形数据
+    analyzeTerrainData()
   } catch (error) {
     console.error('获取方案详情失败', error)
   }
@@ -387,8 +389,6 @@ onMounted(() => {
     projectId.value = route.query.projectId as string
   }
   fetchDetail()
-  // 自动分析地形数据
-  analyzeTerrainData()
 })
 </script>
 
