@@ -147,9 +147,9 @@ function getMinMax(array: any) {
 
 // 地理坐标转世界坐标
 function geoToWorld(lon: number, lat: number, raster: Float32Array, width: number, height: number, min: number, max: number) {
-  const x = (lon - DEM_BOUNDS.lonMin) / (DEM_BOUNDS.lonMax - DEM_BOUNDS.lonMin)
-  const y = (lat - DEM_BOUNDS.latMin) / (DEM_BOUNDS.latMax - DEM_BOUNDS.latMin)
-  
+  const x = (lon - DEM_BOUNDS.value.lonMin) / (DEM_BOUNDS.value.lonMax - DEM_BOUNDS.value.lonMin)
+  const y = (lat - DEM_BOUNDS.value.latMin) / (DEM_BOUNDS.value.latMax - DEM_BOUNDS.value.latMin)
+
   const worldX = (x - 0.5) * TERRAIN_SIZE
   const worldZ = (y - 0.5) * TERRAIN_SIZE
   
