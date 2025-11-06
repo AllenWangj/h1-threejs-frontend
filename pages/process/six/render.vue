@@ -3,7 +3,7 @@
     <schemes-list :list="schemeList" :current="currentAcviteScheme" @tap-scheme="tapScheme"></schemes-list>
     <div class="flex-1 relative border border-[1px] border-[#adcdf7] relative">
       <SixComponent v-if="!isDelive" :planId="currentAcviteScheme" />
-      <delivery v-else :planId="currentAcviteScheme" :dem-url="demUrl" :satellite-url="satelliteUrl" />
+      <delivery v-else :demBounds="demBounds" :planId="currentAcviteScheme" :dem-url="demUrl" :satellite-url="satelliteUrl" />
       <div v-if="currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
         <el-button type="primary" @click="handleDeliveEvt">运输路线</el-button>
         <!-- 下载方案 -->
@@ -15,19 +15,23 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getPackingDetail, planExport } from '@/apis/project'
+import { getResourceList } from '@/apis/resource'
 import SixComponent from '@/components/six-component/index.vue'
 import Delivery from './components/delivery.vue'
 
 const currentAcviteScheme = ref(-1)
 const isDelive = ref(false)
 const tapScheme = (item) => {
-  console.log('点击了运输保障方案', item)
   currentAcviteScheme.value = item.id
 }
-const demUrl = ref(
-  'https://support.maxtan.cn/geoserver/h1/wcs?service=WCS&version=2.0.1&request=GetCoverage&coverageId=h1:dem_107252456638910473&format=image/tiff&subset=Long(106.2,106.3)&subset=Lat(26.1,26.2)&resx=0.001&resy=0.001'
-)
-const satelliteUrl = ref('https://static.maxtan.cn/h1-static/uploads/20251023/90f6842eff314ee4f3c52fc4.jpg')
+const demUrl = ref('')
+const demBounds = ref({
+  lonMin: 106.2,
+  lonMax: 106.3,
+  latMin: 26.1,
+  latMax: 26.2
+})
+const satelliteUrl = ref('')
 
 function handleDeliveEvt() {
   isDelive.value = !isDelive.value
@@ -40,8 +44,30 @@ onMounted(() => {
   if (route.query.projectId) {
     projectId.value = route.query.projectId as string
   }
+  fetchResourceUrls()
   fetchDetail()
 })
+async function fetchResourceUrls() {
+  try {
+    const { data } = await getResourceList({
+      projectId: projectId.value
+    })
+    const {records} = data
+    if(records && records.length) {
+      demUrl.value = records[0].url
+      satelliteUrl.value = records[0].satelliteUrl
+      demBounds.value = {
+        lonMin: records[0].minX,
+        lonMax: records[0].maxX,
+        latMin: records[0].minY,
+        latMax: records[0].maxY
+      }
+    }
+    console.log('获取资源列表', data)
+  } catch (error) {
+    console.error('获取资源列表失败', error)
+  }
+}
 async function fetchDetail() {
   try {
     const { data } = await getPackingDetail({
