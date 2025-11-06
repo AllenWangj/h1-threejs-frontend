@@ -11,15 +11,23 @@
         <p class="progress-text">{{ loadingProgress }}%</p>
       </div>
     </div>
-    <!-- 路线信息面板 -->
-    <div v-if="!loading && routePoints.length > 0" class="route-info-panel">
+    
+    <!-- 路线信息面板 - 修复显示条件 -->
+    <div v-if="!loading" class="route-info-panel">
       <div class="info-header">
         <h3>运输路线</h3>
         <div class="header-actions">
-          <button class="action-btn" @click="toggleAnimation">{{ isAnimating ? '停止动画' : '播放动画' }}</button>
+          <button 
+            v-if="routePoints.length >= 2" 
+            class="action-btn" 
+            @click="toggleAnimation"
+          >
+            {{ isAnimating ? '停止动画' : '播放动画' }}
+          </button>
+          <span v-else class="action-hint">正在生成路线...</span>
         </div>
       </div>
-      <div class="info-content">
+      <div v-if="routePoints.length > 0" class="info-content">
         <div class="info-item">
           <span class="info-label">总距离：</span>
           <span class="info-value">{{ totalDistance.toFixed(2) }} km</span>
@@ -28,11 +36,14 @@
           <span class="info-label">海拔变化：</span>
           <span class="info-value">{{ minElevation }}m - {{ maxElevation }}m</span>
         </div>
+        <div class="info-item">
+          <span class="info-label">路径点数：</span>
+          <span class="info-value">{{ routePoints.length }} 个</span>
+        </div>
       </div>
-    </div>
-    <!-- 绘制提示 -->
-    <div v-if="!loading && !isAnimating && routePoints.length === 0" class="draw-hint">
-      路线已自动生成，点击"播放动画"查看
+      <div v-else class="info-content">
+        <p class="loading-hint">路线生成中，请稍候...</p>
+      </div>
     </div>
 
     <!-- 动画提示 -->
@@ -117,15 +128,20 @@ function geoToWorld(
   min: number,
   max: number
 ) {
-  const x = (lon - DEM_BOUNDS.value.lonMin) / (DEM_BOUNDS.value.lonMax - DEM_BOUNDS.value.lonMin)
-  const y = (lat - DEM_BOUNDS.value.latMin) / (DEM_BOUNDS.value.latMax - DEM_BOUNDS.value.latMin)
+  const lonMin = Number(DEM_BOUNDS.value.lonMin)
+  const lonMax = Number(DEM_BOUNDS.value.lonMax)
+  const latMin = Number(DEM_BOUNDS.value.latMin)
+  const latMax = Number(DEM_BOUNDS.value.latMax)
+
+  const x = (lon - lonMin) / (lonMax - lonMin)
+  const y = (lat - latMin) / (latMax - latMin)
 
   const worldX = (x - 0.5) * TERRAIN_SIZE
   const worldZ = (y - 0.5) * TERRAIN_SIZE
 
   // 获取该位置的高程
-  const rasterX = Math.floor(x * (width - 1))
-  const rasterY = Math.floor(y * (height - 1))
+  const rasterX = Math.max(0, Math.min(width - 1, Math.floor(x * width)))
+  const rasterY = Math.max(0, Math.min(height - 1, Math.floor(y * height)))
   const rasterIndex = rasterY * width + rasterX
   const elevation = raster[rasterIndex] || min
   const normalizedHeight = (elevation - min) / (max - min)
@@ -136,10 +152,15 @@ function geoToWorld(
 
 // 世界坐标转地理坐标
 function worldToGeo(worldX: number, worldZ: number) {
+  const lonMin = Number(DEM_BOUNDS.value.lonMin)
+  const lonMax = Number(DEM_BOUNDS.value.lonMax)
+  const latMin = Number(DEM_BOUNDS.value.latMin)
+  const latMax = Number(DEM_BOUNDS.value.latMax)
+
   const normX = worldX / TERRAIN_SIZE + 0.5
   const normZ = worldZ / TERRAIN_SIZE + 0.5
-  const lon = DEM_BOUNDS.value.lonMin + normX * (DEM_BOUNDS.value.lonMax - DEM_BOUNDS.value.lonMin)
-  const lat = DEM_BOUNDS.value.latMin + normZ * (DEM_BOUNDS.value.latMax - DEM_BOUNDS.value.latMin)
+  const lon = lonMin + normX * (lonMax - lonMin)
+  const lat = latMin + normZ * (latMax - latMin)
   return { lon, lat }
 }
 
@@ -162,6 +183,8 @@ function createRouteMarker(index: number) {
 
 // 绘制路线
 function drawRoute() {
+  console.log('🎨 开始绘制路线，点数:', routePoints.value.length)
+  
   // 清除旧路线
   if (routeLine) {
     scene.remove(routeLine)
@@ -190,11 +213,12 @@ function drawRoute() {
   routeMarkers = []
 
   if (routePoints.value.length === 0) return
+  
   // 绘制路线点标记
   routePoints.value.forEach((point, index) => {
     const marker = createRouteMarker(index)
     if (marker) {
-      marker.position.set(point.x, point.y + 0.03, point.z)
+      marker.position.set(point.x, point.y + 0.05, point.z)
       scene.add(marker)
       routeMarkers.push(marker)
     }
@@ -202,24 +226,29 @@ function drawRoute() {
 
   if (routePoints.value.length < 2) return
 
-  // 创建完整路线（半透明背景）
+  // 创建完整路线（半透明背景）- 增加高度偏移确保可见
   const allPoints: THREE.Vector3[] = []
   routePoints.value.forEach((point) => {
-    allPoints.push(new THREE.Vector3(point.x, point.y + 0.02, point.z))
+    allPoints.push(new THREE.Vector3(point.x, point.y + 0.05, point.z))
   })
+
+  console.log('📍 路线点示例:', allPoints.slice(0, 3))
 
   const bgGeometry = new THREE.BufferGeometry().setFromPoints(allPoints)
   const bgMaterial = new THREE.LineBasicMaterial({
-    color: 0x999999,
-    linewidth: 2,
+    color: 0xffff00, // 改为黄色更明显
+    linewidth: 3,
     transparent: true,
-    opacity: 0.3,
-    depthTest: false
+    opacity: 0.6,
+    depthTest: true, // 改为true使其与地形正确遮挡
+    depthWrite: false
   })
 
   routeLine = new THREE.Line(bgGeometry, bgMaterial)
   routeLine.renderOrder = 999
   scene.add(routeLine)
+
+  console.log('✅ 路线绘制完成')
 
   // 计算统计信息
   calculateRouteStats()
@@ -267,7 +296,7 @@ function updateAnimatedLine() {
   // 添加已完成的点
   for (let i = 0; i <= currentPointIndex; i++) {
     const p = routePoints.value[i]
-    animPoints.push(new THREE.Vector3(p.x, p.y + 0.02, p.z))
+    animPoints.push(new THREE.Vector3(p.x, p.y + 0.05, p.z))
   }
 
   // 添加当前段的插值点
@@ -277,31 +306,33 @@ function updateAnimatedLine() {
 
     const interpolatedPoint = new THREE.Vector3(
       p1.x + (p2.x - p1.x) * segmentProgress,
-      p1.y + (p2.y - p1.y) * segmentProgress + 0.02,
+      p1.y + (p2.y - p1.y) * segmentProgress + 0.05,
       p1.z + (p2.z - p1.z) * segmentProgress
     )
     animPoints.push(interpolatedPoint)
+    
     // 更新或创建移动标记
     if (!movingMarker) {
-      const geometry = new THREE.SphereGeometry(0.08, 16, 16)
+      const geometry = new THREE.SphereGeometry(0.1, 16, 16)
       const material = new THREE.MeshBasicMaterial({
         color: 0x00ffff,
-        depthTest: false
+        depthTest: true
       })
       movingMarker = new THREE.Mesh(geometry, material)
       movingMarker.renderOrder = 1002
       scene.add(movingMarker)
     }
     movingMarker.position.copy(interpolatedPoint)
-    movingMarker.position.y += 0.05
+    movingMarker.position.y += 0.08
   }
 
   // 创建动画线
   const animGeometry = new THREE.BufferGeometry().setFromPoints(animPoints)
   const animMaterial = new THREE.LineBasicMaterial({
-    color: 0xff6600,
-    linewidth: 4,
-    depthTest: false
+    color: 0xff0000, // 改为红色更明显
+    linewidth: 5,
+    depthTest: true,
+    depthWrite: false
   })
 
   animatedLine = new THREE.Line(animGeometry, animMaterial)
@@ -355,9 +386,26 @@ function calculateRouteStats() {
     const p1 = routePoints.value[i]
     const p2 = routePoints.value[i + 1]
 
-    const dx = p2.x - p1.x
-    const dz = p2.z - p1.z
-    distance += Math.sqrt(dx * dx + dz * dz) * 10 // 转换为km（假设TERRAIN_SIZE=8对应80km）
+    // 计算地理距离（使用经纬度）
+    const lat1 = p1.lat
+    const lon1 = p1.lon
+    const lat2 = p2.lat
+    const lon2 = p2.lon
+
+    // 使用 Haversine 公式计算球面距离
+    const R = 6371 // 地球半径（公里）
+    const dLat = ((lat2 - lat1) * Math.PI) / 180
+    const dLon = ((lon2 - lon1) * Math.PI) / 180
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    const segmentDistance = R * c
+
+    distance += segmentDistance
 
     minElev = Math.min(minElev, p1.elevation, p2.elevation)
     maxElev = Math.max(maxElev, p1.elevation, p2.elevation)
@@ -366,25 +414,48 @@ function calculateRouteStats() {
   totalDistance.value = distance
   minElevation.value = Math.round(minElev)
   maxElevation.value = Math.round(maxElev)
+
+  console.log('📊 路线统计:', {
+    总距离: distance.toFixed(2) + ' km',
+    最小海拔: minElevation.value + ' m',
+    最大海拔: maxElevation.value + ' m'
+  })
 }
 
 // 自动生成路线（基于地形分析）
 function generateAutoRoute() {
-  console.log('开始自动生成运输路线...')
+  console.log('🚀 开始自动生成运输路线...')
+  console.log('DEM范围:', DEM_BOUNDS.value)
+  console.log('DEM尺寸:', demWidth, 'x', demHeight)
+
+  // 确保 DEM 边界值是数字类型
+  const lonMin = Number(DEM_BOUNDS.value.lonMin)
+  const lonMax = Number(DEM_BOUNDS.value.lonMax)
+  const latMin = Number(DEM_BOUNDS.value.latMin)
+  const latMax = Number(DEM_BOUNDS.value.latMax)
 
   // 定义起点和终点（基于DEM范围）
-  const startLon = DEM_BOUNDS.value.lonMin + (DEM_BOUNDS.value.lonMax - DEM_BOUNDS.value.lonMin) * 0.2
-  const startLat = DEM_BOUNDS.value.latMin + (DEM_BOUNDS.value.latMax - DEM_BOUNDS.value.latMin) * 0.3
+  const lonRange = lonMax - lonMin
+  const latRange = latMax - latMin
+  
+  const startLon = lonMin + lonRange * 0.2
+  const startLat = latMin + latRange * 0.3
 
-  const endLon = DEM_BOUNDS.value.lonMin + (DEM_BOUNDS.value.lonMax - DEM_BOUNDS.value.lonMin) * 0.8
-  const endLat = DEM_BOUNDS.value.latMin + (DEM_BOUNDS.value.latMax - DEM_BOUNDS.value.latMin) * 0.7
+  const endLon = lonMin + lonRange * 0.8
+  const endLat = latMin + latRange * 0.7
+
+  console.log('起点经纬度:', { lon: startLon.toFixed(6), lat: startLat.toFixed(6) })
+  console.log('终点经纬度:', { lon: endLon.toFixed(6), lat: endLat.toFixed(6) })
 
   // 获取起点和终点的世界坐标
   const startPos = geoToWorld(startLon, startLat, demRaster, demWidth, demHeight, demMin, demMax)
   const endPos = geoToWorld(endLon, endLat, demRaster, demWidth, demHeight, demMin, demMax)
 
+  console.log('起点世界坐标:', startPos)
+  console.log('终点世界坐标:', endPos)
+
   // 先生成关键控制点（用于构建曲线）
-  const numControlPoints = 6 // 控制点数量
+  const numControlPoints = 6
   const controlPoints: Array<{ lon: number; lat: number }> = []
 
   // 添加起点
@@ -397,20 +468,27 @@ function generateAutoRoute() {
     const interpLat = startLat + (endLat - startLat) * t
 
     // 添加随机偏移使路线更自然
-    const randomOffset = 0.015
+    const randomOffset = lonRange * 0.05
     const offsetLon = interpLon + (Math.random() - 0.5) * randomOffset
     const offsetLat = interpLat + (Math.random() - 0.5) * randomOffset
 
-    const clampedLon = Math.max(DEM_BOUNDS.value.lonMin, Math.min(DEM_BOUNDS.value.lonMax, offsetLon))
-    const clampedLat = Math.max(DEM_BOUNDS.value.latMin, Math.min(DEM_BOUNDS.value.latMax, offsetLat))
+    const clampedLon = Math.max(lonMin, Math.min(lonMax, offsetLon))
+    const clampedLat = Math.max(latMin, Math.min(latMax, offsetLat))
 
     controlPoints.push({ lon: clampedLon, lat: clampedLat })
   }
+  
   // 添加终点
   controlPoints.push({ lon: endLon, lat: endLat })
 
+  console.log('控制点数量:', controlPoints.length)
+  console.log('控制点示例:', controlPoints.slice(0, 2).map(p => ({
+    lon: p.lon.toFixed(6),
+    lat: p.lat.toFixed(6)
+  })))
+
   // 使用 Catmull-Rom 样条插值生成平滑路径点
-  const numInterpolatedPoints = 500 // 插值后的总点数（更多点 = 更平滑）
+  const numInterpolatedPoints = 200
   const points: Array<{ x: number; y: number; z: number; elevation: number; lon: number; lat: number }> = []
 
   for (let i = 0; i < numInterpolatedPoints; i++) {
@@ -438,21 +516,28 @@ function generateAutoRoute() {
       x: pointPos.x,
       y: pointPos.y,
       z: pointPos.z,
-      elevation: Math.round(pointPos.elevation),
+      elevation: pointPos.elevation,
       lon: lon,
       lat: lat
     })
   }
 
+  console.log('生成的路径点数量:', points.length)
+  console.log('前3个点:', points.slice(0, 3).map(p => ({
+    lon: p.lon.toFixed(6),
+    lat: p.lat.toFixed(6),
+    elevation: p.elevation.toFixed(1)
+  })))
+
   routePoints.value = points
   drawRoute()
 
   console.log(`✅ 自动生成平滑路线完成，共 ${points.length} 个路径点`)
-  console.log('起点:', { lon: startLon.toFixed(6), lat: startLat.toFixed(6), elevation: points[0].elevation })
+  console.log('起点:', { lon: startLon.toFixed(6), lat: startLat.toFixed(6), elevation: points[0].elevation.toFixed(1) })
   console.log('终点:', {
     lon: endLon.toFixed(6),
     lat: endLat.toFixed(6),
-    elevation: points[points.length - 1].elevation
+    elevation: points[points.length - 1].elevation.toFixed(1)
   })
 
   // 自动开始播放动画
@@ -460,7 +545,7 @@ function generateAutoRoute() {
     if (routePoints.value.length >= 2) {
       toggleAnimation()
     }
-  }, 500)
+  }, 1000)
 }
 
 // Catmull-Rom 样条插值函数
@@ -926,5 +1011,20 @@ onUnmounted(() => {
   font-size: 14px;
   color: #333;
   font-weight: 500;
+}
+
+.action-hint {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.loading-hint {
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
 }
 </style>
