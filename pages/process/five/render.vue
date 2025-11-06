@@ -18,6 +18,12 @@
       <div v-if="!loading && currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
         <!-- 下载方案 -->
         <el-button @click="downloadSolution" type="primary">导出方案</el-button>
+       <el-button type="primary" @click="handleScenePane(false)">禁止拖动</el-button>
+        <el-button type="primary" @click="handleScenePane(true)">允许拖动</el-button>
+        <el-button type="primary" @click="handleSceneEnable(false)">关闭场景</el-button>
+        <el-button type="primary" @click="handleSceneEnable(true)">开启场景</el-button>
+        <el-button type="primary" @click="handleSceneScale(true)">允许缩放</el-button>
+        <el-button type="primary"  @click="handleSceneScale(false)">禁止缩放</el-button>
       </div>
     </div>
   </div>
@@ -307,7 +313,18 @@ function onResize() {
   camera.updateProjectionMatrix()
   renderer.setSize(el.clientWidth, el.clientHeight)
 }
+function handleScenePane(state:boolean) {
+  controls!.enablePan = state
+}
+function handleSceneEnable(state:boolean) {
+  // processFour!.handleSceneEnable(state)
+  controls!.enabled = state
 
+}
+function handleSceneScale(state:boolean) {
+  controls!.enableZoom =state
+
+}
 
 </script>
 

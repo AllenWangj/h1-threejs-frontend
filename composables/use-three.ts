@@ -74,13 +74,25 @@ class BaseThree {
 
     this.animate()
   }
+  public handleScenePane(state:boolean) {
+        this.controls!.enablePan = state
+    }
+    public handleSceneEnable(state:boolean) {
+        this.controls!.enabled = state
+
+    }
+    public handleSceneScale(state:boolean) {
+        this.controls!.enableZoom  = state
+
+    }
 
   /**
    * 初始化场景
    */
   private initScene(): void {
     this.scene = new Three.Scene()
-    this.scene.background = new Three.Color(this.options.sceneBackground)
+    // this.scene.background = new THREE.Color(0x87ceeb)
+    this.scene.background = new Three.Color(0x87ceeb)
   }
 
   /**

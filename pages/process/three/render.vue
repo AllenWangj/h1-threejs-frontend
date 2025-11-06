@@ -6,6 +6,28 @@
       <div v-if="!loading && currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
         <!-- 下载方案 -->
         <el-button @click="downloadSolution" type="primary">导出方案</el-button>
+        <el-button type="primary" @click="handleScenePane(false)">禁止拖动</el-button>
+        <el-button type="primary" @click="handleScenePane(true)">允许拖动</el-button>
+        <el-button type="primary" @click="handleSceneEnable(false)">关闭场景</el-button>
+        <el-button type="primary" @click="handleSceneEnable(true)">开启场景</el-button>
+        <el-button type="primary" @click="handleSceneScale(true)">允许缩放</el-button>
+        <el-button type="primary"  @click="handleSceneScale(false)">禁止缩放</el-button>
+
+      </div>
+       <div class="plan-detail">
+        <el-descriptions title="方案信息" :column="2" >
+          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
+          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
+          <el-descriptions-item label="方案创建时间" :span="1">{{ currentPlan.createTime }}</el-descriptions-item>
+        </el-descriptions>
+           <el-descriptions title="结构信息" :column="2" >
+          <el-descriptions-item label="建筑类型" :span="1">仓储</el-descriptions-item>
+          <el-descriptions-item label="建筑边界" :span="1">1m</el-descriptions-item>
+          <el-descriptions-item label="建筑规模" :span="1">10平米</el-descriptions-item>
+          <el-descriptions-item label="标准功能模块" :span="1">供电</el-descriptions-item>
+          <el-descriptions-item label="门" :span="1">2个</el-descriptions-item>
+          <el-descriptions-item label="窗" :span="1">3个</el-descriptions-item>
+        </el-descriptions>
       </div>
     </div>
   </div>
@@ -35,6 +57,7 @@ const currentAcviteScheme = ref('')
 
 const tapScheme = (item) => {
   currentAcviteScheme.value  = item.id
+    currentPlan.value  = item
     planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         const { data: { layouts } } = res
         loading.value = true
@@ -73,6 +96,7 @@ async function fetchDetail() {
     schemeList.value = data || []
     if (schemeList.value.length) {
       currentAcviteScheme.value = schemeList.value[0].id
+      currentPlan.value = schemeList.value[0]
     }
     // createPlan({
     //   projectId:projectId.value,
@@ -106,11 +130,46 @@ onMounted(() => {
     }
   })
 })
+const currentPlan =ref<any>({})
+function handleScenePane(state:boolean) {
+  processThree!.handleScenePane(state)
+}
+function handleSceneEnable(state:boolean) {
+  processThree!.handleSceneEnable(state)
+}
+function handleSceneScale(state:boolean) {
+  processThree!.handleSceneScale(state)
+
+}
 </script>
 
 <style lang="less" scoped>
 .plan-and-plan_tree {
   width: 100%;
   height: 100%;
+}
+.plan-detail {
+  position: absolute;
+  // top: 380px;
+  left: 20px;
+  bottom: 20px;
+  width: 380px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  & ::v-deep {
+    .el-descriptions__body {
+      background: transparent !important;
+    }
+    .el-descriptions__label,
+    .el-descriptions__content,.el-descriptions__title {
+      color: #fff;
+    }
+  }
 }
 </style>

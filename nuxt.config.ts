@@ -28,5 +28,14 @@ export default defineNuxtConfig({
     port: 3200,
     host: '0.0.0.0'
   },
+  nitro: {
+    devProxy: {
+      '/api/': {
+        target: 'https://h1.maxtan.cn/api/',
+        changeOrigin: true,
+        prependPath: true
+      }
+    }
+  },
   compatibilityDate: '2024-08-13'
 })
