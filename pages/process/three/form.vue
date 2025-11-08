@@ -158,11 +158,11 @@ async function fetchDetail() {
 }
 
 onMounted(async () => {
+  await getDictMap([BuildingFunctional, BuildingBoundary, BuildingScale, ModuleLibrary])
   if (route.query.projectId) {
     projectId.value = route.query.projectId as string
     fetchDetail()
   }
-  await getDictMap([BuildingFunctional, BuildingBoundary, BuildingScale, ModuleLibrary])
 })
 
 
