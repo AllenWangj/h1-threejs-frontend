@@ -164,6 +164,7 @@ async function fetchDetail() {
       projectId: projectId.value
     })
     console.log('获取地址决策详情', data)
+    data.params = (data.params ? data.params : []).length ? data.params : defData
     formData.value.projectForm = (data.params || defData).map((item) => {
       item.label = LABLE_MAP[item.field] || item.field
       item.options = DICT_MAP.value[item.field] || []
