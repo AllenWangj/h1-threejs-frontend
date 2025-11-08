@@ -61,6 +61,8 @@ class RenderPlanLayout extends BaseThree {
   private handleMouseDownBound: (event: MouseEvent) => void
   private handleMouseMoveBound: (event: MouseEvent) => void
   private handleMouseUpBound: (event: MouseEvent) => void
+  private handleMouseMoveAddBound: (event: MouseEvent) => void
+
 
   constructor(node: HTMLElement) {
     super(node, {
@@ -71,7 +73,7 @@ class RenderPlanLayout extends BaseThree {
     this.handleMouseDownBound = this.handleMouseDown.bind(this)
     this.handleMouseMoveBound = this.handleMouseMove.bind(this)
     this.handleMouseUpBound = this.handleMouseUp.bind(this)
-
+    this.handleMouseMoveAddBound = this.handleMouseMoveAdd.bind(this)
     this.initializeScene()
     this.initRaycaster()
     this.addEventListeners()
@@ -260,6 +262,8 @@ class RenderPlanLayout extends BaseThree {
 
     element.addEventListener('mousedown', this.handleMouseDownBound)
     element.addEventListener('mousemove', this.handleMouseMoveBound)
+    element.addEventListener('mousemove', this.handleMouseMoveAddBound)
+
     element.addEventListener('mouseup', this.handleMouseUpBound)
   }
 
@@ -540,6 +544,27 @@ class RenderPlanLayout extends BaseThree {
     })
     return position
   }
+  // 添加模型的移动
+   private handleMouseMoveAdd() {
+      
+  }
+  // 添加部件
+  public async handleCreateModel(code:string) {
+  const modelUrl = getModelUrl(code)
+  const size = this.calculateGroupDimensions(this.wrapper)
+  const gltf = await this.loadGLTFResource(modelUrl)
+    this.addInteractiveModel(gltf, {
+      deg:0,
+      groupName:"",
+      code:code,
+      position:{
+        x: size.center.x,
+        y:size.center.y,
+        z:0
+      }
+    })
+  }
+
 }
 
 export const useRender = () => {

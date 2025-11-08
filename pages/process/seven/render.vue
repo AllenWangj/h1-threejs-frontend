@@ -57,6 +57,17 @@
       <div v-if="currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
         <!-- 下载方案 -->
         <el-button @click="downloadSolution" type="primary">导出方案</el-button>
+          <el-button type="primary" @click="handleScenePane(false)">禁止拖动</el-button>
+        <el-button type="primary" @click="handleScenePane(true)">允许拖动</el-button>
+        <el-button type="primary" @click="handleSceneEnable(false)">关闭场景</el-button>
+        <el-button type="primary" @click="handleSceneEnable(true)">开启场景</el-button>
+        <el-button type="primary" @click="handleSceneScale(true)">允许缩放</el-button>
+        <el-button type="primary"  @click="handleSceneScale(false)">禁止缩放</el-button>
+      </div>
+         <div  class="toolbar-content">
+        <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
+        </BuildInfo>
+        
       </div>
     </div>
   </div>
@@ -69,11 +80,13 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { getAssembleDetail, planExport } from '@/apis/project'
+import BuildInfo from './components/build-info.vue'
+import { materialInfoService } from './composables/material-info-service'
 
 // 全屏相关
 const fullscreenContainer = ref<HTMLElement | null>(null)
 useFullScreenResize(fullscreenContainer, onResize)
-
+const materialDataList = ref(materialInfoService())
 const route = useRoute()
 const projectId = ref('')
 const schemeList = ref<any[]>([])
@@ -153,8 +166,7 @@ function initThree() {
   const width = threeContainer.value.clientWidth
   const height = threeContainer.value.clientHeight
   camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 2000)
-  camera.position.set(300, 300, 900)
-
+  camera.position.set(150, 150, 450)
   renderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true,
@@ -846,6 +858,19 @@ function onResize() {
   camera.updateProjectionMatrix()
   renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight)
 }
+function handleScenePane(state:boolean) {
+  controls!.enablePan = state
+}
+function handleSceneEnable(state:boolean) {
+  // processFour!.handleSceneEnable(state)
+  controls!.enabled = state
+
+}
+function handleSceneScale(state:boolean) {
+  controls!.enableZoom =state
+
+}
+
 </script>
 
 <style scoped>
@@ -871,5 +896,18 @@ function onResize() {
     margin: 0;
     margin-bottom: 10px;
   }
+}
+.toolbar-content {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 380px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 </style>

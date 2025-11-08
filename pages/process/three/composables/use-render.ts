@@ -309,6 +309,7 @@ class ProcessThree extends BaseThree {
         })
         group.clear()
     }
+    
 
 }
 export const useRender = () => {
