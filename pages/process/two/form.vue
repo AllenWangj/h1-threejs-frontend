@@ -22,10 +22,20 @@
                 <template #label>
                   <div class="flex items-center">
                     <el-checkbox v-model="item.tag">{{ item.label }}</el-checkbox>
+                    <template v-if="item.field === 'custom'">
+                      <el-upload class="ml-[20px]" accept=".json" :auto-upload="false" :show-file-list="false"
+                        :on-change="(e) => handleFileChange(e, item)">
+                        <el-button type="primary">选择 JSON 文件</el-button>
+                      </el-upload>
+                    </template>
                   </div>
                 </template>
-                <ez-select v-if="item.field === 'custom'" v-model="item.value" placeholder="请选择" multiple filterable
-                  allow-create default-first-option :clearable="true" style="width: 100%" :options="item.options" />
+                <template v-if="item.field === 'custom'">
+                  <!-- 显示JSON字符串，并按格式换行缩进 -->
+                  <div class="w-[100%]">
+                    <pre v-if="item.value" class="text-[#333] text-[12px]">{{ item.value }}</pre>
+                  </div>
+                </template>
                 <ez-select v-else-if="item.type === 'select'" v-model="item.value" placeholder="请选择" :clearable="true"
                   style="width: 100%" :options="item.options" />
                 <ez-select v-else-if="item.type === 'multiple'" v-model="item.value" placeholder="请选择" :clearable="true"
@@ -105,6 +115,33 @@ const formData = ref({
 })
 // 保存初始数据用来重置功能
 const initProjectForm = ref({})
+
+// 处理文件选择
+const handleFileChange = (file: any, item: any) => {
+  const rawFile = file.raw
+  if (!rawFile) return
+
+  // 判断文件类型
+  if (!rawFile.name.endsWith('.json')) {
+    ElMessage.error('请选择 JSON 文件')
+    return
+  }
+
+  // 使用 FileReader 读取文件内容
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    try {
+      const result = e.target?.result as string
+      item.value = result
+      ElMessage.success('JSON 文件读取成功！')
+    } catch (err) {
+      console.error(err)
+      ElMessage.error('JSON 解析失败，请检查文件内容')
+    }
+  }
+  reader.readAsText(rawFile)
+}
+
 // 重置
 const handleReset = () => {
   formData.value = JSON.parse(JSON.stringify(initProjectForm.value))
