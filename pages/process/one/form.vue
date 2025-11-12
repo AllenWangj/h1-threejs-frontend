@@ -48,7 +48,7 @@
                       <div class="text-[#666] text-[14px] min-w-[60px] text-right mr-[15px]">
                         {{ getArrayLabel(options.field, item.options) }}
                       </div>
-                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d]/g,'')" class="w-[200px]">
+                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px]">
                         <template #append>{{ options.unit }}</template>
                       </el-input>
                     </div>
@@ -88,6 +88,11 @@ const { dictMap, getDictMap, getArrayLabel } = useDict()
 
 const customOptions = []
 
+// 默认选项
+const defaultOptions = [
+  { label: '默认', value: '0' },
+]
+
 // label映射
 const LABLE_MAP = {
   terrain: '地形条件',
@@ -101,12 +106,12 @@ const LABLE_MAP = {
 // 字典映射
 const DICT_MAP = computed(() => {
   return {
-    terrain: dictMap.value.get(Terrain) || [],
-    climateRegion: dictMap.value.get(ClimateRegion) || [],
-    traffic: dictMap.value.get(Transportation) || [],
-    infrastructure: dictMap.value.get(Condition) || [],
-    geological: dictMap.value.get(Condition) || [],
-    country: dictMap.value.get(Country) || [],
+    terrain: [...defaultOptions, ...(dictMap.value.get(Terrain) || [])],
+    climateRegion: [...defaultOptions, ...(dictMap.value.get(ClimateRegion) || [])],
+    traffic: [...defaultOptions, ...(dictMap.value.get(Transportation) || [])],
+    infrastructure: [...defaultOptions, ...(dictMap.value.get(Condition) || [])],
+    geological: [...defaultOptions, ...(dictMap.value.get(Condition) || [])],
+    country: [...defaultOptions, ...(dictMap.value.get(Country) || [])],
     custom: customOptions || []
   }
 })
@@ -167,18 +172,7 @@ const handleSave = async () => {
 const handleGenerateSolution = async () => {
   try {
     saveLoading.value = true
-    const params = JSON.parse(
-      JSON.stringify(
-        formData.value.projectForm.reduce((acc, item) => {
-          if (Array.isArray(item.value)) {
-            acc[item.field] = item.value.join(',')
-          } else {
-            acc[item.field] = item.value
-          }
-          return acc
-        }, {})
-      )
-    )
+    const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generateProjectSitePlan({
       projectId: projectId.value,
       params
@@ -205,10 +199,10 @@ async function fetchDetail() {
     formData.value.projectForm = (data.params || defData).map((item) => {
       item.label = LABLE_MAP[item.field] || item.field
       item.options = DICT_MAP.value[item.field] || []
-      item.type = 'select'
-      if (item.field === 'terrain') {
-        item.type = 'multiple-dynamic'
-      }
+      // item.type = 'select'
+      // if (item.field === 'terrain') {
+      //   item.type = 'multiple-dynamic'
+      // }
       return item
     })
     initProjectForm.value = JSON.parse(JSON.stringify(formData.value))
@@ -239,7 +233,7 @@ const defData = [
     "valueConfig": [
       {
         "type": "input",
-        "unit": "mm",
+        "unit": "m",
         "field": "1",
         "value": "",
         "valueConfig": null
@@ -248,17 +242,19 @@ const defData = [
   },
   {
     "tag": true,
-    "type": "select",
+    "type": "multiple",
     "field": "climateRegion",
     "label": "气候类型",
+    "value": [],
     "options": [],
     "valueConfig": null
   },
   {
     "tag": true,
-    "type": "select",
+    "type": "multiple",
     "field": "traffic",
     "label": "交通条件",
+    "value": [],
     "options": [],
     "valueConfig": null
   },
@@ -288,10 +284,10 @@ const defData = [
   },
   {
     "tag": true,
-    "type": "select",
+    "type": "",
     "field": "custom",
     "label": "自定义参数",
-    "value": [],
+    "value": '',
     "options": [],
     "valueConfig": null
   }

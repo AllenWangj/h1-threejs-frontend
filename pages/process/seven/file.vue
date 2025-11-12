@@ -36,7 +36,10 @@
           <img src="../../../assets/images/icon-pdf.svg" alt="pdf" class="w-[26px] h-[26px]" />
           <div class="flex-1 flex flex-col px-[14px]">
             <span>{{ item.name }}</span>
-            <span class="text-[12px] text-[#999]">{{ formatFileSize(item.size || 0) }}</span>
+            <div class="flex items-center mt-[4px]">
+              <span class="text-[12px] text-[#999] mr-[20px]">{{ formatTime(item.createTime, 'YYYY-MM-DD HH:mm:ss') }}</span>
+              <span class="text-[12px] text-[#999]">{{ formatFileSize(item.size || 0) }}</span>
+            </div>
           </div>
           <img src="../../../assets/images/icon-plot-delete.svg" alt="remove" class="cursor-pointer w-[20px] h-[20px]"
             @click="handleRemoveFile(item)" />
@@ -52,7 +55,7 @@ import { genFileId } from 'element-plus'
 const route = useRoute()
 
 const { putFile } = useOss()
-const { formatFileSize } = useUtils()
+const { formatFileSize, formatTime } = useUtils()
 
 const projectId = ref('')
 const pageLoading = ref(false)
@@ -113,6 +116,13 @@ function createdUploadFile() {
    * @param {File} file - 上传的文件对象
    */
   const uploadFile = (file: any) => {
+    const isPDF = file.name.includes('.pdf')
+    const isDWG = file.name.includes('.dwg')
+    const isDXF = file.name.includes('.dxf')
+    if (!isPDF && !isDWG && !isDXF) {
+      ElMessage.error('请上传PDF、DWG或DXF文件')
+      return false
+    }
     currentFile.value = file.name
     submitFile(file)
   }
