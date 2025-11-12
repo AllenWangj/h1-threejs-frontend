@@ -48,7 +48,7 @@
                       <div class="text-[#666] text-[14px] min-w-[120px] text-right mr-[15px]">{{
                         getArrayLabel(options.field,
                           item.options) }}</div>
-                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d]/g,'')" class="w-[200px]">
+                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px]">
                         <template #append>{{ options.unit }}</template>
                       </el-input>
                     </div>
@@ -240,6 +240,27 @@ const defData = [
         "type": "input",
         "unit": "度",
         "field": "2",
+        "value": "",
+        "valueConfig": null
+      },
+      {
+        "type": "input",
+        "unit": "kN/m²",
+        "field": "3",
+        "value": "",
+        "valueConfig": null
+      },
+      {
+        "type": "input",
+        "unit": "kN/m²",
+        "field": "4",
+        "value": "",
+        "valueConfig": null
+      },
+      {
+        "type": "input",
+        "unit": "kN/m²",
+        "field": "5",
         "value": "",
         "valueConfig": null
       }
