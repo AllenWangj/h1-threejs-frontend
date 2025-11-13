@@ -40,6 +40,25 @@
                   style="width: 100%" :options="item.options" />
                 <ez-select v-else-if="item.type === 'multiple'" v-model="item.value" placeholder="请选择" :clearable="true"
                   multiple style="width: 100%" :options="item.options" />
+                <div v-else-if="item.type === 'multiple-dynamic'" class="w-full">
+                  <ez-select v-model="item.value" placeholder="请选择" :clearable="true" multiple style="width: 100%"
+                    :options="item.options" />
+                  <div v-for="(options, index) in item.valueConfig" :key="options.field">
+                    <div v-if="item.value.includes(options.field)" class="flex items-center mt-[8px]">
+                      <div class="text-[#666] text-[14px] min-w-[60px] text-right mr-[15px]">
+                        {{ getArrayLabel(options.field, item.options) }}
+                      </div>
+                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px]">
+                        <template #append>{{ options.unit }}</template>
+                      </el-input>
+                      <!-- 可以输入数字和小数点得正则 -->
+                      <el-input v-if="options.unit2" v-model="options.value2"
+                        oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px] ml-[10px]">
+                        <template #append>{{ options.unit2 }}</template>
+                      </el-input>
+                    </div>
+                  </div>
+                </div>
               </el-form-item>
             </div>
           </el-form>
@@ -72,7 +91,7 @@ const BuildingFunctional = 'building_functional' // 建筑功能
 const BuildingBoundary = 'building_boundary' // 建筑边界
 const BuildingScale = 'building_scale' // 建筑规模
 const ModuleLibrary = 'module_library' // 标准化模块库
-const { dictMap, getDictMap } = useDict()
+const { dictMap, getDictMap, getArrayLabel } = useDict()
 // 整体布局
 const layoutOptions = [
   {
@@ -81,6 +100,13 @@ const layoutOptions = [
   }
 ]
 const customOptions = []
+
+const defaultOptions = [
+  {
+    label: '默认',
+    value: '0'
+  }
+]
 
 // label映射
 const LABLE_MAP = {
@@ -94,11 +120,11 @@ const LABLE_MAP = {
 // 字典映射
 const DICT_MAP = computed(() => {
   return {
-    functional: dictMap.value.get(BuildingFunctional) || [],
-    boundary: dictMap.value.get(BuildingBoundary) || [],
-    scale: dictMap.value.get(BuildingScale) || [],
+    functional: [...defaultOptions, ...(dictMap.value.get(BuildingFunctional) || [])],
+    boundary: [...defaultOptions, ...(dictMap.value.get(BuildingBoundary) || [])],
+    scale: [...defaultOptions, ...(dictMap.value.get(BuildingScale) || [])],
     layout: layoutOptions || [],
-    moduleLibrary: dictMap.value.get(ModuleLibrary) || [],
+    moduleLibrary: [...defaultOptions, ...(dictMap.value.get(ModuleLibrary) || [])],
     custom: customOptions || []
   }
 })
@@ -159,9 +185,11 @@ const handleSave = async () => {
 const handleGenerateSolution = async () => {
   try {
     saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generateInternalLayoutPlan({
       projectId: projectId.value,
-      type: 3
+      type: 3,
+      params
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -215,21 +243,35 @@ const defData = [
   },
   {
     "tag": true,
-    "type": "multiple",
+    "type": "multiple-dynamic",
     "field": "boundary",
     "label": "建筑边界",
     "value": [],
     "options": [],
-    "valueConfig": null
+    "valueConfig": [
+      {
+        "field": "1",
+        "type": "input",
+        "unit": "m",
+        "value": "",
+      }
+    ]
   },
   {
     "tag": true,
-    "type": "multiple",
+    "type": "multiple-dynamic",
     "field": "scale",
     "label": "建筑规模",
     "value": [],
     "options": [],
-    "valueConfig": null
+    "valueConfig": [
+      {
+        "field": "1",
+        "type": "input",
+        "unit": "m²",
+        "value": "",
+      }
+    ]
   },
   {
     "tag": true,

@@ -516,8 +516,15 @@ function initDragControls() {
   })
 
   // drag end
-  dragControls.addEventListener('dragend', () => {
+  dragControls.addEventListener('dragend', (event) => {
     orbitControls.enabled = rotateEnabled.value
+    
+    // ✅ 拖拽结束后，Y轴自动下降直到碰到物体或容器底部
+    const obj = draggableObjects.find((o) => o.mesh === event.object)
+    if (obj && obj.enteredContainer) {
+      autoDropToGround(obj)
+    }
+    
     const data = []
     draggableObjects.forEach((ele) => {
       const position = ele.mesh.position.clone()
@@ -928,6 +935,77 @@ function handleSceneEnable(state:boolean) {
 function handleSceneScale(state:boolean) {
   orbitControls!.enableZoom =state
 
+}
+
+/**
+ * 自动下降物体直到碰到其他物体或容器底部
+ * @param obj 需要下降的物体对象
+ */
+function autoDropToGround(obj: any) {
+  if (!obj || !obj.mesh) return
+  
+  const stepSize = 0.1 // 每次下降的步长
+  const halfSize = {
+    x: obj.size.x / 2,
+    y: obj.size.y / 2,
+    z: obj.size.z / 2
+  }
+  
+  // 容器底部位置
+  const groundLevel = -containerSize.y / 2 + halfSize.y
+  
+  // 当前位置
+  let currentPos = obj.mesh.position.clone()
+  let stopped = false
+  
+  // 逐步下降直到碰到障碍
+  while (!stopped && currentPos.y > groundLevel) {
+    // 尝试下降一步
+    const testPos = currentPos.clone()
+    testPos.y -= stepSize
+    
+    // 确保不低于容器底部
+    if (testPos.y < groundLevel) {
+      testPos.y = groundLevel
+      stopped = true
+    }
+    
+    // 检测是否与其他物体碰撞
+    const boxA = new THREE.Box3().setFromCenterAndSize(
+      testPos,
+      new THREE.Vector3(obj.size.x, obj.size.y, obj.size.z)
+    )
+    
+    let hasCollision = false
+    for (let other of draggableObjects) {
+      if (other.mesh === obj.mesh) continue
+      
+      const boxB = new THREE.Box3().setFromCenterAndSize(
+        other.mesh.position.clone(),
+        new THREE.Vector3(other.size.x, other.size.y, other.size.z)
+      )
+      
+      if (boxA.intersectsBox(boxB)) {
+        hasCollision = true
+        stopped = true
+        break
+      }
+    }
+    
+    // 如果没有碰撞，继续下降
+    if (!hasCollision) {
+      currentPos.copy(testPos)
+    } else {
+      // 碰到物体，停在碰撞前的位置
+      stopped = true
+    }
+  }
+  
+  // 更新物体位置
+  obj.mesh.position.copy(currentPos)
+  obj.prevPosition.copy(currentPos)
+  
+  console.log(`🔽 物体已下降到 Y=${currentPos.y.toFixed(2)}`)
 }
 </script>
 

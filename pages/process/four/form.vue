@@ -48,7 +48,7 @@
                       <div class="text-[#666] text-[14px] min-w-[120px] text-right mr-[15px]">{{
                         getArrayLabel(options.field,
                           item.options) }}</div>
-                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d]/g,'')" class="w-[200px]">
+                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px]">
                         <template #append>{{ options.unit }}</template>
                       </el-input>
                     </div>
@@ -176,9 +176,11 @@ const handleSave = async () => {
 const handleGenerateSolution = async () => {
   try {
     saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generateStructuralDesignPlan({
       projectId: projectId.value,
-      type: 4
+      type: 4,
+      params
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -240,6 +242,27 @@ const defData = [
         "type": "input",
         "unit": "度",
         "field": "2",
+        "value": "",
+        "valueConfig": null
+      },
+      {
+        "type": "input",
+        "unit": "kN/m²",
+        "field": "3",
+        "value": "",
+        "valueConfig": null
+      },
+      {
+        "type": "input",
+        "unit": "kN/m²",
+        "field": "4",
+        "value": "",
+        "valueConfig": null
+      },
+      {
+        "type": "input",
+        "unit": "kN/m²",
+        "field": "5",
         "value": "",
         "valueConfig": null
       }

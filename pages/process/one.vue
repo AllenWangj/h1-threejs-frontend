@@ -233,6 +233,11 @@ function createdUploadFile() {
    * @param {File} file - 上传的文件对象
    */
   const uploadFile = (file: any) => {
+    const isTIF = file.name.includes('.tif')
+    if (!isTIF) {
+      ElMessage.error('请上传TIF文件')
+      return false
+    }
     submitFile(file)
   }
 

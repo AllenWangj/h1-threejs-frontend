@@ -30,7 +30,7 @@
             </div>
             <div v-else class="flex flex-col items-center justify-center">
               <span class="text-[20px] text-[#333] mt-[15px]">点击或拖拽到此区域上传</span>
-              <p class="text-[14px] text-[#999] mt-[7px]">支持单个文件上传，仅支持DWG、DXF或PDF文件格式</p>
+              <p class="text-[14px] text-[#999] mt-[7px]">支持单个文件上传，仅支持DWG、DXF、DXF或TIF文件格式</p>
             </div>
           </div>
         </el-upload>
@@ -51,7 +51,10 @@
           <img src="../../../assets/images/icon-pdf.svg" alt="pdf" class="w-[26px] h-[26px]" />
           <div class="flex-1 flex flex-col px-[14px]">
             <span>{{ item.name }}</span>
-            <span class="text-[12px] text-[#999]">{{ formatFileSize(item.size || 0) }}</span>
+            <div class="flex items-center mt-[4px]">
+              <span class="text-[12px] text-[#999] mr-[20px]">{{ formatTime(item.createTime, 'YYYY-MM-DD HH:mm:ss') }}</span>
+              <span class="text-[12px] text-[#999]">{{ formatFileSize(item.size || 0) }}</span>
+            </div>
           </div>
           <img
             src="../../../assets/images/icon-plot-delete.svg"
@@ -71,7 +74,7 @@ import { genFileId } from 'element-plus'
 const route = useRoute()
 
 const { putFile } = useOss()
-const { formatFileSize } = useUtils()
+const { formatFileSize, formatTime } = useUtils()
 
 const projectId = ref('')
 const pageLoading = ref(false)
@@ -135,8 +138,9 @@ function createdUploadFile() {
     const isPDF = file.name.includes('.pdf')
     const isDWG = file.name.includes('.dwg')
     const isDXF = file.name.includes('.dxf')
-    if (!isPDF && !isDWG && !isDXF) {
-      ElMessage.error('请上传PDF、DWG或DXF文件')
+    const isTIF = file.name.includes('.tif')
+    if (!isPDF && !isDWG && !isDXF && !isTIF) {
+      ElMessage.error('请上传PDF、DWG、DXF或TIF文件')
       return false
     }
     currentFile.value = file.name

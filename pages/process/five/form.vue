@@ -93,6 +93,13 @@ const componentLocationOptions = [
 ]
 const customOptions = []
 
+const defaultOptions = [
+  {
+    label: '默认',
+    value: '0'
+  }
+]
+
 // label映射
 const LABLE_MAP = {
   layout: '建筑布局',
@@ -104,10 +111,10 @@ const LABLE_MAP = {
 // 字典映射
 const DICT_MAP = computed(() => {
   return {
-    layout: dictMap.value.get(BuildingFunctional) || [],
-    structuralPlan: dictMap.value.get(StructuralPlan) || [],
+    layout: [...defaultOptions, ...(dictMap.value.get(BuildingFunctional) || [])],
+    structuralPlan: [...defaultOptions, ...(dictMap.value.get(StructuralPlan) || [])],
     componentLocation: componentLocationOptions || [],
-    componentSpecifications: dictMap.value.get(ComponentSpecifications) || [],
+    componentSpecifications: [...defaultOptions, ...(dictMap.value.get(ComponentSpecifications) || [])],
     custom: customOptions || []
   }
 })
@@ -167,9 +174,11 @@ const handleSave = async () => {
 const handleGenerateSolution = async () => {
   try {
     saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generatePartsProductionPlan({
       projectId: projectId.value,
-      type: 5
+      type: 5,
+      params
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
