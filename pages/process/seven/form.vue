@@ -49,7 +49,21 @@
                       <div class="text-[#666] text-[14px] min-w-[80px] text-right mr-[15px]">
                         {{ getArrayLabel(options.field, item.options) }}
                       </div>
-                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d]/g,'')" class="w-[200px]">
+                      <el-input v-model="options.value" @input="handleInputFilter(options, $event)" class="w-[200px]">
+                        <template #append>{{ options.unit }}</template>
+                      </el-input>
+                    </div>
+                  </div>
+                </div>
+                <div v-else-if="item.type === 'select-dynamic'" class="w-full">
+                  <ez-select v-model="item.value" placeholder="请选择" :clearable="true" style="width: 100%"
+                    :options="item.options" />
+                  <div v-for="(options, index) in item.valueConfig" :key="options.field">
+                    <div v-if="item.value === options.field" class="flex items-center mt-[8px]">
+                      <div class="text-[#666] text-[14px] min-w-[120px] text-right mr-[15px]">
+                        {{ getArrayLabel(options.field, item.options) }}
+                      </div>
+                      <el-input v-model="options.value" @input="handleInputFilter(options, $event)" class="w-[200px]">
                         <template #append>{{ options.unit }}</template>
                       </el-input>
                     </div>
@@ -88,6 +102,11 @@ const { dictMap, getDictMap, getArrayLabel } = useDict()
 
 const customOptions = []
 
+const defaultOptions = [{
+  label: '默认',
+  value: '0'
+}]
+
 // label映射
 const LABLE_MAP = {
   overallSize: '总体规模',
@@ -99,10 +118,10 @@ const LABLE_MAP = {
 // 字典映射
 const DICT_MAP = computed(() => {
   return {
-    overallSize: dictMap.value.get(AssembleScale) || [],
-    completionTime: dictMap.value.get(Time) || [],
-    worker: dictMap.value.get(Workers) || [],
-    machinery: dictMap.value.get(Machinery) || [],
+    overallSize: [...defaultOptions, ...(dictMap.value.get(AssembleScale) || [])],
+    completionTime: [...defaultOptions, ...(dictMap.value.get(Time) || [])],
+    worker: [...defaultOptions, ...(dictMap.value.get(Workers) || [])],
+    machinery: [...defaultOptions, ...(dictMap.value.get(Machinery) || [])],
     custom: customOptions || []
   }
 })
@@ -138,6 +157,13 @@ const handleFileChange = (file: any, item: any) => {
   reader.readAsText(rawFile)
 }
 
+// 处理输入限制
+const handleInputFilter = (options: any, value: string) => {
+  const regex = options.regex || /[^\d]/g
+  const filtered = value.replace(regex, '')
+  options.value = filtered
+}
+
 const handleReset = () => {
   formData.value = JSON.parse(JSON.stringify(initProjectForm.value))
 }
@@ -162,9 +188,11 @@ const handleSave = async () => {
 const handleGenerateSolution = async () => {
   try {
     saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generateAssemblePlan({
       projectId: projectId.value,
-      type: 7
+      type: 7,
+      params
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -184,7 +212,7 @@ async function fetchDetail() {
       projectId: projectId.value
     })
     console.log('获取现场组装详情', data)
-    formData.value.projectForm = (data.params || defData).map((item) => {
+    formData.value.projectForm = ( defData).map((item) => {
       item.label = LABLE_MAP[item.field] || item.field
       item.options = DICT_MAP.value[item.field] || []
       return item
@@ -208,42 +236,10 @@ onMounted(async () => {
 const defData = [
   {
     "tag": true,
-    "type": "select",
+    "type": "select-dynamic",
     "field": "overallSize",
     "label": "总体规模",
-    "options": [],
-    "valueConfig": null
-  },
-  {
-    "tag": true,
-    "type": "multiple-dynamic",
-    "field": "completionTime",
-    "label": "完成时间",
-    "value": [],
-    "options": [],
-    "valueConfig": [
-      {
-        "type": "input",
-        "unit": "天",
-        "field": "2",
-        "value": "",
-        "valueConfig": null
-      },
-      {
-        "type": "input",
-        "unit": "小时",
-        "field": "1",
-        "value": "",
-        "valueConfig": null
-      }
-    ]
-  },
-  {
-    "tag": true,
-    "type": "multiple-dynamic",
-    "field": "worker",
-    "label": "工人数量",
-    "value": [],
+    "value": '',
     "options": [],
     "valueConfig": [
       {
@@ -257,10 +253,53 @@ const defData = [
   },
   {
     "tag": true,
-    "type": "multiple-dynamic",
+    "type": "select-dynamic",
+    "field": "completionTime",
+    "label": "完成时间",
+    "value": '',
+    "options": [],
+    "valueConfig": [
+      {
+        "type": "input",
+        "unit": "天",
+        "field": "1",
+        "value": "",
+        "regex": /[^\d.]/g,
+        "valueConfig": null
+      },
+      {
+        "type": "input",
+        "unit": "小时",
+        "field": "2",
+        "value": "",
+        "regex": /[^\d.]/g,
+        "valueConfig": null
+      }
+    ]
+  },
+  {
+    "tag": true,
+    "type": "select-dynamic",
+    "field": "worker",
+    "label": "工人数量",
+    "value": '',
+    "options": [],
+    "valueConfig": [
+      {
+        "type": "input",
+        "unit": "人",
+        "field": "1",
+        "value": "",
+        "valueConfig": null
+      }
+    ]
+  },
+  {
+    "tag": true,
+    "type": "select-dynamic",
     "field": "machinery",
     "label": "机械数量",
-    "value": [],
+    "value": '',
     "options": [],
     "valueConfig": [
       {

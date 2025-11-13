@@ -40,6 +40,25 @@
                   style="width: 100%" :options="item.options" />
                 <ez-select v-else-if="item.type === 'multiple'" v-model="item.value" placeholder="请选择" :clearable="true"
                   multiple style="width: 100%" :options="item.options" />
+                <div v-else-if="item.type === 'multiple-dynamic'" class="w-full">
+                  <ez-select v-model="item.value" placeholder="请选择" :clearable="true" multiple style="width: 100%"
+                    :options="item.options" />
+                  <div v-for="(options, index) in item.valueConfig" :key="options.field">
+                    <div v-if="item.value.includes(options.field)" class="flex items-center mt-[8px]">
+                      <div class="text-[#666] text-[14px] min-w-[60px] text-right mr-[15px]">
+                        {{ getArrayLabel(options.field, item.options) }}
+                      </div>
+                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d]/g,'')" class="w-[200px]">
+                        <template #append>{{ options.unit }}</template>
+                      </el-input>
+                      <!-- 可以输入数字和小数点得正则 -->
+                      <el-input v-if="options.unit2" v-model="options.value2"
+                        oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px] ml-[10px]">
+                        <template #append>{{ options.unit2 }}</template>
+                      </el-input>
+                    </div>
+                  </div>
+                </div>
               </el-form-item>
             </div>
           </el-form>
@@ -69,7 +88,7 @@ const ClimateRegion = 'climate_region' // 区域目标规划
 const FunctionalDivision = 'functional_division' // 功能区划
 const SchemaType = 'schema_type' // 模式类型
 const BuildingFunctional = 'building_functional' // 功能模块建筑
-const { dictMap, getDictMap } = useDict()
+const { dictMap, getDictMap, getArrayLabel } = useDict()
 
 // 土地规划
 const LandOptions = [
@@ -85,15 +104,22 @@ const FacilityLayoutOptions = [
     value: '0'
   }
 ]
+
+const defaultOptions = [
+  {
+    label: '默认',
+    value: '0'
+  }
+]
 // 自定义
 const customOptions = []
 // 字典映射
 const DICT_MAP = computed(() => {
   return {
-    climateRegion: dictMap.value.get(ClimateRegion) || [],
+    climateRegion: [...defaultOptions, ...(dictMap.value.get(ClimateRegion) || [])],
     land: LandOptions || [],
-    functionalDivision: dictMap.value.get(FunctionalDivision) || [],
-    schemaType: dictMap.value.get(SchemaType) || [],
+    functionalDivision: [...defaultOptions, ...(dictMap.value.get(FunctionalDivision) || [])],
+    schemaType: [...defaultOptions, ...(dictMap.value.get(SchemaType) || [])],
     facilityLayout: FacilityLayoutOptions || [],
     functionalBuilding: dictMap.value.get(BuildingFunctional) || [],
     custom: customOptions || []
@@ -167,17 +193,11 @@ const handleSave = async () => {
 const handleGenerateSolution = async () => {
   try {
     saveLoading.value = true
-    // const params = JSON.parse(JSON.stringify(formData.value.projectForm.reduce((acc, item) => {
-    //   if (Array.isArray(item.value)) {
-    //     acc[item.field] = item.value.join(',')
-    //   } else {
-    //     acc[item.field] = item.value
-    //   }
-    //   return acc
-    // }, {})))
+    const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generatePlanLayoutPlan({
       projectId: projectId.value,
-      type: 2
+      type: 2,
+      params
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -254,6 +274,14 @@ const defData = [
   {
     "tag": true,
     "type": "select",
+    "field": "facilityLayout",
+    "label": "建筑和设施布局",
+    "options": [],
+    "valueConfig": null
+  },
+  {
+    "tag": true,
+    "type": "select",
     "field": "schemaType",
     "label": "模式类型",
     "options": [],
@@ -261,12 +289,54 @@ const defData = [
   },
   {
     "tag": true,
-    "type": "multiple",
+    "type": "multiple-dynamic",
     "field": "functionalBuilding",
     "label": "功能模块建筑",
     "value": [],
     "options": [],
-    "valueConfig": null
+    "valueConfig": [
+      {
+        "field": "1",
+        "type": "input",
+        "type2": "input",
+        "unit": "个",
+        "unit2": "m²",
+        "value": "",
+        "value2": ""
+      }, {
+        "field": "2",
+        "type": "input",
+        "type2": "input",
+        "unit": "个",
+        "unit2": "m²",
+        "value": "",
+        "value2": ""
+      }, {
+        "field": "3",
+        "type": "input",
+        "type2": "input",
+        "unit": "个",
+        "unit2": "m²",
+        "value": "",
+        "value2": ""
+      }, {
+        "field": "4",
+        "type": "input",
+        "type2": "input",
+        "unit": "个",
+        "unit2": "m²",
+        "value": "",
+        "value2": ""
+      }, {
+        "field": "5",
+        "type": "input",
+        "type2": "input",
+        "unit": "个",
+        "unit2": "m²",
+        "value": "",
+        "value2": ""
+      }
+    ]
   },
   {
     "tag": true,

@@ -52,6 +52,20 @@
                     </div>
                   </div>
                 </div>
+                <div v-else-if="item.type === 'select-dynamic'" class="w-full">
+                  <ez-select v-model="item.value" placeholder="请选择" :clearable="true" style="width: 100%"
+                    :options="item.options" />
+                  <div v-for="(options, index) in item.valueConfig" :key="options.field">
+                    <div v-if="item.value === options.field" class="flex items-center mt-[8px]">
+                      <div class="text-[#666] text-[14px] min-w-[120px] text-right mr-[15px]">
+                        {{ getArrayLabel(options.field, item.options) }}
+                      </div>
+                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px]">
+                        <template #append>{{ options.unit }}</template>
+                      </el-input>
+                    </div>
+                  </div>
+                </div>
               </el-form-item>
             </div>
           </el-form>
@@ -84,6 +98,13 @@ const { dictMap, getDictMap, getArrayLabel } = useDict()
 
 const customOptions = []
 
+const defaultOptions = [
+  {
+    label: '默认',
+    value: '0'
+  }
+]
+
 // label映射
 const LABLE_MAP = {
   transportation: '运载方式',
@@ -94,9 +115,9 @@ const LABLE_MAP = {
 // 字典映射
 const DICT_MAP = computed(() => {
   return {
-    transportation: dictMap.value.get(Transportation) || [],
-    loadingCapacity: dictMap.value.get(LoadingCapacity) || [],
-    shippingTime: dictMap.value.get(Time) || [],
+    transportation: [...defaultOptions, ...(dictMap.value.get(Transportation) || [])],
+    loadingCapacity: [...defaultOptions, ...(dictMap.value.get(LoadingCapacity) || [])],
+    shippingTime: [...defaultOptions, ...(dictMap.value.get(Time) || [])],
     custom: customOptions || []
   }
 })
@@ -156,9 +177,11 @@ const handleSave = async () => {
 const handleGenerateSolution = async () => {
   try {
     saveLoading.value = true
+    const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generatePackingPlan({
       projectId: projectId.value,
-      type: 6
+      type: 6,
+      params
     })
     ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
@@ -219,23 +242,23 @@ const defData = [
   },
   {
     "tag": true,
-    "type": "multiple-dynamic",
+    "type": "select-dynamic",
     "field": "shippingTime",
     "label": "运输时间",
-    "value": [],
+    "value": "",
     "options": [],
     "valueConfig": [
       {
         "type": "input",
         "unit": "天",
-        "field": "2",
+        "field": "1",
         "value": "",
         "valueConfig": null
       },
       {
         "type": "input",
         "unit": "小时",
-        "field": "1",
+        "field": "2",
         "value": "",
         "valueConfig": null
       }
