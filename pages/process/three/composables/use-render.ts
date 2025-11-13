@@ -1,7 +1,5 @@
 import { type GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import * as THREE from 'three';
-import {a} from "./a"
-import { plan } from "./plan1"
 const { BaseThree } = useThree()
 const { getModelUrl, getModelMap } = useModelMap()
 enum EGroupType {
