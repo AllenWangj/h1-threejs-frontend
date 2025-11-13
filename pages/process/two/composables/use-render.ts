@@ -1,7 +1,6 @@
 import * as Three from 'three'
 const { BaseThree } = useThree()
 const { getModelUrl, getModelMap } = useModelMap()
-import  {Set75} from "./set75"
 /**
  * 场景布局类型
  */

@@ -15,9 +15,10 @@
       </div>
          <div class="plan-detail">
         <el-descriptions title="方案信息" :column="2" >
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
+          <el-descriptions-item label="方案名称" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-          <el-descriptions-item label="方案创建时间" :span="1">{{ currentPlan.createTime }}</el-descriptions-item>
+          <el-descriptions-item label="方案创建时间" :span="1">{{ formatTime(currentPlan.createTime , 'YYYY-MM-DD HH:mm:ss') }}</el-descriptions-item>
+
         </el-descriptions>
            <el-descriptions title="结构信息" :column="2" >
           <el-descriptions-item label="建筑类型" :span="1">仓储</el-descriptions-item>
@@ -42,6 +43,7 @@ import { planList, planDetailInfo, planExport } from '@/apis/project'
 import { useRender } from './composables/use-render'
 import { materialInfoService } from './composables/material-info-service'
 import BuildInfo from './build-info.vue'
+const { formatTime } = useUtils()
 
 const loading = ref(true)
 const four = ref()
@@ -97,7 +99,7 @@ async function fetchDetail() {
       type: 4
     })
     schemeList.value = data || []
-    if (schemeList.value.length) {
+    if (schemeList.value.length>0) {
       currentAcviteScheme.value = schemeList.value[0].id
       loading.value = true
       currentPlan.value = schemeList.value[0]

@@ -83,7 +83,7 @@ async function fetchDetail() {
       type:5
     })
     schemeList.value = data || []
-    if (schemeList.value.length) {
+    if (schemeList.value.length >0) {
       currentAcviteScheme.value = schemeList.value[0].id
       loadModel()
     }

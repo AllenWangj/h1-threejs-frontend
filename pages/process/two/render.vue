@@ -70,12 +70,13 @@
         <!-- <el-button type="primary" style="width: 100px;margin-bottom: 10px;margin-left: 0px;" @click="handleAddModel('02_75_10137')">建筑一</el-button> -->
       </div>
       <div class="plan-detail">
-        <el-descriptions title="方案信息" :column="2" >
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
+        <el-descriptions title="方案信息" :column="2">
+          <el-descriptions-item label="方案名称" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-          <el-descriptions-item label="方案创建时间" :span="1">{{ currentPlan.createTime }}</el-descriptions-item>
+          <el-descriptions-item label="方案创建时间" :span="1">{{ formatTime(currentPlan.createTime, 'YYYY-MM-DD HH:mm:ss')
+            }}</el-descriptions-item>
         </el-descriptions>
-           <el-descriptions title="地块信息" :column="2" >
+        <el-descriptions title="地块信息" :column="2">
           <el-descriptions-item label="经纬度" :span="1"> 31.2304°N, 121.4737°E</el-descriptions-item>
           <el-descriptions-item label="地块面积" :span="1"> 250mx250m</el-descriptions-item>
           <el-descriptions-item label="海拔" :span="1">1200m</el-descriptions-item>
@@ -84,17 +85,17 @@
           <el-descriptions-item label="功能模块布局" :span="1">办公、生活、卫勤、指挥、仓库</el-descriptions-item>
 
         </el-descriptions>
-            
 
-          <el-descriptions title="建筑信息" :column="2" >
+
+        <el-descriptions title="建筑信息" :column="2">
           <el-descriptions-item label="办公" :span="1"> 3栋</el-descriptions-item>
           <el-descriptions-item label="生活" :span="1"> 6栋</el-descriptions-item>
           <el-descriptions-item label="卫勤" :span="1"> 2栋</el-descriptions-item>
           <el-descriptions-item label="指挥" :span="1"> 6栋</el-descriptions-item>
           <el-descriptions-item label="仓库" :span="1"> 2栋</el-descriptions-item>
- 
+
         </el-descriptions>
-       
+
       </div>
     </div>
   </div>
@@ -103,6 +104,7 @@
 <script setup lang="ts">
 import SchemesList from '@/components/schemes-list/index.vue'
 import { useRender } from './composables/use-render'
+const { formatTime } = useUtils()
 import { planList, planDetailInfo, removePlan, createPlan, updatePlan, planExport } from '@/apis/project'
 const route = useRoute()
 const projectId = ref('')
@@ -163,9 +165,9 @@ async function fetchDetail(isLoadFirst = true) {
       type: '2'
     })
     schemeList.value = data || []
-    if (schemeList.value.length && isLoadFirst) {
+    if (schemeList.value.length>0  && isLoadFirst) {
       currentAcviteScheme.value = schemeList.value[0].id
-  currentPlan.value =   schemeList.value[0]
+      currentPlan.value = schemeList.value[0]
 
       planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         const {
@@ -291,8 +293,10 @@ function handleAddModel(code: string) {
     .el-descriptions__body {
       background: transparent !important;
     }
+
     .el-descriptions__label,
-    .el-descriptions__content,.el-descriptions__title {
+    .el-descriptions__content,
+    .el-descriptions__title {
       color: #fff;
     }
   }

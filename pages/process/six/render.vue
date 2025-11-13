@@ -5,7 +5,7 @@
       <SixComponent v-if="!isDelive" :planId="currentAcviteScheme" />
       <delivery v-else :demBounds="demBounds" :planId="currentAcviteScheme" :dem-url="demUrl" :satellite-url="satelliteUrl" />
       <div v-if="currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
-        <el-button type="primary" @click="handleDeliveEvt">运输路线</el-button>
+        <el-button type="primary" @click="handleDeliveEvt" :disabled="!(schemeList.length > 0)">运输路线</el-button>
         <!-- 下载方案 -->
         <el-button @click="downloadSolution" type="primary">导出方案</el-button>
         
@@ -76,7 +76,7 @@ async function fetchDetail() {
       type: 6
     })
     schemeList.value = data || []
-    if (schemeList.value.length) {
+    if (schemeList.value.length >0) {
       currentAcviteScheme.value = schemeList.value[0].id
       // planDetail({ planId: currentAcviteScheme.value }).then(res => {
       //   const { data: { layouts } } = res

@@ -16,9 +16,10 @@
       </div>
        <div class="plan-detail">
         <el-descriptions title="方案信息" :column="2" >
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
+          <el-descriptions-item label="方案名称" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-          <el-descriptions-item label="方案创建时间" :span="1">{{ currentPlan.createTime }}</el-descriptions-item>
+          <el-descriptions-item label="方案创建时间" :span="1">{{ formatTime(currentPlan.createTime , 'YYYY-MM-DD HH:mm:ss') }}</el-descriptions-item>
+
         </el-descriptions>
            <el-descriptions title="结构信息" :column="2" >
           <el-descriptions-item label="建筑类型" :span="1">仓储</el-descriptions-item>
@@ -39,16 +40,12 @@ import SchemesList from '@/components/schemes-list/index.vue'
 // import Threeobject from "@/threejs/three/index"
 import { getInternalLayoutDetail,planDetailInfo,planList ,createPlan, planExport} from '@/apis/project'
 import {useRender} from "./composables/use-render"
-// import {plan} from "./composables/plan1.ts"
-// import {plan} from "./composables/plan2"
-// import {plan} from "./composables/a"
+const { formatTime } = useUtils()
 
 const three = ref()
 const { ProcessThree } = useRender()
 let processThree: InstanceType<typeof ProcessThree> | null = null
 const loading = ref(false)
-// let processTwo: Threeobject | null = null
-
 const route = useRoute()
 const projectId = ref('')
 const schemeList = ref<any[]>([])
@@ -94,9 +91,16 @@ async function fetchDetail() {
       type:3
     })
     schemeList.value = data || []
-    if (schemeList.value.length) {
+    if (schemeList.value.length >0) {
       currentAcviteScheme.value = schemeList.value[0].id
       currentPlan.value = schemeList.value[0]
+           planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
+        const { data: { layouts } } = res
+        loading.value = true
+       await processThree!.handleOriginModel(layouts)
+        loading.value = false
+
+      })
     }
     // createPlan({
     //   projectId:projectId.value,
@@ -107,13 +111,7 @@ async function fetchDetail() {
 
     
     // console.log('获取内部布局详情', data)
-     planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
-        const { data: { layouts } } = res
-        loading.value = true
-       await processThree!.handleOriginModel(layouts)
-        loading.value = false
 
-      })
   } catch (error) {
     console.error('获取内部布局详情失败', error)
   } finally {
