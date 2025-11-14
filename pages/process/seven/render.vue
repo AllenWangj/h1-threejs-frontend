@@ -58,23 +58,29 @@
         <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要20人/天" placement="top-start"> 
           <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep53Animation">步骤14</el-button>
         </el-tooltip>
+           <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要20人/天" placement="top-start"> 
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep53Animation1">步骤15</el-button>
+        </el-tooltip>
+         <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要20人/天" placement="top-start"> 
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep53Animation2">步骤16</el-button>
+        </el-tooltip>
         <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要15人/天" placement="top-start">
-          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep54Animation">步骤15</el-button>
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep54Animation">步骤17</el-button>
         </el-tooltip>
         <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要10人/天" placement="top-start"> 
-          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation">步骤16</el-button>
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation">步骤18</el-button>
         </el-tooltip>
             <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要10人/天" placement="top-start"> 
-          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation1">步骤17</el-button>
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation1">步骤19</el-button>
         </el-tooltip>
          <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要10人/天" placement="top-start"> 
-          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation2">步骤188</el-button>
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation2">步骤20</el-button>
         </el-tooltip>
            <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要10人/天" placement="top-start"> 
-          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation3">步骤19</el-button>
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation3">步骤21</el-button>
         </el-tooltip>
           <el-tooltip class="box-item" :enterable="false" effect="dark" content="需要10人/天" placement="top-start"> 
-          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation4">步骤20</el-button>
+          <el-button :disabled="btnLoading" class="w-[65px]" type="primary" @click="playStep55Animation4">步骤22</el-button>
         </el-tooltip>
       </div>
       <div v-if="currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
@@ -1068,7 +1074,7 @@ async function playStep53Animation() {
     // '密封钢板（顶）',
     // '吊顶板',
     // '地板(顶）',
-    // '屋架',
+    '屋架',
     '内装饰墙板',
     '门窗',
     '外墙板檩条',
@@ -1076,7 +1082,122 @@ async function playStep53Animation() {
     '柱装饰板',
     '屋面板'
   ])
-  await animateObjects(['屋架'])
+  // await animateObjects(['屋面主檩条'])
+  await animateObjects1(['屋架'],500,1,0)
+  btnLoading.value = false
+}
+async function playStep53Animation1() {
+  // btnLoading.value = true
+  // hiddenModel(['外墙面板', '柱装饰板', '屋面板'])
+  // // 需要先显示上一步的部件以免未执行第上一步
+  // await animateObjects(
+  //   [
+  //     '屋架',
+  //     '底柱',
+  //     '地板托架',
+  //     '次梁',
+  //     '密封钢板',
+  //     '地板',
+  //     '柱',
+  //     '角件',
+  //     '梁',
+  //     '地板托架（顶）',
+  //     '次梁（顶）',
+  //     '密封钢板（顶）',
+  //     '吊顶板',
+  //     '地板(顶）'
+  //   ],
+  //   0
+  // )
+  // // 执行当前步骤的动画
+  // await animateObjects(['内装饰墙板', '门窗'], 0)
+  // await animateObjects(['外墙板檩条'], 0)
+  // await animateObjects(['外墙面板'])
+  // // await animateObjects(['柱装饰板'])
+  // // await animateObjects(['屋面板'])
+  // btnLoading.value = false
+   btnLoading.value = true
+  hiddenModel([
+    // '底柱',
+    // '地板托架',
+    // '次梁',
+    // '密封钢板',
+  // '地板' ,
+    // '柱',
+    // '角件',
+    // '梁',
+    // '地板托架（顶）',
+    // '次梁（顶）',
+    // '密封钢板（顶）',
+    // '吊顶板',
+    // '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // await animateObjects(['屋面主檩条'])
+  await animateObjects1(['屋架'],500,1,1)
+  btnLoading.value = false
+}
+async function playStep53Animation2() {
+  // btnLoading.value = true
+  // hiddenModel(['外墙面板', '柱装饰板', '屋面板'])
+  // // 需要先显示上一步的部件以免未执行第上一步
+  // await animateObjects(
+  //   [
+  //     '屋架',
+  //     '底柱',
+  //     '地板托架',
+  //     '次梁',
+  //     '密封钢板',
+  //     '地板',
+  //     '柱',
+  //     '角件',
+  //     '梁',
+  //     '地板托架（顶）',
+  //     '次梁（顶）',
+  //     '密封钢板（顶）',
+  //     '吊顶板',
+  //     '地板(顶）'
+  //   ],
+  //   0
+  // )
+  // // 执行当前步骤的动画
+  // await animateObjects(['内装饰墙板', '门窗'], 0)
+  // await animateObjects(['外墙板檩条'], 0)
+  // await animateObjects(['外墙面板'])
+  // // await animateObjects(['柱装饰板'])
+  // // await animateObjects(['屋面板'])
+  // btnLoading.value = false
+   btnLoading.value = true
+  hiddenModel([
+    // '底柱',
+    // '地板托架',
+    // '次梁',
+    // '密封钢板',
+  // '地板' ,
+    // '柱',
+    // '角件',
+    // '梁',
+    // '地板托架（顶）',
+    // '次梁（顶）',
+    // '密封钢板（顶）',
+    // '吊顶板',
+    // '地板(顶）',
+    '屋架',
+    '内装饰墙板',
+    '门窗',
+    '外墙板檩条',
+    '外墙面板',
+    '柱装饰板',
+    '屋面板'
+  ])
+  // await animateObjects(['屋面主檩条'])
+  await animateObjects1(['屋架'],500,1,2)
   btnLoading.value = false
 }
 async function playStep54Animation() {
@@ -1501,6 +1622,50 @@ function animateObjects(names, startZ = 500, duration = 1) {
 
   return Promise.all(promises)
 }
+function animateObjects1(names, startZ = 500, duration = 1,number=0) {
+  
+  const promises = names.map((name) => {
+    const obj = scene.getObjectByName(name)
+    
+    // const namme = ['屋面主檩条',"屋面次檩条","屋面连接件"]
+    if(number ==0) {
+        const obj = scene.getObjectByName("屋面主檩条")
+       const obj1 = scene.getObjectByName("屋面次檩条")
+    const obj2 = scene.getObjectByName("屋面连接件")
+    obj.visible = true
+    obj1.visible = false
+    obj2.visible = false
+    }else if(number ==1) {
+  const obj1 = scene.getObjectByName("屋面次檩条")
+   obj1.visible = true
+   obj1.parent.visible = true
+     const obj2 = scene.getObjectByName("屋面次檩条")
+   obj2.visible = false
+   animateObjects(["屋面次檩条"])
+       const obj3 = scene.getObjectByName("屋面连接件")
+   obj3.visible = false
+
+    }else if(number ==2) {
+    const obj1 = scene.getObjectByName("屋面次檩条")
+    obj1.visible = true
+    obj1.parent.visible = true
+    const obj2 = scene.getObjectByName("屋面次檩条")
+       obj2.visible = true
+  const obj3 = scene.getObjectByName("屋面连接件")
+   obj3.visible = false
+   animateObjects(["屋面连接件"])
+    }
+   
+ if (!obj || obj.visible) return Promise.resolve()
+    const endPos = obj.position.clone()
+  if(number == 0){
+    return animateObject(obj, endPos, startZ, duration)
+  }
+  })
+
+  return Promise.all(promises)
+}
+
 
 // 隐藏模型
 function hiddenModel(names = []) {
