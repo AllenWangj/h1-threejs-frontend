@@ -1,23 +1,25 @@
 <template>
-  <div class="w-full h-full flex">
+  <div class="w-full h-full flex pt-[70px] px-[6%]">
     <!-- 项目列表 -->
-    <div class="w-[280px] bg-[#f8f9fa] rounded-[4px] flex flex-col items-center">
-      <div class="cursor-pointer flex flex-col justify-center items-center py-[30px]" @click="handleCreateProject">
-        <img src="../../assets/images/home/addIcon.svg" alt="add" class="w-[44px] h-[44px]" />
-        <span class="text-[#333333] text-[14px] mt-[10px]">新建项目</span>
-      </div>
-      <div class="w-[100%] h-[1px] bg-[#9CC6ED]"></div>
-      <div class="mt-[20px] w-[100%] px-[10px]">
-        <el-input v-model="searchText" placeholder="请输入项目名称" class="w-[100%]">
-          <template #append>
-            <el-button
-              :icon="Search"
-              class="!text-[#fff] !rounded-[0]"
-              style="background: linear-gradient(#3a83fc 16%, #a0c6ff)"
-              @click="handleSearchProject"
-            />
+    <div class="w-[436px] rounded-[4px] flex flex-col items-center home-side-bar">
+      <div class="w-[100%] side-bar-search-box">
+        <el-input
+          v-model="searchText"
+          placeholder="搜索"
+          @keydown.enter="handleSearchProject"
+          @blur="handleSearchProject"
+          class="w-[282px] h-[73px] rounded-[16px] text-[24px]"
+        >
+          <template #prefix>
+            <div class="pl-[20px]">
+              <img src="../../assets/images/home/icon-input-search.png" alt="" width="25px" height="25px" />
+            </div>
           </template>
         </el-input>
+        <div class="side-bar-search-box-botton" @click="handleCreateProject">
+          <img src="../../assets/images/home/icon-add.png" alt="" width="22px" height="22px" />
+          <span>新建</span>
+        </div>
       </div>
       <div class="list-wrap">
         <div
@@ -29,210 +31,154 @@
         >
           <div class="list-wrap-item-header w-[100%] flex items-center justify-between">
             <p class="list-wrap-item-header__title">{{ item.name }}</p>
+            <div v-if="item.status === 1" class="status-ongoing ml-[10px]">
+              <!-- 进行中 -->
+              <img src="../../assets/images/home/icon-project-status-ongoing.png" alt="" class="w-[66px] h-[31px]" />
+            </div>
+            <div v-else-if="item.status === 2" class="status-done ml-[10px]">
+              <!-- 已完成 -->
+              <img src="../../assets/images/home/icon-project-status-done.png" alt="" class="w-[66px] h-[31px]" />
+            </div>
+            <div v-else class="status-waiting ml-[10px]">
+              <!-- 未开始 -->
+              <img src="../../assets/images/home/icon-project-status-waiting.png" alt="" class="w-[66px] h-[31px]" />
+            </div>
             <span class="flex-1"></span>
             <img
-              class="list-wrap-item-header__edit !mr-0"
-              src="../../assets/images/home/icon-delete.png"
+              class="cursor-pointer mr-[9px] ml-[10px]"
+              src="../../assets/images/home/icon-project-item-delete.png"
               alt=""
+              width="22px"
+              height="22px"
               @click="handleRemoveProject(item)"
             />
             <img
-              class="list-wrap-item-header__edit"
-              src="../../assets/images/home/edit.svg"
+              class="cursor-pointer"
+              src="../../assets/images/home/icon-project-item-edit.png"
               alt=""
+              width="22px"
+              height="22px"
               @click="handleEditProject(item)"
             />
-            <div
-              v-if="item.status === 1"
-              class="list-wrap-item-header__status status-ongoing"
-              @click="handlepushLibarty"
-            >
-              进行中
-            </div>
-            <div
-              v-else-if="item.status === 2"
-              class="list-wrap-item-header__status status-done"
-              @click="handlepushLibarty"
-            >
-              已完成
-            </div>
-            <div v-else class="list-wrap-item-header__status" @click="handlepushLibarty">未选择</div>
           </div>
           <div class="list-wrap-item-body">
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
-              <span class="title">地址决策</span>
-              <span class="status" v-if="item.siteStatus == 0">未选择</span>
-              <span class="status status-ongoing" v-else-if="item.siteStatus == 1">进行中</span>
-              <span class="status status-done" v-else-if="item.siteStatus == 2">已完成</span>
+            <span class="title">创建时间</span>
+            <span class="status">{{ dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss') }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="relative flex-1 ml-[118px] home-background" v-loading="detailLoading">
+      <div
+        v-for="item in projectDetailList"
+        :key="item.id"
+        class="h-[50%] w-[25%] min-w-[250px]"
+        @click="handleStepClick(item.path, item.status)"
+      >
+        <div class="home-main-item">
+          <div class="relative h-[100%]">
+            <img class="home-main-item-bg" src="../../assets/images/home/icon-project-step-bg.png" alt="" />
+            <img
+              class="home-main-item-bg-active"
+              src="../../assets/images/home/icon-project-step-bg-active.png"
+              alt=""
+            />
+            <div class="content">
+              <img class="content-img" :src="item.src" alt="" />
+              <span class="title">{{ item.name }}</span>
+              <div class="step-status-box">
+                <img
+                  v-if="item.status === 0"
+                  src="../../assets/images/home/icon-project-step-status-waiting.png"
+                  alt=""
+                  width="24px"
+                  height="24px"
+                />
+                <img
+                  v-else-if="item.status === 1"
+                  src="../../assets/images/home/icon-project-step-status-ongoing.png"
+                  alt=""
+                  width="24px"
+                  height="24px"
+                />
+                <img
+                  v-else-if="item.status === 2"
+                  src="../../assets/images/home/icon-project-step-status-done.png"
+                  alt=""
+                  width="24px"
+                  height="24px"
+                />
+                <span>{{ item.status === 2 ? '已完成' : item.status === 1 ? '进行中' : '未选择' }}</span>
+              </div>
             </div>
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
-              <span class="title">规划布局</span>
-              <span class="status" v-if="item.planLayoutStatus == 0">未选择</span>
-              <span class="status status-ongoing" v-else-if="item.planLayoutStatus == 1">进行中</span>
-              <span class="status status-done" v-else-if="item.planLayoutStatus == 2">已完成</span>
-            </div>
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
-              <span class="title">内部结构</span>
-              <span class="status" v-if="item.internalLayoutStatus == 0">未选择</span>
-              <span class="status status-ongoing" v-else-if="item.internalLayoutStatus == 1">进行中</span>
-              <span class="status status-done" v-else-if="item.internalLayoutStatus == 2">已完成</span>
-            </div>
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
-              <span class="title">结构设计</span>
-              <span class="status" v-if="item.structuralDesignStatus == 0">未选择</span>
-              <span class="status status-ongoing" v-else-if="item.structuralDesignStatus == 1">进行中</span>
-              <span class="status status-done" v-else-if="item.structuralDesignStatus == 2">已完成</span>
-            </div>
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
-              <span class="title">部件生产</span>
-              <span class="status" v-if="item.packingStatus == 0">未选择</span>
-              <span class="status status-ongoing" v-else-if="item.packingStatus == 1">进行中</span>
-              <span class="status status-done" v-else-if="item.packingStatus == 2">已完成</span>
-            </div>
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
-              <span class="title">运输保障</span>
-              <span class="status" v-if="item.partsProductionStatus == 0">未选择</span>
-              <span class="status status-ongoing" v-else-if="item.partsProductionStatus == 1">进行中</span>
-              <span class="status status-done" v-else-if="item.partsProductionStatus == 2">已完成</span>
-            </div>
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/type.svg" alt="" />
-              <span class="title">现场组装</span>
-              <span class="status" v-if="item.assembleStatus == 0">未选择</span>
-              <span class="status status-ongoing" v-else-if="item.assembleStatus == 1">进行中</span>
-              <span class="status status-done" v-else-if="item.assembleStatus == 2">已完成</span>
-            </div>
-            <div class="body-item">
-              <img class="w-[16px] h-[16px] icon" src="../../assets/images/home/timeIcon.svg" alt="" />
-              <span class="title">创建时间</span>
-              <span class="status">{{ dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss') }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="h-[50%] w-[25%] min-w-[250px]">
+        <div class="home-main-item">
+          <div class="relative h-[100%]">
+            <img class="home-main-item-bg" src="../../assets/images/home/icon-project-step-bg.png" alt="" />
+            <img
+              class="home-main-item-bg-active"
+              src="../../assets/images/home/icon-project-step-bg-active.png"
+              alt=""
+            />
+            <div class="content">
+              <img class="content-img" src="../../assets/images/home/icon-project-step-8.png" alt="" />
+              <span class="title">模型库</span>
+              <div class="step-status-box opacity-0">
+                <!-- 占位 -->
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="relative flex-1 ml-[15px] home-background" v-loading="detailLoading">
-      <a
-        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-1"
-        @click="handleStepClick('/process/one', currentProjectDetail.siteStatus)"
-      >
-        <div>
-          <span v-if="currentProjectDetail.siteStatus == 0" class="status-unselected">未选择</span>
-          <span v-if="currentProjectDetail.siteStatus == 1" class="status-ongoing">进行中</span>
-          <span v-if="currentProjectDetail.siteStatus == 2" class="status-done">已完成</span>
-        </div>
-      </a>
-      <a
-        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-2"
-        @click="handleStepClick('/process/two', currentProjectDetail.planLayoutStatus)"
-      >
-        <div>
-          <span v-if="currentProjectDetail.planLayoutStatus == 0" class="status-unselected">未选择</span>
-          <span v-if="currentProjectDetail.planLayoutStatus == 1" class="status-ongoing">进行中</span>
-          <span v-if="currentProjectDetail.planLayoutStatus == 2" class="status-done">已完成</span>
-        </div>
-      </a>
-      <a
-        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-3"
-        @click="handleStepClick('/process/three', currentProjectDetail.internalLayoutStatus)"
-      >
-        <div>
-          <span v-if="currentProjectDetail.internalLayoutStatus == 0" class="status-unselected">未选择</span>
-          <span v-if="currentProjectDetail.internalLayoutStatus == 1" class="status-ongoing">进行中</span>
-          <span v-if="currentProjectDetail.internalLayoutStatus == 2" class="status-done">已完成</span>
-        </div>
-      </a>
-      <a
-        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-4"
-        @click="handleStepClick('/process/four', currentProjectDetail.structuralDesignStatus)"
-      >
-        <div>
-          <span v-if="currentProjectDetail.structuralDesignStatus == 0" class="status-unselected">未选择</span>
-          <span v-if="currentProjectDetail.structuralDesignStatus == 1" class="status-ongoing">进行中</span>
-          <span v-if="currentProjectDetail.structuralDesignStatus == 2" class="status-done">已完成</span>
-        </div>
-      </a>
-      <a
-        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-5"
-        @click="handleStepClick('/process/five', currentProjectDetail.packingStatus)"
-      >
-        <div>
-          <span v-if="currentProjectDetail.packingStatus == 0" class="status-unselected">未选择</span>
-          <span v-if="currentProjectDetail.packingStatus == 1" class="status-ongoing">进行中</span>
-          <span v-if="currentProjectDetail.packingStatus == 2" class="status-done">已完成</span>
-        </div>
-      </a>
-      <a
-        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-6"
-        @click="handleStepClick('/process/six', currentProjectDetail.partsProductionStatus)"
-      >
-        <div>
-          <span v-if="currentProjectDetail.partsProductionStatus == 0" class="status-unselected">未选择</span>
-          <span v-if="currentProjectDetail.partsProductionStatus == 1" class="status-ongoing">进行中</span>
-          <span v-if="currentProjectDetail.partsProductionStatus == 2" class="status-done">已完成</span>
-        </div>
-      </a>
-      <a
-        class="cursor-pointer text-[#007bff] mx-[10px] step-button step-button-7"
-        @click="handleStepClick('/process/seven', currentProjectDetail.assembleStatus)"
-      >
-        <div>
-          <span v-if="currentProjectDetail.assembleStatus == 0" class="status-unselected">未选择</span>
-          <span v-if="currentProjectDetail.assembleStatus == 1" class="status-ongoing">进行中</span>
-          <span v-if="currentProjectDetail.assembleStatus == 2" class="status-done">已完成</span>
-        </div>
-      </a>
-    </div>
     <!-- 新建项目 -->
-    <ez-dialog
-      v-model="dialogFlag"
-      :loading="submitLoading"
-      title="新建项目"
-      width="720px"
-      class="project-dialog-container"
-      @confirm="handleSubmitProject"
-    >
-      <el-form ref="projectFormRef" :model="projectForm" :rules="projectFormRules" label-width="120px">
+    <el-drawer v-model="dialogFlag" direction="rtl" title="新建项目" class="project-dialog-container">
+      <el-form ref="projectFormRef" label-position="top" :model="projectForm" :rules="projectFormRules">
         <el-form-item label="项目名称" prop="name">
-          <el-input v-model="projectForm.name" placeholder="请输入项目名" />
+          <el-input v-model="projectForm.name" placeholder="请输入项目名" size="large" />
         </el-form-item>
         <el-form-item label="选择建筑类型" prop="types">
-          <div class="flex flex-wrap bg-[#f7f8fa] p-[8px] rounded-[4px]">
+          <div class="flex flex-wrap justify-between p-[8px] rounded-[4px]">
             <div
               v-for="type in typesList"
               :key="type.id"
-              class="cursor-pointer flex flex-col items-center justify-center bg-[#fff] w-[120px] h-[120px] m-[8px] rounded-[4px]"
+              class="add-project-type-item"
               :class="projectForm.types.includes(type.id) ? 'is-active' : ''"
               @click="handleSelectType(type.id)"
             >
-              <img :src="type.src" alt="" width="46" height="46" />
+              <img :src="type.src" alt="" width="101" height="101" />
               <span class="text-[13px]">{{ type.name }}</span>
             </div>
+            <!-- 占位 -->
+            <div class="w-[149px]"></div>
           </div>
         </el-form-item>
       </el-form>
-    </ez-dialog>
+      <template #footer>
+        <div class="flex items-center justify-center project-dialog-footer">
+          <el-button class="button-comfirm" @click="handleSubmitProject">确定</el-button>
+          <el-button class="button-cancel" @click="dialogFlag = false">取消</el-button>
+        </div>
+      </template>
+    </el-drawer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Search } from '@maxtan/ez-ui-icons'
-import ProjectStep1 from '../../assets/images/home/project-step-1.svg'
-import ProjectStep2 from '../../assets/images/home/project-step-2.svg'
-import ProjectStep3 from '../../assets/images/home/project-step-3.svg'
-import ProjectStep4 from '../../assets/images/home/project-step-4.svg'
-import ProjectStep5 from '../../assets/images/home/project-step-5.svg'
-import ProjectStep6 from '../../assets/images/home/project-step-6.svg'
-import ProjectStep7 from '../../assets/images/home/project-step-7.svg'
+import ProjectStep1 from '../../assets/images/home/icon-project-step-1.png'
+import ProjectStep2 from '../../assets/images/home/icon-project-step-2.png'
+import ProjectStep3 from '../../assets/images/home/icon-project-step-3.png'
+import ProjectStep4 from '../../assets/images/home/icon-project-step-4.png'
+import ProjectStep5 from '../../assets/images/home/icon-project-step-5.png'
+import ProjectStep6 from '../../assets/images/home/icon-project-step-6.png'
+import ProjectStep7 from '../../assets/images/home/icon-project-step-7.png'
 
 import { getProjectList, createProject, removeProject, getProjectDetail, updateProject } from '~~/apis/project'
 import dayjs from 'dayjs'
+import path from 'path'
 
 definePageMeta({
   permissions: 'home'
@@ -282,10 +228,6 @@ const handleTapProject = (item) => {
   fetchProjectDetail(item.id)
 }
 
-function handlepushLibarty() {
-  router.push('/show-mode-libary')
-}
-
 // 删除项目
 const handleRemoveProject = async (item) => {
   console.log('删除项目')
@@ -327,39 +269,48 @@ const typesList = [
   {
     id: 1,
     name: '选址决策',
-    src: ProjectStep1
+    src: ProjectStep1,
+    path: '/process/one'
   },
   {
     id: 2,
     name: '规划布局',
-    src: ProjectStep2
+    src: ProjectStep2,
+    path: '/process/two'
   },
   {
     id: 3,
     name: '内部布局',
-    src: ProjectStep3
+    src: ProjectStep3,
+    path: '/process/three'
   },
   {
     id: 4,
     name: '结构设计',
-    src: ProjectStep4
+    src: ProjectStep4,
+    path: '/process/four'
   },
   {
     id: 5,
     name: '部件生产',
-    src: ProjectStep5
+    src: ProjectStep5,
+    path: '/process/five'
   },
   {
     id: 6,
     name: '运输保障',
-    src: ProjectStep6
+    src: ProjectStep6,
+    path: '/process/six'
   },
   {
     id: 7,
     name: '现场组装',
-    src: ProjectStep7
+    src: ProjectStep7,
+    path: '/process/seven'
   }
 ]
+
+const projectDetailList = ref<any[]>([...typesList])
 
 // 打开新增弹窗
 const handleCreateProject = () => {
@@ -412,6 +363,39 @@ async function fetchProjectDetail(id: number) {
     const { data } = await getProjectDetail({ id })
     console.log('项目详情', data)
     currentProjectDetail.value = data
+
+    projectDetailList.value = projectDetailList.value.map((item) => {
+      let status = 0
+      switch (item.id) {
+        case 1:
+          status = data.siteStatus
+          break
+        case 2:
+          status = data.planLayoutStatus
+          break
+        case 3:
+          status = data.internalLayoutStatus
+          break
+        case 4:
+          status = data.structuralDesignStatus
+          break
+        case 5:
+          status = data.packingStatus
+          break
+        case 6:
+          status = data.partsProductionStatus
+          break
+        case 7:
+          status = data.assembleStatus
+          break
+        default:
+          break
+      }
+      return {
+        ...item,
+        status
+      }
+    })
   } catch (error) {
     console.error('获取项目详情失败', error)
   } finally {
@@ -442,299 +426,308 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
-:deep(.el-input__wrapper) {
-  box-shadow: 0 0 0 1px #9cc6ed inset;
+.home-side-bar {
+  :deep(.el-input) {
+    --el-text-color-placeholder: #94b8de;
+  }
+  :deep(.el-input__wrapper) {
+    box-shadow: 0 0 0 0 transparent inset;
+    background: transparent;
+    background-image: url('../../assets/images/home/icon-input-bg.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    .el-input__inner {
+      color: #fff;
+    }
+  }
+
+  .side-bar-search-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .side-bar-search-box-botton {
+      cursor: pointer;
+      width: 137px;
+      height: 73px;
+      background-image: url('../../assets/images/home/icon-input-button-bg.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #ffffff;
+      line-height: 33px;
+
+      span {
+        margin-left: 10px;
+      }
+    }
+  }
 }
 
 .list-wrap {
+  margin-top: 30px;
   flex: 1;
   width: 100%;
-  margin-top: 10px;
-  padding: 0 10px 10px;
   overflow-y: auto;
+
+  // 隐藏滚动条
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome / Safari */
+  }
 
   .list-wrap-item {
     cursor: pointer;
     width: 100%;
-    background: #fff;
-    box-shadow: 0 2px 4px 0 rgba(116, 166, 248, 0.2);
-    border-radius: 4px;
-    border: 1px solid #fff;
-    padding: 10px;
-    margin-bottom: 15px;
-
-    &:hover {
-      border: 1px solid #3a83fc;
-
-      .list-wrap-item-header {
-        .list-wrap-item-header__title {
-          color: #3a83fc;
-        }
-      }
-    }
+    height: 107px;
+    padding: 0px 34px;
+    margin-bottom: 18px;
+    background-image: url('../../assets/images/home/icon-project-item-bg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     .list-wrap-item-header {
-      padding: 10px 0;
-      border-bottom: 1px solid #9cc6ed;
-
       .list-wrap-item-header__title {
-        font-size: 14px;
-        color: #333;
-        font-weight: bold;
-        // 超出省略号
-        overflow: hidden;
+        font-weight: 600;
+        font-size: 24px;
+        color: #ffffff;
+        line-height: 33px;
         text-overflow: ellipsis;
+        overflow: hidden;
         white-space: nowrap;
-      }
-
-      .list-wrap-item-header__edit {
-        flex-shrink: 0;
-        margin: 0 8px;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-      }
-
-      .list-wrap-item-header__status {
-        width: 60px;
-        line-height: 24px;
-        text-align: center;
-        flex-shrink: 0;
-        font-size: 12px;
-        color: #fff;
-        background: #acb3c1;
-        border-radius: 23px;
-      }
-
-      .list-wrap-item-header__status.status-ongoing {
-        background: linear-gradient(270deg, rgba(255, 218, 55, 0.4), #ffc118);
-        color: #ff8206;
-      }
-
-      .list-wrap-item-header__status.status-done {
-        background: linear-gradient(270deg, #e5eeff, #b3cfff);
-        color: #3a83fc;
       }
     }
 
     .list-wrap-item-body {
-      margin-top: 10px;
+      margin-top: 7px;
+      font-weight: 400;
+      font-size: 18px;
+      color: #69aaee;
+      line-height: 25px;
+    }
 
-      .body-item {
-        display: flex;
-        align-items: center;
-        padding: 5px 0;
-
-        .icon {
-          flex-shrink: 0;
-          margin-right: 8px;
-        }
-
-        .title {
-          flex: 1;
-          font-size: 13px;
-          color: #333;
-          // 超出省略号
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .status {
-          font-size: 13px;
-          color: #777;
-        }
-
-        .status-ongoing {
-          color: #ff8206;
-        }
-
-        .status-done {
-          color: #3a83fc;
-        }
-      }
+    &:hover {
+      background-image: url('../../assets/images/home/icon-project-item-bg-active.png');
     }
   }
 
   .list-wrap-item.is-active {
-    border: 1px solid #3a83fc;
-
-    .list-wrap-item-header {
-      .list-wrap-item-header__title {
-        color: #3a83fc;
-      }
-    }
+    background-image: url('../../assets/images/home/icon-project-item-bg-active.png');
+    // .list-wrap-item-header {
+    //   .list-wrap-item-header__title {
+    //     color: #398eff;
+    //   }
+    // }
   }
 }
 
 .home-background {
   position: relative;
-  background-image: url('../../assets/images/home/homeRightBk.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow-y: auto;
+  // 隐藏滚动条
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome / Safari */
+  }
 
-  .step-button {
-    position: absolute;
-    background: rgba(255, 255, 255, 0);
-    width: 13%;
-    height: 27%;
+  .home-main-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 250px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
+    cursor: pointer;
 
-    & > div {
-      position: relative;
-      width: 172px;
-      height: 49px;
-
-      & > span {
-        position: absolute;
-        top: -12px;
-        right: -30px;
-        display: inline-block;
-        width: 60px;
-        height: 24px;
-        border-radius: 23px 23px 23px 23px;
-        font-size: 12px;
-        text-align: center;
-        line-height: 24px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      & > .status-unselected {
-        background: #acb3c1;
-        color: #fff;
-      }
-
-      & > .status-ongoing {
-        background: linear-gradient(270deg, rgba(255, 218, 55, 0.4), #ffc118);
-        color: #ff8206;
-      }
-
-      & > .status-done {
-        background: linear-gradient(270deg, #e5eeff, #b3cfff);
-        color: #3a83fc;
-      }
+    .home-main-item-bg {
+      display: block;
+      width: auto;
+      height: 100%;
     }
-  }
 
-  .step-button-1 {
-    top: 40%;
-    left: 3.5%;
-
-    & > div {
-      background-image: url('../../assets/images/home/1-1.svg');
+    .home-main-item-bg-active {
+      display: none;
+      width: auto;
+      height: 100%;
     }
 
     &:hover {
-      & > div {
-        background-image: url('../../assets/images/home/1-2.svg');
+      .home-main-item-bg {
+        display: none;
+      }
+      .home-main-item-bg-active {
+        display: block;
+      }
+
+      .content {
+        .title {
+          color: #398eff;
+          font-weight: bold;
+        }
       }
     }
-  }
 
-  .step-button-2 {
-    top: 60%;
-    left: 14.5%;
+    .content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
-    & > div {
-      background-image: url('../../assets/images/home/2-1.svg');
-    }
-
-    &:hover {
-      & > div {
-        background-image: url('../../assets/images/home/2-2.svg');
+      .content-img {
+        // min-width: 150px;
+        width: 50%;
+        object-fit: contain;
       }
-    }
-  }
 
-  .step-button-3 {
-    top: 67%;
-    left: 31.5%;
-
-    & > div {
-      background-image: url('../../assets/images/home/3-1.svg');
-    }
-
-    &:hover {
-      & > div {
-        background-image: url('../../assets/images/home/3-2.svg');
+      .title {
+        margin-top: 20%;
+        font-weight: 400;
+        font-size: 35px;
+        color: #d8e9ff;
+        line-height: 49px;
+        letter-spacing: 3px;
       }
-    }
-  }
 
-  .step-button-4 {
-    top: 67%;
-    left: 51.5%;
+      .step-status-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 3px;
 
-    & > div {
-      background-image: url('../../assets/images/home/4-1.svg');
-    }
-
-    &:hover {
-      & > div {
-        background-image: url('../../assets/images/home/4-2.svg');
-      }
-    }
-  }
-
-  .step-button-5 {
-    top: 60%;
-    left: 69.5%;
-
-    & > div {
-      background-image: url('../../assets/images/home/5-1.svg');
-    }
-
-    &:hover {
-      & > div {
-        background-image: url('../../assets/images/home/5-2.svg');
-      }
-    }
-  }
-
-  .step-button-6 {
-    top: 40%;
-    left: 82.5%;
-
-    & > div {
-      background-image: url('../../assets/images/home/6-1.svg');
-    }
-
-    &:hover {
-      & > div {
-        background-image: url('../../assets/images/home/6-2.svg');
-      }
-    }
-  }
-
-  .step-button-7 {
-    top: 21%;
-    left: 66.5%;
-
-    & > div {
-      background-image: url('../../assets/images/home/7-1.svg');
-    }
-
-    &:hover {
-      & > div {
-        background-image: url('../../assets/images/home/7-2.svg');
+        span {
+          margin-left: 9px;
+          font-weight: 400;
+          font-size: 20px;
+          color: #69aaee;
+          line-height: 28px;
+        }
       }
     }
   }
 }
 
-.project-dialog-container {
-  .is-active {
-    background: #fff;
-    box-shadow: 0 2px 4px 0 rgba(116, 166, 248, 0.2);
-    border-radius: 4px;
-    border: 1px solid #3a83fc;
+:deep(.project-dialog-container) {
+  background: #022e67;
+  width: 714px !important;
 
-    span {
-      color: #3a83fc;
+  .el-drawer__header {
+    background: #10427d;
+    color: #fff;
+    padding-bottom: 20px;
+
+    .el-drawer__close-btn {
+      color: #ffffff;
+    }
+  }
+
+  .el-drawer__body {
+    .el-input {
+      --el-text-color-placeholder: #69aaee;
+      --el-input-border-color: #3a78c0;
+    }
+
+    .el-form-item__label {
+      font-weight: 600;
+      font-size: 18px;
+      color: #69aaee;
+      line-height: 25px;
+    }
+
+    .el-input__wrapper {
+      background: #114e8e;
+
+      .el-input__inner {
+        color: #fff;
+      }
+    }
+
+    .add-project-type-item {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 148px;
+      height: 149px;
+      background: #114e8e;
+      border-radius: 6px;
+      border: 1px solid #3a78c0;
+      margin-bottom: 16px;
+
+      span {
+        margin-top: 4px;
+        font-weight: 400;
+        font-size: 18px;
+        color: #69aaee;
+        line-height: 25px;
+      }
+    }
+
+    .add-project-type-item.is-active {
+      background: #398eff;
+      border: 1px solid #398eff;
+    }
+  }
+
+  .project-dialog-footer {
+    .el-button {
+      position: relative;
+      width: 137px;
+      height: 63px;
+      font-size: 24px;
+      color: #238ce8;
+      border-radius: 16px; /* 与伪元素圆角一致 */
+      overflow: hidden; /* 裁剪伪元素超出的圆角部分 */
+      background-color: #022e67; /* 内容区背景 */
+      border-width: 0;
+    }
+
+    .el-button + .el-button {
+      margin-left: 30px;
+    }
+
+    /* 伪元素实现渐变边框 */
+    .button-comfirm::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 16px; /* 继承父元素圆角 */
+      padding: 2px; /* 边框宽度 */
+      background: linear-gradient(180deg, rgba(185, 221, 255, 1), rgba(65, 158, 255, 1), rgba(185, 221, 255, 1)); /* 渐变样式 */
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; /* 仅显示 padding 区域（边框） */
+      mask-composite: exclude; /* 标准写法，兼容现代浏览器 */
+      pointer-events: none; /* 不影响鼠标交互 */
+    }
+
+    .button-cancel {
+      background-image: url('../../assets/images/home/icon-input-button-bg.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      color: #fff;
     }
   }
 }

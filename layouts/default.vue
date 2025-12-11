@@ -3,7 +3,7 @@
     <!-- <layout-sidebar /> -->
     <el-container direction="vertical">
       <layout-new-navbar />
-      <div v-if="showBreadcrumb" class="px-[35px] pt-[10px]">
+      <div v-if="showBreadcrumb" class="px-[72px] pb-[10px]">
         <el-breadcrumb :separator-icon="ArrowRight">
           <el-breadcrumb-item :to="{ path: '/' }">{{ homePageName }}</el-breadcrumb-item>
           <el-breadcrumb-item disabled>{{ detailPageName }}</el-breadcrumb-item>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight } from '@maxtan/ez-ui-icons'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -46,9 +46,15 @@ watchEffect(() => {
 
 <style lang="less" scoped>
 .container-background {
-  background-image: url('../assets/images/home/homeBk.e325e136.png');
+  background-image: url('../assets/images/home/icon-bg.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding-top: 20px;
+
+  :deep(.el-breadcrumb) {
+    --el-text-color-primary: #fff;
+    --el-text-color-regular: #398EFF;
+    --el-text-color-placeholder: #398EFF;
+    font-size: 18px;
+  }
 }
 </style>
