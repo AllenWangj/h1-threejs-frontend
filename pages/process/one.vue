@@ -1,31 +1,57 @@
 <template>
-  <div class="flex h-full w-full bg-white rounded-[4px] process-page-container">
+  <div class="flex h-full w-full bg-[transparent]">
     <!-- 初始化选择地块 -->
     <div v-if="pageState === 'list'" class="w-full">
-      <div class="flex items-center px-[14px] h-[54px] border-b-[1px] border-[#e4ecfd]">
-        <img src="../../assets/images/icon-header.svg" alt="" width="20" height="20" />
-        <span class="text-[16px] text-[#1e1e1e] ml-[10px]">地块列表</span>
-        <el-button class="ml-auto" type="primary" @click="handleAddPlot">新增地块</el-button>
+      <div class="flex items-center px-[14px]">
+        <div class="add-block-button" @click="handleAddPlot">
+          <img src="../../assets/images/home/icon-add.png" alt="" width="22px" height="22px" />
+          <span>新增地块</span>
+        </div>
       </div>
       <div class="plot-wrapper">
         <div
-          class="plot-item cursor-pointer flex px-[14px] py-[10px] bg-[#f8f9fd] border border-[#e8e9ef] rounded-[2px] mb-[10px]"
-          v-for="(item, index) in plotList" :key="index" :class="{ 'is-active': currentPlot === item.id }"
-          @click="handlePlotClick(item)">
-          <img :src="item.satelliteUrl" alt="" class="w-[80px] h-[100%] object-cover rounded-[4px]" />
-          <div class="flex flex-col flex-1 ml-[10px]">
-            <span class="text-[16px] text-[#1e1e1e] font-black">{{ item.name }}</span>
-            <span class="text-[14px] text-[#666] mt-[6px]]">经度: {{item.minX}} ~ {{ item.maxX }}</span>
-            <span class="text-[14px] text-[#666]">纬度: {{item.minY}} ~ {{ item.maxY }}</span>
-            <span class="text-[14px] text-[#666]">总面积: {{item.area}}平方公里</span>
-            <span class="text-[12px] text-[#a7aebb] mt-[8px]">
-              {{ formatTime(item.updateTime, 'YYYY-MM-DD HH:mm:ss') }}
-            </span>
+          class="plot-item"
+          v-for="(item, index) in plotList"
+          :key="index"
+          :class="{ 'is-active': currentPlot === item.id }"
+          @click="handlePlotClick(item)"
+        >
+          <div class="w-[100%] pb-[72%] relative">
+            <div class="absolute top-0 left-0 right-0 bottom-0">
+              <img :src="item.satelliteUrl" alt="" class="w-[100%] h-[100%] object-cover" />
+              <span class="absolute right-[23px] bottom-[27px] text-[16px] text-[#fff]">
+                {{ formatTime(item.updateTime, 'YYYY-MM-DD HH:mm:ss') }}
+              </span>
+            </div>
           </div>
-          <img class="ml-[15px] w-[20px] h-[20px]" src="../../assets/images/icon-plot-edit.svg" alt=""
-            @click.stop="handleEditPlot(item)" />
-          <img class="ml-[15px] w-[20px] h-[20px]" src="../../assets/images/icon-plot-delete.svg" alt=""
-            @click.stop="handleDeletePlot(item)" />
+          <div class="flex flex-col flex-1 px-[20px] pt-[20px] pb-[36px]">
+            <div class="flex items-center">
+              <span class="flex-1 text-[28px] text-[#ffffff] font-black">{{ item.name }}</span>
+              <div class="flex items-center pb-[10px]">
+                <!-- 删除 -->
+                <img
+                  class="cursor-pointer mx-[9px]"
+                  src="../../assets/images/home/icon-project-item-delete.png"
+                  alt=""
+                  width="22px"
+                  height="22px"
+                  @click.stop="handleDeletePlot(item)"
+                />
+                <!-- 修改 -->
+                <img
+                  class="cursor-pointer"
+                  src="../../assets/images/home/icon-project-item-edit.png"
+                  alt=""
+                  width="22px"
+                  height="22px"
+                  @click.stop="handleEditPlot(item)"
+                />
+              </div>
+            </div>
+            <span class="text-[16px] text-[#69AAEE] mt-[13px]">总面积: {{ item.area }}平方公里</span>
+            <span class="text-[16px] text-[#69AAEE] mt-[5px]">经&nbsp;&nbsp;&nbsp;度: {{ item.minX }} ~ {{ item.maxX }}</span>
+            <span class="text-[16px] text-[#69AAEE] mt-[5px]">纬&nbsp;&nbsp;&nbsp;度: {{ item.minY }} ~ {{ item.maxY }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -44,25 +70,53 @@
       </div>
     </div>
     <!-- 新增地块 -->
-    <ez-dialog v-model="dialogVisible" :title="`${plotForm.id ? '编辑' : '新增'}地块`" width="600px" :loading="submitLoading"
-      @confirm="add">
+    <ez-dialog
+      v-model="dialogVisible"
+      :title="`${plotForm.id ? '编辑' : '新增'}地块`"
+      width="600px"
+      :loading="submitLoading"
+      @confirm="add"
+    >
       <el-form ref="PlotFormRef" :model="plotForm" label-width="120px">
-        <el-form-item label="地块名称" prop="name" :rules="{ required: true, message: '请输入地块名称', trigger: 'blur' }">
+        <el-form-item
+          label="地块名称"
+          prop="name"
+          :rules="{ required: true, message: '请输入地块名称', trigger: 'blur' }"
+        >
           <el-input v-model="plotForm.name" placeholder="请输入地块名称"></el-input>
         </el-form-item>
-        <el-form-item v-if="!plotForm.id" label="dem文件" prop="demUrl"
-          :rules="{ required: true, message: '请选择dem文件', trigger: 'blur' }">
-          <el-upload ref="uploadRef" action="" accept=".tif" :limit="1" :on-exceed="handleExceed"
-            :on-change="uploadFile" :auto-upload="false">
+        <el-form-item
+          v-if="!plotForm.id"
+          label="dem文件"
+          prop="demUrl"
+          :rules="{ required: true, message: '请选择dem文件', trigger: 'blur' }"
+        >
+          <el-upload
+            ref="uploadRef"
+            action=""
+            accept=".tif"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :on-change="uploadFile"
+            :auto-upload="false"
+          >
             <template #trigger>
               <el-button type="primary" :loading="uploadLoading">上传dem文件</el-button>
             </template>
           </el-upload>
         </el-form-item>
-        <el-form-item v-if="!plotForm.id" label="纹理底图" prop="satelliteUrl"
-          :rules="{ required: true, message: '请选择纹理底图', trigger: 'blur' }">
-          <ez-image-upload :limit-size="100" v-model="plotForm.satelliteUrl" v-loading="uploadImgFlag"
-            :api="uploadApi"></ez-image-upload>
+        <el-form-item
+          v-if="!plotForm.id"
+          label="纹理底图"
+          prop="satelliteUrl"
+          :rules="{ required: true, message: '请选择纹理底图', trigger: 'blur' }"
+        >
+          <ez-image-upload
+            :limit-size="100"
+            v-model="plotForm.satelliteUrl"
+            v-loading="uploadImgFlag"
+            :api="uploadApi"
+          ></ez-image-upload>
         </el-form-item>
       </el-form>
     </ez-dialog>
@@ -275,29 +329,48 @@ function createdUploadFile() {
 </script>
 
 <style lang="less" scoped>
+:deep(.add-block-button) {
+  width: 165px;
+  height: 73px;
+  background-image: url('../../assets/images/home/icon-input-button-bg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #ffffff;
+  line-height: 33px;
+  margin-left: auto;
+
+  span {
+    margin-left: 10px;
+  }
+}
+
 .plot-wrapper {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 14px;
+  padding: 14px 54px;
 
   .plot-item {
-    width: calc(25% - 20px);
-    min-width: 360px;
-    margin: 0 20px 20px 0;
+    display: flex;
+    flex-direction: column;
+    width: 406px;
+    margin: 0 55px 55px 0;
+    background: linear-gradient(180deg, #0865bc 0%, #002051 100%);
+    box-shadow:
+      0px 0px 12px 0px #125091,
+      inset 0px 0px 13px 0px #0796fd;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
 
     &:hover {
-      background: #f4f9ff;
-      box-shadow: 0 4px 4px 0 rgba(58, 131, 252, 0.25);
-      border-radius: 2px 2px 2px 2px;
-      border: 1px solid #3a83fc;
-    }
-
-    &.is-active {
-      background: #f4f9ff;
-      box-shadow: 0 4px 4px 0 rgba(58, 131, 252, 0.25);
-      border-radius: 2px 2px 2px 2px;
-      border: 1px solid #3a83fc;
+      box-shadow:
+        0px 0px 24px 0px #125091,
+        inset 0px 0px 27px 0px #0796fd;
     }
   }
 }

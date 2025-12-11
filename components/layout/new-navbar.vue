@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="icon-header-center">
-        <span class="text-[36px] text-[#fff] font-bold cursor-pointer" @click="triggerHome()">典型区域全过程快速建造管理工具</span>
+        <span class="text-[32px] text-[#fff] font-bold cursor-pointer" @click="triggerHome()">典型区域全过程快速建造管理工具</span>
       </div>
       <div class="icon-header-right">
         <el-dropdown placement="bottom-end" trigger="click" @command="selectMenu">
@@ -96,11 +96,11 @@ const triggerHome = () => {
 
     span {
       // 超出隐藏并显示...
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // white-space: nowrap;
       text-align: center;
-      width: 70%;
+      // width: 70%;
     }
   }
 
