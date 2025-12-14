@@ -92,7 +92,9 @@ const triggerHome = () => {
 
     display: flex;
     justify-content: center;
+    align-items: center;
     padding-top: 17px;
+    padding-bottom: 30px;
 
     span {
       // 超出隐藏并显示...
