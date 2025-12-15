@@ -57,7 +57,7 @@ class BaseThree {
       pixelRatio: Math.min(window.devicePixelRatio, 2),
       fov: 75,
       near: 0.1,
-      far: 9000,
+      far: 10000,
       ...options
     }
 
