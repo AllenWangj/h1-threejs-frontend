@@ -54,7 +54,7 @@ const currentAcviteScheme = ref('')
 const tapScheme = (item) => {
    currentAcviteScheme.value  = item.id
    loadModel()
-  console.log('点击了部件生产方案', item)
+  console.log('点击了部件生成方案', item)
 }
 
 // 下载方案
@@ -66,7 +66,7 @@ const downloadSolution = async () => {
     })
     const a = document.createElement('a')
     a.href = url
-    a.download = `部件生产方案.docx`
+    a.download = `部件生成方案.docx`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)

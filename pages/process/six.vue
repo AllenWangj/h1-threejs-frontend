@@ -1,7 +1,7 @@
 <template>
-  <div class="flex h-full w-full bg-white rounded-[4px] process-page-container">
+  <div class="process-new-page-container">
     <sub-menu-sidebar :active-tab="isActiveTab" @on-change="tabChange" />
-    <div class="flex-1 mx-[20px] my-[20px]">
+    <div class="flex-1 overflow-hidden">
       <nuxt-page />
     </div>
   </div>

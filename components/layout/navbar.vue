@@ -11,7 +11,7 @@
     <div class="flex h-full">
       <el-dropdown placement="bottom-end" trigger="click" @command="selectMenu">
         <div class="flex items-center px-[12px] cursor-pointer">
-          <img src="../../assets/images/home/touxiang.svg" alt="" class="w-[24px] h-[24px] mr-[8px]" />
+          <img src="../../assets/images/home/icon-touxiang.png" alt="" class="w-[36px] h-[36px] mr-[8px]" />
           <span class="text-[14px]">{{ userInfo?.name }}</span>
         </div>
         <template #dropdown>

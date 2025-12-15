@@ -6,6 +6,6 @@
   </el-config-provider>
 </template>
 <script lang="ts" setup>
-import '~/assets/css/style.css'
+import '~/assets/css/style.less'
 import { zhCn } from 'element-plus/es/locale/index'
 </script>

@@ -1,48 +1,63 @@
 <template>
-  <div class="h-[100%] w-[100%] flex flex-col">
-    <div class="flex-shrink-0 flex items-center h-[56px] px-[14px] border-b border-[#e4ecfd]">
-      <img src="../../../assets/images/home/file-icon.svg" width="20" height="20" alt="" />
-      <span class="text-[16px] text-[#333] ml-[8px]">上传文件</span>
-      <p class="text-[14px] text-[#999] ml-[8px]">（请上传项目相关的DWG、DXF或PDF文件，支持拖拽上传）</p>
+  <div class="h-full w-full flex flex-col flie-page-container">
+    <div class="flex-shrink-0 flex items-center h-[56px] px-[54px]">
+      <span class="text-[18px] text-[#69AAEE] font-bold">上传文件</span>
+      <p class="text-[18px] text-[#69AAEE] ml-[4px]">（请上传项目相关的DWG、DXF或PDF文件，支持拖拽上传）</p>
     </div>
-    <div class="flex-1 flex flex-col px-[14px] py-[14px] overflow-y-auto">
-      <div v-loading="uploadLoading"
-        class="h-[300px] flex-shrink-0 flex flex-col items-center justify-center w-[100%] min-w-[200px] border-[1px] border-[#adcdf7]">
-        <el-upload ref="uploadRef" :file-list="updateFileList" :on-exceed="handleExceed" :limit="1"
-          accept=".pdf,.dwg,.dxf" action="" :drag="true" :auto-upload="false" :on-change="uploadFile"
-          :show-file-list="false" class="w-[100%] h-[100%]">
+    <div class="flex-1 flex flex-col px-[54px] pb-[14px] overflow-y-auto">
+      <div
+        v-loading="uploadLoading"
+        class="h-[300px] flex-shrink-0 flex flex-col items-center justify-center w-[100%] min-w-[200px] bg-[#114E8E] rounded-[8px] border-[1px] border-[#3A78C0]"
+      >
+        <el-upload
+          ref="uploadRef"
+          :file-list="updateFileList"
+          :on-exceed="handleExceed"
+          :limit="1"
+          accept=".pdf,.dwg,.dxf"
+          action=""
+          :drag="true"
+          :auto-upload="false"
+          :on-change="uploadFile"
+          :show-file-list="false"
+          class="w-[100%] h-[100%]"
+        >
           <div class="w-[100%] h-[100%] flex flex-col items-center justify-center px-[14px]">
             <img src="../../../assets/images/home/tianjiashangchuan.svg" width="90" height="110" alt="" />
             <div v-if="currentFile">
               <span class="text-[20px] text-[#333] mt-[15px] text-center">{{ currentFile }}</span>
             </div>
             <div v-else class="flex flex-col items-center justify-center">
-              <span class="text-[20px] text-[#333] mt-[15px]">点击或拖拽到此区域上传</span>
-              <p class="text-[14px] text-[#999] mt-[7px]">支持单个文件上传，仅支持DWG、DXF或PDF文件格式</p>
+              <span class="text-[18px] font-bold text-[#69AAEE] mt-[15px]">点击或拖拽到此区域上传</span>
+              <p class="text-[15px] text-[#69AAEE] mt-[7px]">支持单个文件上传，仅支持DWG、DXF或PDF文件格式</p>
             </div>
           </div>
         </el-upload>
       </div>
       <div class="flex-1 file-list">
-        <div class="flex items-center h-[44px] px-[14px] mb-[14px] border-b border-[#e4ecfd]">
-          <img src="../../../assets/images/home/upload-file-icon.svg" width="20" height="20" alt="" />
-          <span class="text-[16px] text-[#333] ml-[8px]">
+        <div class="flex items-center h-[44px] my-[20px]">
+          <span class="text-[18px] text-[#69AAEE] font-bold">
             已上传文件
-            <span class="text-[14px] text-[#999]">({{ fileList.length }}个)</span>
+            <span class="text-[18px] text-[#69AAEE] ml-[4px]">({{ fileList.length }}个)</span>
           </span>
         </div>
-        <div v-for="item in fileList" :key="item.id"
-          class="flex items-center justify-between bg-[#f8f9fd] rounded-[2px] border-[1px] border-[#e4ecfd] py-[10px] px-[14px] ml-[14px] mb-[10px] file-item">
+        <div v-for="item in fileList" :key="item.id" class="file-item">
           <img src="../../../assets/images/icon-pdf.svg" alt="pdf" class="w-[26px] h-[26px]" />
           <div class="flex-1 flex flex-col px-[14px]">
-            <span>{{ item.name }}</span>
+            <span class="text-[18px] text-[#69AAEE] font-bold">{{ item.name }}</span>
             <div class="flex items-center mt-[4px]">
-              <span class="text-[12px] text-[#999] mr-[20px]">{{ formatTime(item.createTime, 'YYYY-MM-DD HH:mm:ss') }}</span>
-              <span class="text-[12px] text-[#999]">{{ formatFileSize(item.size || 0) }}</span>
+              <span class="text-[15px] text-[#69AAEE] mr-[20px]">
+                {{ formatTime(item.updatedAt, 'YYYY-MM-DD HH:mm:ss') }}
+              </span>
+              <span class="text-[15px] text-[#69AAEE]">{{ formatFileSize(item.size || 0) }}</span>
             </div>
           </div>
-          <img src="../../../assets/images/icon-plot-delete.svg" alt="remove" class="cursor-pointer w-[20px] h-[20px]"
-            @click="handleRemoveFile(item)" />
+          <img
+            src="../../../assets/images/home/icon-project-item-delete.png"
+            alt="remove"
+            class="cursor-pointer w-[20px] h-[20px]"
+            @click="handleRemoveFile(item)"
+          />
         </div>
       </div>
     </div>

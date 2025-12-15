@@ -1,69 +1,113 @@
 <template>
-  <div class="h-full w-full flex flex-col">
-    <div class="flex-shrink-0 flex items-center h-[56px] px-[14px] border-b border-[#e4ecfd]">
-      <span class="text-[16px] text-[#333] ml-[8px]">地址决策</span>
-    </div>
-
-    <div class="flex flex-1 overflow-hidden">
-      <div class="flex-grow-[1]">
-        <File />
+  <div v-loading="pageLoading" element-loading-background="rgba(0,0,0,0.5)" class="form-page-container">
+    <div class="w-[100%] h-[100%] flex flex-col bg-[#022E67] rounded-[16px]">
+      <div class="form-page-header">
+        <span class="text-[16px] text-[#3689F7] ml-[8px]">地址决策</span>
       </div>
 
-      <div class="flex-grow-[3] flex flex-col">
-        <div class="flex-shrink-0 flex items-center h-[56px] px-[14px] border-b border-[#e4ecfd]">
-          <img src="../../../assets/images/home/file-icon.svg" width="20" height="20" alt="" />
-          <span class="text-[16px] text-[#333] ml-[8px]">参数配置</span>
+      <div class="form-page-body">
+        <div class="flex-grow-[1]">
+          <File />
         </div>
-        <div class="flex-1 flex flex-col px-[14px] py-[14px] overflow-y-auto">
-          <el-form ref="ProjectFormRef" :model="formData" label-position="top" label-width="120px" class="w-full">
-            <div class="w-full px-[14px] py-[10px] bg-[#fff] mb-[14px] rounded-[4px]"
-              v-for="item in formData.projectForm" :key="item.field">
-              <el-form-item label="">
-                <template #label>
-                  <div class="flex items-center">
-                    <el-checkbox v-model="item.tag">{{ item.label }}</el-checkbox>
-                    <template v-if="item.field === 'custom'">
-                      <el-upload class="ml-[20px]" accept=".json" :auto-upload="false" :show-file-list="false"
-                        :on-change="(e) => handleFileChange(e, item)">
-                        <el-button type="primary">选择 JSON 文件</el-button>
-                      </el-upload>
-                    </template>
-                  </div>
-                </template>
-                <template v-if="item.field === 'custom'">
-                  <!-- 显示JSON字符串，并按格式换行缩进 -->
-                  <div class="w-[100%]">
-                    <pre v-if="item.value" class="text-[#333] text-[12px]">{{ item.value }}</pre>
-                  </div>
-                </template>
-                <ez-select v-else-if="item.type === 'select'" v-model="item.value" placeholder="请选择" :clearable="true"
-                  style="width: 100%" :options="item.options" />
-                <ez-select v-else-if="item.type === 'multiple'" v-model="item.value" placeholder="请选择" :clearable="true"
-                  multiple style="width: 100%" :options="item.options" />
-                <div v-else-if="item.type === 'multiple-dynamic'" class="w-full">
-                  <ez-select v-model="item.value" placeholder="请选择" :clearable="true" multiple style="width: 100%"
-                    :options="item.options" />
-                  <div v-for="(options, index) in item.valueConfig" :key="options.field">
-                    <div v-if="item.value.includes(options.field)" class="flex items-center mt-[8px]">
-                      <div class="text-[#666] text-[14px] min-w-[60px] text-right mr-[15px]">
-                        {{ getArrayLabel(options.field, item.options) }}
+
+        <div class="flex-grow-[3] flex flex-col">
+          <div class="px-[14px] py-[14px]">
+            <el-form
+              ref="ProjectFormRef"
+              :model="formData"
+              size="large"
+              label-position="top"
+              label-width="120px"
+              class="w-full"
+            >
+              <div
+                class="w-full px-[14px] py-[10px] mb-[14px] rounded-[4px]"
+                v-for="item in formData.projectForm"
+                :key="item.field"
+              >
+                <el-form-item label="">
+                  <template #label>
+                    <div class="flex items-center">
+                      <el-checkbox size="large" v-model="item.tag" class="checkbox-class">{{ item.label }}</el-checkbox>
+                      <template v-if="item.field === 'custom'">
+                        <el-upload
+                          class="ml-[20px]"
+                          accept=".json"
+                          :auto-upload="false"
+                          :show-file-list="false"
+                          :on-change="(e) => handleFileChange(e, item)"
+                        >
+                          <el-button type="primary">选择 JSON 文件</el-button>
+                        </el-upload>
+                      </template>
+                    </div>
+                  </template>
+                  <template v-if="item.field === 'custom'">
+                    <!-- 显示JSON字符串，并按格式换行缩进 -->
+                    <div class="w-[100%]">
+                      <pre v-if="item.value" class="text-[#69AAEE] text-[16px]">{{ item.value }}</pre>
+                    </div>
+                  </template>
+                  <ez-select
+                    v-else-if="item.type === 'select'"
+                    v-model="item.value"
+                    placeholder="请选择"
+                    :clearable="true"
+                    style="width: 100%"
+                    :options="item.options"
+                  />
+                  <ez-select
+                    v-else-if="item.type === 'multiple'"
+                    v-model="item.value"
+                    placeholder="请选择"
+                    :clearable="true"
+                    multiple
+                    style="width: 100%"
+                    :options="item.options"
+                  />
+                  <div v-else-if="item.type === 'multiple-dynamic'" class="w-full">
+                    <ez-select
+                      v-model="item.value"
+                      placeholder="请选择"
+                      :clearable="true"
+                      multiple
+                      style="width: 100%"
+                      :options="item.options"
+                    />
+                    <div v-for="(options, index) in item.valueConfig" :key="options.field">
+                      <div v-if="item.value.includes(options.field)" class="flex items-center mt-[8px]">
+                        <div class="text-[#69AAEE] text-[16px] min-w-[60px] text-right mr-[15px]">
+                          {{ getArrayLabel(options.field, item.options) }}
+                        </div>
+                        <el-input v-model="options.value" oninput="value=value.replace(/[^\d]/g,'')" class="w-[200px]">
+                          <template #append>{{ options.unit }}</template>
+                        </el-input>
+                        <!-- 可以输入数字和小数点得正则 -->
+                        <el-input
+                          v-if="options.unit2"
+                          v-model="options.value2"
+                          oninput="value=value.replace(/[^\d.]/g,'')"
+                          class="w-[200px] ml-[10px]"
+                        >
+                          <template #append>{{ options.unit2 }}</template>
+                        </el-input>
                       </div>
-                      <el-input v-model="options.value" oninput="value=value.replace(/[^\d.]/g,'')" class="w-[200px]">
-                        <template #append>{{ options.unit }}</template>
-                      </el-input>
                     </div>
                   </div>
-                </div>
-              </el-form-item>
-            </div>
-          </el-form>
-        </div>
-        <div class="flex items-center justify-center py-[10px]">
-          <el-button type="primary" :disabled="saveLoading" plain @click="handleReset">重置</el-button>
-          <el-button type="primary" :loading="saveLoading" @click="handleSave">保存</el-button>
-          <el-button type="primary" :loading="saveLoading" @click="handleGenerateSolution">生成方案</el-button>
+                </el-form-item>
+              </div>
+            </el-form>
+          </div>
         </div>
       </div>
+    </div>
+
+    <div class="form-page-foooter">
+      <el-button class="def-plain-button" size="large" :disabled="saveLoading" @click="handleReset">重置</el-button>
+      <el-button class="def-plain-button" size="large" :loading="saveLoading" @click="handleSave">保存</el-button>
+      <el-button class="def-primary-button" size="large" :disabled="saveLoading" @click="handleGenerateSolution">
+        生成方案
+      </el-button>
     </div>
   </div>
 </template>
@@ -89,9 +133,7 @@ const { dictMap, getDictMap, getArrayLabel } = useDict()
 const customOptions = []
 
 // 默认选项
-const defaultOptions = [
-  { label: '默认', value: '0' },
-]
+const defaultOptions = [{ label: '默认', value: '0' }]
 
 // label映射
 const LABLE_MAP = {
@@ -147,7 +189,6 @@ const handleFileChange = (file: any, item: any) => {
   reader.readAsText(rawFile)
 }
 
-
 const handleReset = () => {
   formData.value = JSON.parse(JSON.stringify(initProjectForm.value))
 }
@@ -177,7 +218,7 @@ const handleGenerateSolution = async () => {
       projectId: projectId.value,
       params
     })
-    ElMessageBox.alert('方案生成中，请稍后去生产方案中查看', '温馨提示', {
+    ElMessageBox.alert('方案生成中，请稍后去生成方案中查看', '温馨提示', {
       confirmButtonText: '知道了'
     })
   } catch (error) {
@@ -221,76 +262,74 @@ onMounted(async () => {
   }
 })
 
-
 const defData = [
   {
-    "tag": true,
-    "type": "multiple-dynamic",
-    "field": "terrain",
-    "label": "地形条件",
-    "value": [],
-    "options": [],
-    "valueConfig": [
+    tag: true,
+    type: 'multiple-dynamic',
+    field: 'terrain',
+    label: '地形条件',
+    value: [],
+    options: [],
+    valueConfig: [
       {
-        "type": "input",
-        "unit": "m",
-        "field": "1",
-        "value": "",
-        "valueConfig": null
+        type: 'input',
+        unit: 'm',
+        field: '1',
+        value: '',
+        valueConfig: null
       }
     ]
   },
   {
-    "tag": true,
-    "type": "multiple",
-    "field": "climateRegion",
-    "label": "气候类型",
-    "value": [],
-    "options": [],
-    "valueConfig": null
+    tag: true,
+    type: 'multiple',
+    field: 'climateRegion',
+    label: '气候类型',
+    value: [],
+    options: [],
+    valueConfig: null
   },
   {
-    "tag": true,
-    "type": "multiple",
-    "field": "traffic",
-    "label": "交通条件",
-    "value": [],
-    "options": [],
-    "valueConfig": null
+    tag: true,
+    type: 'multiple',
+    field: 'traffic',
+    label: '交通条件',
+    value: [],
+    options: [],
+    valueConfig: null
   },
   {
-    "tag": true,
-    "type": "select",
-    "field": "infrastructure",
-    "label": "基础设施",
-    "options": [],
-    "valueConfig": null
+    tag: true,
+    type: 'select',
+    field: 'infrastructure',
+    label: '基础设施',
+    options: [],
+    valueConfig: null
   },
   {
-    "tag": true,
-    "type": "select",
-    "field": "geological",
-    "label": "地质条件",
-    "options": [],
-    "valueConfig": null
+    tag: true,
+    type: 'select',
+    field: 'geological',
+    label: '地质条件',
+    options: [],
+    valueConfig: null
   },
   {
-    "tag": true,
-    "type": "select",
-    "field": "country",
-    "label": "所在国限制",
-    "options": [],
-    "valueConfig": null
+    tag: true,
+    type: 'select',
+    field: 'country',
+    label: '所在国限制',
+    options: [],
+    valueConfig: null
   },
   {
-    "tag": true,
-    "type": "",
-    "field": "custom",
-    "label": "自定义参数",
-    "value": '',
-    "options": [],
-    "valueConfig": null
+    tag: true,
+    type: '',
+    field: 'custom',
+    label: '自定义参数',
+    value: '',
+    options: [],
+    valueConfig: null
   }
 ]
-
 </script>

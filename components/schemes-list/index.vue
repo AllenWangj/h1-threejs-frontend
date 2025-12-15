@@ -1,12 +1,12 @@
 <template>
   <div class="schemes-list-container">
-    <div class="flex items-center h-[54px] px-[14px] border-b-[1px] border-[#e4ecfd]">
-      <img src="../../assets/images/home/schemes-icon.svg" alt="" width="20" height="20" />
-      <span class="text-[16px] ml-[8px]">方案名称</span>
+    <div class="flex items-center pt-[37px] pb-[26px] px-[35px]">
+      <img src="../../assets/images/home/schemes-icon.svg" alt="" width="22" height="22" />
+      <span class="text-[20px] ml-[8px] text-[#fff]">方案名称</span>
       <span class="flex-1"></span>
-      <span class="text-[12px] text-[#94a3c0]">
+      <span class="text-[14px] text-[#CEE6FF]">
         已生成
-        <span class="text-[#3a83fc]">{{ props.list.length }}</span>
+        <span class="text-[14px] text-[#CEE6FF]">{{ props.list.length }}</span>
         个方案
       </span>
     </div>
@@ -20,15 +20,15 @@
       >
         <div class="flex-1 mr-[20px]">
           <div class="flex items-center justify-between">
-            <span class="text-[14px] text-[#1e1e1e]">{{ item.name }}</span>
+            <span class="text-[18px] font-bold text-[#ffffff]">{{ item.name }}</span>
             <slot name="opt" :record="item"></slot>
           </div>
-          <div class="flex items-center justify-between mt-[8px]">
-            <span class="text-[12px] text-[#8999b8]">评分：{{ Number(item.score) }}分</span>
-            <span class="text-[12px] text-[#8999b8]">{{ formatTime(item.updateTime, 'YYYY-MM-DD HH:mm:ss') }}</span>
+          <div class="flex flex-col mt-[8px]">
+            <span class="text-[14px] text-[#CEE6FF]">评分：{{ Number(item.score) }}分</span>
+            <span class="text-[14px] text-[#CEE6FF]">时间：{{ formatTime(item.updatedAt, 'YYYY-MM-DD HH:mm:ss') }}</span>
           </div>
         </div>
-        <img src="../../assets/images/home/xiala.svg" alt="" width="20px" height="20px" />
+        <!-- <img src="../../assets/images/home/xiala.svg" alt="" width="20px" height="20px" /> -->
       </div>
     </div>
   </div>
@@ -63,11 +63,11 @@ const handleTapScheme = (item: any) => {
 
 <style lang="less" scoped>
 .schemes-list-container {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  width: 300px;
-  margin-right: 10px;
-  border: 1px solid #adcdf7;
+  width: 336px;
+  background: #09488a;
 
   .schemes-list-wrapper {
     flex: 1;
@@ -78,16 +78,16 @@ const handleTapScheme = (item: any) => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
-      margin-bottom: 14px;
-      background: #f8f9fd;
-      border-radius: 4px;
-      border: 1px solid #e8e9ef;
+      padding: 14px 21px;
+      margin-bottom: 10px;
+      background: rgba(86, 143, 204, 0.43);
+      border-radius: 8px;
+      border: 1px solid #3a78c0;
     }
 
     .scheme-item.is-active {
-      background: linear-gradient(180deg, #fff, #deecff);
-      border: 1px solid #adcdf7;
+      background: #568FCC;
+      border: 1px solid #3A78C0;
     }
   }
 }

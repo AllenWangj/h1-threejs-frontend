@@ -1,0 +1,213 @@
+:root {
+  --h1-input-width: 220px;
+  --h1-layout-table-max-height: calc(100vh - 252px);
+  --ez-fast-table--wrap-padding: 0 10px;
+  --el-color-primary: #409eff;
+  --el-color-primary-light-3: rgb(121, 187, 255);
+  --el-color-primary-light-5: rgb(160, 207, 255);
+  --el-color-primary-light-7: rgb(198, 226, 255);
+  --el-color-primary-light-8: rgb(217, 236, 255);
+  --el-color-primary-light-9: rgb(236, 245, 255);
+  --el-color-primary-dark-2: rgb(51, 126, 204);
+  --el-color-success: #67c23a;
+  --el-color-success-light-3: rgb(149, 212, 117);
+  --el-color-success-light-5: rgb(179, 225, 157);
+  --el-color-success-light-7: rgb(209, 237, 196);
+}
+
+/* 默认充值样式 */
+.ez-search-from .el-input,
+.ez-search-from .el-select {
+  width: var(--h1-input-width);
+}
+
+.ez-search-from .el-cascader__tags .el-tag {
+  max-width: 70%;
+}
+
+.ez-fast-table {
+  border-radius: 5px;
+}
+
+.ez-fast-table .ez-search-from {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.ez-fast-table .ez-search-from_operate {
+  margin-right: 0;
+}
+
+/* 处理火狐浏览器的input disabled属性不能选择问题 */
+input[disabled] {
+  pointer-events: auto;
+}
+
+.process-page-container {
+  background-image: linear-gradient(180deg, #fff, #deecff);
+}
+
+.process-new-page-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .form-page-container {
+    --el-fill-color-blank: #114E8E;
+    --el-input-text-color: #69AAEE;
+    --el-text-color-regular: #69AAEE;
+    --el-input-border-color: #3A78C0;
+    --el-border-color: #3A78C0;
+    --el-fill-color-light: #3A78C0;
+    --el-color-info: #94C8FF;
+    --el-text-color-placeholder: #3A93EF;
+
+    --el-color-info-light-9: #3A78C0;
+    --el-color-info-light-8: #3A78C0;
+    --el-color-info: #94C8FF;
+    width: 100%;
+    height: 100%;
+    padding: 0 72px 130px;
+
+    .form-page-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      height: 63px;
+      padding: 0 32px;
+      background: linear-gradient(180deg, #0A396E 0%, #1A4A85 100%);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+
+    }
+
+    .form-page-body {
+      flex: 1;
+      display: flex;
+      height: 100%;
+      overflow-y: auto;
+
+      .checkbox-class {
+        .el-checkbox__inner {
+          width: 18px;
+          height: 18px;
+          border-color: #3A78C0;
+        }
+
+        .el-checkbox__inner:after {
+          border-width: 2px;
+        }
+
+        .el-checkbox__label {
+          font-size: 18px;
+          font-weight: bold;
+          color: #69AAEE;
+        }
+      }
+    }
+
+    .form-page-foooter {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99;
+      height: 103px;
+      background: #083A6B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .el-button {
+        position: relative;
+        height: 60px;
+        min-width: 130px;
+        padding: 0 24px;
+        font-size: 20px;
+        color: #238ce8;
+        border-radius: 16px;
+        /* 与伪元素圆角一致 */
+        overflow: hidden;
+        /* 裁剪伪元素超出的圆角部分 */
+        background-color: #022e67;
+        /* 内容区背景 */
+        border-width: 0;
+      }
+
+      .def-plain-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 16px;
+        /* 继承父元素圆角 */
+        padding: 2px;
+        /* 边框宽度 */
+        background: linear-gradient(180deg,
+            rgba(185, 221, 255, 1),
+            rgba(65, 158, 255, 1),
+            rgba(185, 221, 255, 1));
+        /* 渐变样式 */
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        /* 仅显示 padding 区域（边框） */
+        mask-composite: exclude;
+        /* 标准写法，兼容现代浏览器 */
+        pointer-events: none;
+        /* 不影响鼠标交互 */
+      }
+
+      .def-primary-button {
+        border-radius: 16px;
+        background-image: url('../../assets/images/home/icon-input-button-bg.png');
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        color: #fff;
+      }
+
+      .el-button+.el-button {
+        margin-left: 30px;
+      }
+    }
+  }
+
+  .flie-page-container {
+    .el-upload-dragger {
+      border-width: 0;
+      background: #114E8E;
+      border-radius: 8px;
+    }
+
+    .file-list {
+      .file-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 2px;
+        border: 1px #e4ecfd solid;
+        padding: 20px 30px;
+        margin-bottom: 20px;
+        background: #114E8E;
+        border-radius: 6px;
+        border: 1px solid #3A78C0;
+
+        &:hover {
+          background: #114e8e;
+          box-shadow: inset 0px 0px 27px 0px #0796fd;
+          border-radius: 6px;
+          border: 1px solid #3a78c0;
+        }
+      }
+    }
+
+  }
+}
