@@ -5,25 +5,68 @@
       class="flex-1 relative border border-[1px] border-[#adcdf7]">
       <div ref="threeContainer" class="three-container" />
       <div v-if="!loading && currentAcviteScheme" class="toolbar-container">
-        <el-button v-for="item in materialDataList" :key="item.value"
+        <ModelWrapper v-for="item in materialDataList" :key="item.value">
+          <p style="color: #fff;text-align: center;"> {{ item.name }}</p>
+
+          <p style="color: #fff;text-align: center;width: 100%;"> <el-switch v-model="item.state"
+              @change="playStepAnimation(item.value)"></el-switch></p>
+        </ModelWrapper>
+        <!-- <el-button v-for="item in materialDataList" :key="item.value"
           :type="hideModel.includes(item.value) ? 'info' : 'primary'" @click="playStepAnimation(item.value)">
           {{ item.name }}
-        </el-button>
+        </el-button> -->
       </div>
       <div v-if="!loading && currentAcviteScheme" class="toolbar-content">
         <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
         </BuildInfo>
       </div>
 
-      <div v-if="!loading && currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
+      <div v-if="!loading && currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10" style="width: 100%;">
         <!-- 下载方案 -->
-        <el-button @click="downloadSolution" type="primary">导出方案</el-button>
+        <!-- <el-button @click="downloadSolution" type="primary">导出方案</el-button>
        <el-button type="primary" @click="handleScenePane(false)">禁止拖动</el-button>
         <el-button type="primary" @click="handleScenePane(true)">允许拖动</el-button>
         <el-button type="primary" @click="handleSceneEnable(false)">关闭场景</el-button>
         <el-button type="primary" @click="handleSceneEnable(true)">开启场景</el-button>
         <el-button type="primary" @click="handleSceneScale(true)">允许缩放</el-button>
-        <el-button type="primary"  @click="handleSceneScale(false)">禁止缩放</el-button>
+        <el-button type="primary"  @click="handleSceneScale(false)">禁止缩放</el-button> -->
+        <div class="opt">
+          <div class="opt-content">
+            <p class="opt-btn" @click="handleScenePane(false)">
+              <img src="./svg/stop-o.svg"
+                style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
+              <span>禁止拖动</span>
+            </p>
+            <p class="opt-btn" @click="handleScenePane(true)">
+              <img src="./svg/drag.svg"
+                style="width: 30px;position: relative;  margin-right: 3px;display: inline-block;" />
+              <span>允许拖动</span>
+            </p>
+            <p class="opt-btn" @click="handleSceneEnable(false)">
+              <img src="./svg/closescene.svg"
+                style="width: 30px;position: relative;  margin-right: 3px; display: inline-block;" />
+              <span>关闭场景</span>
+            </p>
+            <p class="opt-btn" @click="handleSceneEnable(true)">
+              <img src="./svg/openscene.svg"
+                style="width: 30px; position: relative;  margin-right: 3px; display: inline-block;" />
+              <span>开启场景</span>
+            </p>
+            <p class="opt-btn" @click="handleSceneScale(true)">
+              <img src="./svg/okscale.svg"
+                style="width: 30px;position: relative;  margin-right: 3px;  display: inline-block;" />
+              <span>允许缩放</span>
+            </p>
+            <p class="opt-btn" @click="handleSceneScale(false)">
+              <img src="./svg/hide.svg"
+                style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
+              <span>禁止缩放</span>
+            </p>
+          </div>
+          <el-button
+            style="background-color: #3A78C0;width: 110px;border-radius: 30px;background: linear-gradient( 180deg, #C7EEFF 0%, #4FF396 100%);color:#09488A"
+            type="primary" @click="downloadSolution" size="large">导出方案</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -38,7 +81,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { modeService } from './composables/mode-service'
 import { materialInfoService } from './composables/material-info-service'
-import { getPartsProductionDetail, planExport} from '@/apis/project'
+import { getPartsProductionDetail, planExport } from '@/apis/project'
+import ModelWrapper from "@/components/model-wrapper/index.vue"
 
 
 // 全屏相关
@@ -52,8 +96,8 @@ const schemeList = ref<any[]>([])
 const currentAcviteScheme = ref('')
 
 const tapScheme = (item) => {
-   currentAcviteScheme.value  = item.id
-   loadModel()
+  currentAcviteScheme.value = item.id
+  loadModel()
   console.log('点击了部件生成方案', item)
 }
 
@@ -80,10 +124,10 @@ async function fetchDetail() {
   try {
     const { data } = await getPartsProductionDetail({
       projectId: projectId.value,
-      type:5
+      type: 5
     })
     schemeList.value = data || []
-    if (schemeList.value.length >0) {
+    if (schemeList.value.length > 0) {
       currentAcviteScheme.value = schemeList.value[0].id
       loadModel()
     }
@@ -122,8 +166,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   cancelAnimationFrame(animationId)
-  if(renderer) {
-  renderer.dispose()
+  if (renderer) {
+    renderer.dispose()
 
   }
   window.removeEventListener('resize', onResize)
@@ -183,18 +227,18 @@ function initThree() {
 }
 
 // 加载模型并创建自定义动画
-let lastMesh :any= null
+let lastMesh: any = null
 function loadModel() {
   loading.value = true
   const loader = new GLTFLoader()
   loader.load(
     '/models/tool5/scene.gltf', // 替换成你自己的路径
     async (gltf) => {
-      if(lastMesh) {
-           lastMesh.traverse((object) => {
-               object.geometry?.dispose()
-               object.material?.dispose()
-           })
+      if (lastMesh) {
+        lastMesh.traverse((object) => {
+          object.geometry?.dispose()
+          object.material?.dispose()
+        })
         lastMesh.parent.remove(lastMesh)
 
       }
@@ -313,16 +357,16 @@ function onResize() {
   camera.updateProjectionMatrix()
   renderer.setSize(el.clientWidth, el.clientHeight)
 }
-function handleScenePane(state:boolean) {
+function handleScenePane(state: boolean) {
   controls!.enablePan = state
 }
-function handleSceneEnable(state:boolean) {
+function handleSceneEnable(state: boolean) {
   // processFour!.handleSceneEnable(state)
   controls!.enabled = state
 
 }
-function handleSceneScale(state:boolean) {
-  controls!.enableZoom =state
+function handleSceneScale(state: boolean) {
+  controls!.enableZoom = state
 
 }
 
@@ -339,17 +383,18 @@ function handleSceneScale(state:boolean) {
   position: absolute;
   top: 20px;
   right: 20px;
-  width: 380px;
-  max-height: 250px;
-  overflow-y: auto;
+  width: 100px;
+  // max-height: 200px;
+  // overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.1);
+  // background: rgba(0, 0, 0, 0.1);
   padding: 20px 10px 10px;
-  border: 1px solid #ccc;
+  // border: 1px solid #ccc;
   border-radius: 8px;
+
 
   .el-button {
     margin: 0;
@@ -360,16 +405,58 @@ function handleSceneScale(state:boolean) {
 
 .toolbar-content {
   position: absolute;
-  top: 280px;
-  right: 20px;
   bottom: 20px;
-  width: 380px;
+  height: 630px;
+  left: 10px;
+  width: 508px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  background: rgba(0, 0, 0, 0.3);
+  // background: rgba(0, 0, 0, 0.3);
   padding: 10px 10px 0;
   border: 1px solid #ccc;
   border-radius: 8px;
+
+  background: #568FCC;
+  border-radius: 8px;
+  border: 1px solid #3A78C0;
+}
+
+.opt {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+
+  .opt-content {
+    width: 800px;
+    height: 40px;
+
+    border-radius: 8px;
+    border: 1px solid #3A78C0;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+
+    .opt-btn {
+      flex: 1;
+      text-align: center;
+      color: #fff;
+      line-height: 38px;
+      height: 38px;
+      cursor: pointer;
+      background: #568FCC;
+
+      &:hover {
+        background: #568FCC90
+      }
+    }
+
+  }
+
 }
 </style>

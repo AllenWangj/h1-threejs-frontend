@@ -172,42 +172,50 @@ export const materialInfoService = (): any[] => {
     return [{
         name: '窗',
         value: 1,
-        infoList: windowData
+        infoList: windowData,
+        state:true
     },
     {
         name: '门',
         value: 2,
-        infoList: doorData
+        infoList: doorData,
+        state:true
     },
     {
         name: '屋面板',
         value: 3,
-        infoList: housePanelData
+        infoList: housePanelData,
+        state:true
     },
     {
         name: '屋顶',
         value: 4,
-        infoList: roofPanelData
+        infoList: roofPanelData,
+        state:true
     },
     {
         name: '墙',
         value: 5,
-        infoList: wallData
+        infoList: wallData,
+        state:true
     },
     {
         name: '地板',
         value: 6,
-        infoList: groundData
+        infoList: groundData,
+        state:true
     },
     {
         name: '顶底板',
         value: 7,
-        infoList: floorData
+        infoList: floorData,
+        state:true
     },
     {
         name: '柱',
         value: 8,
-        infoList: columnData
+        infoList: columnData,
+        state:true
     },
     {
         name: '梁',

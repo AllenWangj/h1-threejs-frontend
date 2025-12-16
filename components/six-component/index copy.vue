@@ -50,47 +50,69 @@
     <div class="toolbar-container">
           <ModelWrapper  @click="addCube('cube3')">
            <img  :src="image1" />
-           <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体1</p>
-        </ModelWrapper>
-
-  <ModelWrapper  @click="addCube('cube4')">
-           <img  :src="image2" />
-           <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体2</p>
-        </ModelWrapper>
-          <ModelWrapper @click="addCube('cube6')">
-           <img  :src="image3" />
            <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体3</p>
         </ModelWrapper>
 
-          <ModelWrapper @click="addCube('cube7')">
-           <img  :src="image4" />
-           <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体4</p>
-        </ModelWrapper>
- 
 
-       <ModelWrapper @click="addCube('cube8')">
-           <img  :src="image5" />
-           <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体5</p>
-        </ModelWrapper>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube3')">物体3</el-button>
+        </template>
+        <img src="/assets/material3.png" />
+      </el-popover>
 
-          <ModelWrapper  @click="addCube('cube9')">
-           <img  :src="image6" />
-           <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体6</p>
-        </ModelWrapper>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube4')">物体4</el-button>
 
-           <ModelWrapper  @click="addCube('cube10')">
-           <img  :src="image7" />
-           <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体7</p>
-        </ModelWrapper>
+        </template>
+        <img src="/assets/material4.png" />
+      </el-popover>
 
-           <ModelWrapper  @click="addCube('cube11')">
-           <img  :src="image8" />
-           <p style="margin:0px;text-align:center;color:#fff;font-weight:400px;margin-top:3px;font-size:18px">物体8</p>
-        </ModelWrapper>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube6')">物体6</el-button>
+
+        </template>
+        <img src="/assets/material6.png" />
+      </el-popover>
 
 
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube7')">物体7</el-button>
 
-      <!-- <el-popover class="box-item" placement="left">
+
+        </template>
+        <img src="/assets/material7.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube8')">物体8</el-button>
+        </template>
+        <img src="/assets/material8.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube9')">物体9</el-button>
+        </template>
+        <img src="/assets/material9.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube10')">物体10</el-button>
+
+        </template>
+        <img src="/assets/material10.png" />
+      </el-popover>
+      <el-popover class="box-item" placement="left">
+        <template #reference>
+          <el-button class="w-[120px]" type="primary" @click="addCube('cube11')">物体11</el-button>
+        </template>
+        <img src="/assets/material11.png" />
+      </el-popover>
+
+      <el-popover class="box-item" placement="left">
         <template #reference>
           <el-button class="w-[120px]" type="primary" @click="addCube('cube13')">物体13</el-button>
         </template>
@@ -118,10 +140,10 @@
 
       <el-button class="w-[120px]" type="primary" :plain="rotateEnabled" @click="toggleRotate">
         {{ rotateEnabled ? '关闭场景旋转' : '开启场景旋转' }}
-      </el-button> -->
+      </el-button>
     </div>
     <div class="plan-detail">
-          <el-descriptions title="集装箱信息" :column="3" >
+          <el-descriptions title="集装箱信息" :column="2" >
           <el-descriptions-item label="8x8梁" :span="1">100根</el-descriptions-item>
           <el-descriptions-item label="8x12梁" :span="1">20根</el-descriptions-item>
           <el-descriptions-item label="连接器" :span="1">100个</el-descriptions-item>
@@ -1065,18 +1087,12 @@ function autoDropToGround(obj: any) {
   padding: 10px 10px 0;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background: #568FCC;
-border-radius: 8px;
-border: 1px solid #3A78C0;
     & ::v-deep {
     .el-descriptions__body {
       background: transparent !important;
     }
-     .el-descriptions__label,
-    .el-descriptions__content {
-      color:#CEE6FF
-    }
-   .el-descriptions__title {
+    .el-descriptions__label,
+    .el-descriptions__content,.el-descriptions__title {
       color: #fff;
     }
   }

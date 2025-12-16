@@ -11,12 +11,16 @@
       <div class="opt">
         <div class="opt-content">
           <p class="opt-btn" @click="handllePlanRestEvt">
+            <img src="./svg/rest.svg" style="width: 30px;height: 30px;position: relative;top: 5px;"/>
             <span>复位</span>
           </p>
           <p class="opt-btn" @click="handllePlanRoatationEvt">
+            <img src="./svg/move.svg" style="width: 30px;height: 30px;position: relative;top: 5px;"/>
             <span>移动</span>
           </p>
           <p class="opt-btn" @click="handllePlanScaleEvt">
+            <img src="./svg/rotation.svg" style="width: 30px;height: 30px;position: relative;top: 5px;"/>
+
             <span>旋转</span>
           </p>
           <!-- <p class="opt-btn">
@@ -299,7 +303,10 @@ function handleAddModel(code: string) {
       line-height: 38px;
       height: 38px;
       cursor: pointer;
-         background: #568FCC;
+      background: #568FCC;
+      display: flex;
+    justify-content: center;
+    gap: 5px;
       &:hover {
         background: #568FCC90
 

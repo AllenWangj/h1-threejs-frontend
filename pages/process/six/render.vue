@@ -4,10 +4,13 @@
     <div class="flex-1 relative border border-[1px] border-[#adcdf7] relative">
       <SixComponent v-if="!isDelive" :planId="currentAcviteScheme" />
       <delivery v-else :demBounds="demBounds" :planId="currentAcviteScheme" :dem-url="demUrl" :satellite-url="satelliteUrl" />
-      <div v-if="currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
-        <el-button type="primary" @click="handleDeliveEvt" :disabled="!(schemeList.length > 0)">运输路线</el-button>
-        <!-- 下载方案 -->
-        <el-button @click="downloadSolution" type="primary">导出方案</el-button>
+      <div v-if="currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10" style="left: calc(50% + 646px);
+    top: 20px;">
+        <el-button style="background-color: #3A78C0;width: 118px;border-radius: 30px;" type="primary" @click="handleDeliveEvt" :disabled="!(schemeList.length > 0)">运输路线</el-button>
+        <el-button
+            style="background-color: #3A78C0;width: 110px;border-radius: 30px;background: linear-gradient( 180deg, #C7EEFF 0%, #4FF396 100%);color:#09488A"
+            type="primary" @click="downloadSolution" size="large">导出方案</el-button>
+            
         
       </div>
     </div>
@@ -117,4 +120,5 @@ const downloadSolution = async () => {
   left: 10px;
   z-index: 9999;
 }
+
 </style>

@@ -1,15 +1,15 @@
 <template>
-  <div class="mb-[10px]">
-    <div class="text-[14px] text-[#fff] text-center mb-[4px]">{{props.name}}</div>
+  <div class="mb-[10px]" style="display: flex;">
+    <div class="text-[14px] text-[#fff] text-center mb-[4px]" style="width: 80px;">{{props.name}}</div>
     <table>
       <thead>
         <tr>
-          <th class="w-[50px]">编号</th>
-          <th class="w-[64px]">规格(mm)</th>
-          <th class="w-[64px]">长度(mm)</th>
-          <th class="w-[60px]">数量(个)</th>
-          <th class="w-[60px]">材质</th>
-          <th class="w-[60px]">重量(kg)</th>
+          <th class="w-[90px]">编号</th>
+          <th class="w-[74px]">规格(mm)</th>
+          <th class="w-[74px]">长度(mm)</th>
+          <th class="w-[70px]">数量(个)</th>
+          <th class="w-[70px]">材质</th>
+          <th class="w-[70px]">重量(kg)</th>
         </tr>
       </thead>
       <tbody>
@@ -38,7 +38,7 @@ table {
   background: transparent;
 
   tr {
-    border: 1px solid #333;
+   border: 1px solid #77B7F9;
   }
 
   th,
@@ -46,9 +46,9 @@ table {
     padding: 0;
     font-size: 12px;
     font-weight: normal;
-    color: #fff;
+    color: #CEE6FF;
     text-align: center;
-    border-right: 1px solid #333;
+    border-right: 1px solid #77B7F9;
   }
 }
 </style>
