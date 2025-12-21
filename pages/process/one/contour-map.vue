@@ -27,13 +27,31 @@
       </div>
     </div>
 
-    <!-- 地理标记信息面板 -->
-    <div v-if="!loading && selectedArea" class="area-info-panel">
-      <div class="info-header">
-        <h3>{{ selectedArea.name }}</h3>
-        <button class="close-btn" @click="selectedArea = null">×</button>
+    <!-- 地理标记信息面板 + 区域形状切换 -->
+    <div v-if="!loading" class="area-info-wrapper">
+      <!-- 区域形状切换按钮 -->
+      <div class="shape-control-panel">
+        <button 
+          :class="['shape-btn', { active: areaShapeType === 'circle' }]"
+          @click="areaShapeType = 'circle'"
+        >
+          ⭕ 圆形
+        </button>
+        <button 
+          :class="['shape-btn', { active: areaShapeType === 'square' }]"
+          @click="areaShapeType = 'square'"
+        >
+          ▢ 方形
+        </button>
       </div>
-      <div class="info-content">
+      
+      <!-- 信息面板 -->
+      <div v-if="selectedArea" class="area-info-panel">
+        <div class="info-header">
+          <h3>{{ selectedArea.name }}</h3>
+          <button class="close-btn" @click="selectedArea = null">×</button>
+        </div>
+        <div class="info-content">
         <div class="info-item">
           <span class="info-label">海拔高度：</span>
           <span class="info-value">{{ selectedArea.elevation }}m</span>
@@ -50,13 +68,14 @@
           <span class="info-label">描述：</span>
           <span class="info-value">{{ selectedArea.description }}</span>
         </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed, nextTick } from 'vue'
 import * as THREE from 'three'
 import { fromArrayBuffer } from 'geotiff'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -84,6 +103,7 @@ const loading = ref(true)
 const loadingText = ref('正在加载...')
 const loadingProgress = ref(0)
 const selectedArea = ref<any>(null)
+const areaShapeType = ref<'circle' | 'square'>('circle')
 
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
@@ -94,6 +114,8 @@ let animationId: number
 let terrainMesh: THREE.Mesh
 let contourLabels: CSS2DObject[] = []
 let areaMarkers: CSS2DObject[] = []
+let areaMeshes: THREE.Mesh[] = []
+let cachedRaster: { data: Float32Array; width: number; height: number; min: number; max: number } | null = null
 
 const TERRAIN_SIZE = 8
 let demMinHeight = 0
@@ -185,7 +207,7 @@ function generateLegend(minHeight: number, maxHeight: number) {
   legendItems.value = items
 }
 
-// 添加选址区域标记 - 使用THREE.js圆环
+// 添加选址区域标记 - 支持圆形和方形
 function addAreaMarkers(raster: Float32Array, width: number, height: number, min: number, max: number) {
   // 清除旧标记
   areaMarkers.forEach(marker => {
@@ -195,6 +217,16 @@ function addAreaMarkers(raster: Float32Array, width: number, height: number, min
     scene.remove(marker)
   })
   areaMarkers = []
+  
+  // 清除旧的几何体
+  areaMeshes.forEach(mesh => {
+    scene.remove(mesh)
+    mesh.geometry.dispose()
+    if (mesh.material instanceof THREE.Material) {
+      mesh.material.dispose()
+    }
+  })
+  areaMeshes = []
   
   // 如果有分析结果，使用分析结果；否则使用默认数据
   const areasToShow = props.analyzedAreas && props.analyzedAreas.length > 0 
@@ -213,36 +245,73 @@ function addAreaMarkers(raster: Float32Array, width: number, height: number, min
     const worldPos = geoToWorld(area.lon, area.lat, raster, width, height, min, max)
     area.elevation = Math.round(worldPos.elevation)
 
-    // 创建THREE.js圆环（更清晰可见）
-    const circleRadius = 0.5 // 圆圈半径
-    const circleGeometry = new THREE.RingGeometry(circleRadius - 0.02, circleRadius, 64)
-    const circleMaterial = new THREE.MeshBasicMaterial({
-      color: 0xff5722,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.9,
-      depthTest: false
-    })
-    const circleMesh = new THREE.Mesh(circleGeometry, circleMaterial)
-    circleMesh.rotation.x = -Math.PI / 2
-    circleMesh.position.set(worldPos.x, 0.01, worldPos.z)
-    circleMesh.renderOrder = 999
-    scene.add(circleMesh)
+    const regionSize = 0.5
     
-    // 添加半透明填充圆
-    const fillGeometry = new THREE.CircleGeometry(circleRadius - 0.02, 64)
-    const fillMaterial = new THREE.MeshBasicMaterial({
-      color: 0xff5722,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.15,
-      depthTest: false
-    })
-    const fillMesh = new THREE.Mesh(fillGeometry, fillMaterial)
-    fillMesh.rotation.x = -Math.PI / 2
-    fillMesh.position.set(worldPos.x, 0.005, worldPos.z)
-    fillMesh.renderOrder = 998
-    scene.add(fillMesh)
+    if (areaShapeType.value === 'circle') {
+      // 圆形区域
+      const circleGeometry = new THREE.RingGeometry(regionSize - 0.02, regionSize, 64)
+      const circleMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff5722,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.9,
+        depthTest: false
+      })
+      const circleMesh = new THREE.Mesh(circleGeometry, circleMaterial)
+      circleMesh.rotation.x = -Math.PI / 2
+      circleMesh.position.set(worldPos.x, 0.01, worldPos.z)
+      circleMesh.renderOrder = 999
+      scene.add(circleMesh)
+      areaMeshes.push(circleMesh)
+      
+      // 添加半透明填充圆
+      const fillGeometry = new THREE.CircleGeometry(regionSize - 0.02, 64)
+      const fillMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff5722,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.15,
+        depthTest: false
+      })
+      const fillMesh = new THREE.Mesh(fillGeometry, fillMaterial)
+      fillMesh.rotation.x = -Math.PI / 2
+      fillMesh.position.set(worldPos.x, 0.005, worldPos.z)
+      fillMesh.renderOrder = 998
+      scene.add(fillMesh)
+      areaMeshes.push(fillMesh)
+    } else {
+      // 方形区域
+      const squareGeometry = new THREE.PlaneGeometry(regionSize, regionSize)
+      const squareMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff5722,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.9,
+        depthTest: false
+      })
+      const squareMesh = new THREE.Mesh(squareGeometry, squareMaterial)
+      squareMesh.rotation.x = -Math.PI / 2
+      squareMesh.position.set(worldPos.x, 0.01, worldPos.z)
+      squareMesh.renderOrder = 999
+      scene.add(squareMesh)
+      areaMeshes.push(squareMesh)
+      
+      // 添加半透明填充方形
+      const fillGeometry = new THREE.PlaneGeometry(regionSize - 0.04, regionSize - 0.04)
+      const fillMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff5722,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.15,
+        depthTest: false
+      })
+      const fillMesh = new THREE.Mesh(fillGeometry, fillMaterial)
+      fillMesh.rotation.x = -Math.PI / 2
+      fillMesh.position.set(worldPos.x, 0.005, worldPos.z)
+      fillMesh.renderOrder = 998
+      scene.add(fillMesh)
+      areaMeshes.push(fillMesh)
+    }
     
     // 添加中心标记点
     const dotGeometry = new THREE.CircleGeometry(0.05, 32)
@@ -256,6 +325,7 @@ function addAreaMarkers(raster: Float32Array, width: number, height: number, min
     dotMesh.position.set(worldPos.x, 0.02, worldPos.z)
     dotMesh.renderOrder = 1000
     scene.add(dotMesh)
+    areaMeshes.push(dotMesh)
     
     // 创建区域名称标签
     const nameDiv = document.createElement('div')
@@ -294,11 +364,11 @@ function addAreaMarkers(raster: Float32Array, width: number, height: number, min
     })
     
     const nameLabel = new CSS2DObject(nameDiv)
-    nameLabel.position.set(worldPos.x, 0, worldPos.z + circleRadius + 0.3)
+    nameLabel.position.set(worldPos.x, 0, worldPos.z + regionSize + 0.3)
     scene.add(nameLabel)
     areaMarkers.push(nameLabel)
     
-    console.log(`✅ 添加区域标记: ${area.name}, 位置=(${worldPos.x.toFixed(2)}, ${worldPos.z.toFixed(2)}), 半径=${circleRadius}`)
+    console.log(`✅ 添加${areaShapeType.value === 'circle' ? '圆形' : '方形'}区域标记: ${area.name}, 位置=(${worldPos.x.toFixed(2)}, ${worldPos.z.toFixed(2)})`)
   })
 }
 
@@ -389,8 +459,13 @@ async function init() {
     geometry.computeVertexNormals()
 
     // 获取高度范围用于shader
-    const minHeight = positions.reduce((a, _, i) => (i % 3 === 2 ? Math.min(a, positions[i]) : a), Infinity)
-    const maxHeight = positions.reduce((a, _, i) => (i % 3 === 2 ? Math.max(a, positions[i]) : a), -Infinity)
+    let minHeight = Infinity
+    let maxHeight = -Infinity
+    for (let i = 0; i < positions.length; i += 3) {
+      const h = positions[i + 2]
+      if (h < minHeight) minHeight = h
+      if (h > maxHeight) maxHeight = h
+    }
     
     // 创建等高线材质 - 使用颜色渐变
     const material = new THREE.ShaderMaterial({
@@ -454,6 +529,9 @@ async function init() {
     loadingProgress.value = 85
     loadingText.value = '添加区域标记...'
     
+    // 缓存raster数据用于后续切换形状
+    cachedRaster = { data: raster, width, height, min, max }
+    
     // 添加选址区域标记
     addAreaMarkers(raster, width, height, min, max)
     
@@ -465,7 +543,7 @@ async function init() {
 
     loadingProgress.value = 100
     loadingText.value = '加载完成！'
-      // 延迟隐藏加载提示
+    // 延迟隐藏加载提示
     setTimeout(() => {
       loading.value = false
     }, 300)
@@ -495,6 +573,46 @@ function onWindowResize() {
   renderer.setSize(container.value.clientWidth, container.value.clientHeight)
   labelRenderer.setSize(container.value.clientWidth, container.value.clientHeight)
 }
+
+// 监听区域形状切换 - 只更新区域标记，不重新初始化整个场景
+watch(areaShapeType, async () => {
+  if (scene && terrainMesh && cachedRaster && props.demUrl) {
+    console.log(`\n🔄 切换区域形状为: ${areaShapeType.value === 'circle' ? '圆形' : '方形'}`)
+    
+    // 使用 nextTick 延迟执行，不阻塞主线程
+    await nextTick()
+    
+    // 清除旧标记
+    areaMarkers.forEach(marker => {
+      if (marker.element && marker.element.parentNode) {
+        marker.element.parentNode.removeChild(marker.element)
+      }
+      scene.remove(marker)
+    })
+    areaMarkers = []
+    
+    // 清除旧的几何体
+    areaMeshes.forEach(mesh => {
+      scene.remove(mesh)
+      mesh.geometry.dispose()
+      if (mesh.material instanceof THREE.Material) {
+        mesh.material.dispose()
+      }
+    })
+    areaMeshes = []
+    
+    // 使用缓存的raster数据直接重新添加区域标记
+    addAreaMarkers(cachedRaster.data, cachedRaster.width, cachedRaster.height, cachedRaster.min, cachedRaster.max)
+    console.log(`✅ 区域标记已切换为${areaShapeType.value === 'circle' ? '圆形' : '方形'}`)
+    
+    // 立即触发一次渲染更新
+    if (renderer && labelRenderer) {
+      renderer.render(scene, camera)
+      labelRenderer.render(scene, camera)
+    }
+  }
+}, { flush: 'sync' })
+
 watch(
   () => props.demUrl,
   (newUrl) => {
@@ -504,6 +622,7 @@ watch(
   },
   { immediate: true }
 )
+
 onMounted(() => {
   init()
 })
@@ -527,6 +646,16 @@ onUnmounted(() => {
     }
   })
   areaMarkers = []
+  
+  // 清理区域几何体
+  areaMeshes.forEach(mesh => {
+    scene.remove(mesh)
+    mesh.geometry.dispose()
+    if (mesh.material instanceof THREE.Material) {
+      mesh.material.dispose()
+    }
+  })
+  areaMeshes = []
 
   if (terrainMesh) {
     terrainMesh.geometry.dispose()
@@ -548,6 +677,48 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.area-info-wrapper {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.shape-control-panel {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  gap: 10px;
+}
+
+.shape-btn {
+  padding: 8px 16px;
+  border: 2px solid #ff5722;
+  background: white;
+  color: #ff5722;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.shape-btn:hover {
+  background: rgba(255, 87, 34, 0.1);
+  transform: translateY(-2px);
+}
+
+.shape-btn.active {
+  background: #ff5722;
+  color: white;
+  box-shadow: 0 2px 8px rgba(255, 87, 34, 0.4);
+}
+
 .legend-panel {
   position: absolute;
   top: 20px;
@@ -597,13 +768,9 @@ onUnmounted(() => {
 }
 
 .area-info-panel {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
   min-width: 320px;
   max-width: 450px;
   overflow: hidden;
