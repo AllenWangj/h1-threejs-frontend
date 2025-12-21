@@ -61,7 +61,7 @@ class RenderPlanLayout extends BaseThree {
   private handleMouseMoveBound: (event: MouseEvent) => void
   private handleMouseUpBound: (event: MouseEvent) => void
   private handleMouseMoveAddBound: (event: MouseEvent) => void
-
+  private spriteList: Three.Sprite[] = []
 
   constructor(node: HTMLElement) {
     super(node, {
@@ -76,8 +76,8 @@ class RenderPlanLayout extends BaseThree {
     this.initializeScene()
     this.initRaycaster()
     this.addEventListeners()
-         // // 加载场景模型
-      //  this.loadSceneModels(Set75)
+    // // 加载场景模型
+    //  this.loadSceneModels(Set75)
     // this.loadDefaultScene()
   }
 
@@ -130,7 +130,7 @@ class RenderPlanLayout extends BaseThree {
       // 设置相机位置
       this.setupCamera()
 
- 
+
 
       this.isCompleteLoadScene = true
     } catch (error) {
@@ -158,11 +158,11 @@ class RenderPlanLayout extends BaseThree {
    * 加载场景模型
    */
   public async loadSceneModels(data: any): Promise<void> {
-    console.log("data",data)
+    console.log("data", data)
     this.handleClearnJunk(this.wrapper)
     // 
     this.loadDefaultScene()
-        try {
+    try {
       // 1. 提取所有模型的 code
       const modelCodes = data.map(config => config.code)
 
@@ -176,6 +176,80 @@ class RenderPlanLayout extends BaseThree {
       )
 
       await Promise.all(loadPromises)
+      const size = this.calculateGroupDimensions(this.wrapper)
+      const height = 600
+      this.spriteList= []
+      const { center } = size
+      const dormSprite = this.createTextSprite('办公区', {
+        fontSize: 40,
+        font: '微软雅黑, Arial', // 支持中文字体（确保系统有该字体）
+        color: '#ffffff',
+        bgColor: '#568FCC', // 半透明橙色背景
+        position: [size.min.x + 1000, center.y - 1000, center.z + height] // 位置在场景中心
+      });
+          dormSprite.name="办公区"
+      this.spriteList.push(dormSprite)
+      this.wrapper.add(dormSprite)
+
+      const dormSprite1 = this.createTextSprite('生活区', {
+        fontSize: 40,
+        font: '微软雅黑, Arial', // 支持中文字体（确保系统有该字体）
+        color: '#ffffff',
+        bgColor: '#568FCC', // 半透明橙色背景
+        position: [size.min.x + 1000, center.y - 200, center.z + height] // 位置在场景中心
+      });
+      dormSprite1.name="生活区"
+      this.spriteList.push(dormSprite1)
+      this.wrapper.add(dormSprite1)
+
+      const dormSprite2 = this.createTextSprite('仓储区', {
+        fontSize: 40,
+        font: '微软雅黑, Arial', // 支持中文字体（确保系统有该字体）
+        color: '#ffffff',
+        bgColor: '#568FCC', // 半透明橙色背景
+        position: [size.min.x + 2000, center.y - 1000, center.z + height]  // 位置在场景中心
+      });
+      dormSprite2.name="仓储区"
+
+      this.wrapper.add(dormSprite2)
+      this.spriteList.push(dormSprite2)
+
+
+      const dormSprite3 = this.createTextSprite('生产区', {
+        fontSize: 40,
+        font: '微软雅黑, Arial', // 支持中文字体（确保系统有该字体）
+        color: '#ffffff',
+        bgColor: '#568FCC', // 半透明橙色背景
+        position: [size.min.x + 3000, center.y - 200, center.z + height]
+      });
+           dormSprite3.name="生产区"
+      this.wrapper.add(dormSprite3)
+      this.spriteList.push(dormSprite3)
+
+
+
+      const dormSprite4 = this.createTextSprite('服务区', {
+        fontSize: 40,
+        font: '微软雅黑, Arial', // 支持中文字体（确保系统有该字体）
+        color: '#ffffff',
+        bgColor: '#568FCC', // 半透明橙色背景
+        position: [size.min.x + 3000, center.y + 2000, center.z + height]
+      }); 
+           dormSprite4.name="服务区"
+
+      this.wrapper.add(dormSprite4)
+      this.spriteList.push(dormSprite4)
+      // debugger
+      // this.
+      // 02_75_10137
+      // const name = this.wrapper.getObjectByName("Group_37")
+      // const sprite = this.createTextSprite("办公区域",{
+      //  x:0 ,
+      //   y:0,
+      //   z:0,
+      // })
+      // this.wrapper.add(dormSprite)
+
       console.log('✅ 所有场景模型加载完成')
     } catch (error) {
       console.error('❌ 加载场景模型失败:', error)
@@ -219,7 +293,7 @@ class RenderPlanLayout extends BaseThree {
   private addInteractiveModel(gltf: any, config: any): void {
     const group = gltf.scene.children[0] as Three.Group
     const size = this.calculateGroupDimensions(group)
-
+    // debugger
     // 设置旋转和位置
     group.name = config.groupName
     group.rotation.z = (config.deg * Math.PI) / 180
@@ -229,22 +303,22 @@ class RenderPlanLayout extends BaseThree {
     const pivot = new Three.Object3D()
     pivot.name = config.groupName
     pivot.userData.data = config //原始数据位置 q
-    if(config.isSave) {
-          pivot.position.set(
-      config.newPosition.x,
-      config.newPosition.y,
-      config.newPosition.z,
-    )
-    pivot.rotation.set(0,0,config.z) 
-    }else {
-        pivot.position.set(
-      config.position.x + size.width / 2,
-      config.position.y + size.height / 2,
-      config.position.z
-    )
-   
+    if (config.isSave) {
+      pivot.position.set(
+        config.newPosition.x,
+        config.newPosition.y,
+        config.newPosition.z,
+      )
+      pivot.rotation.set(0, 0, config.z)
+    } else {
+      pivot.position.set(
+        config.position.x + size.width / 2,
+        config.position.y + size.height / 2,
+        config.position.z
+      )
+
     }
-  
+
     pivot.add(group)
     this.wrapper.add(pivot)
     this.interactiveObjects.push(pivot)
@@ -461,34 +535,34 @@ class RenderPlanLayout extends BaseThree {
       this.defaultGroup = null
     }
   }
-   protected handleClearnJunk(group: Three.Group): void {
-      if (!group || !group.parent) {
-        console.warn('⚠️ 尝试释放无效的组')
-        return
-      }
-      // 递归释放所有资源
-      group.traverse((object) => {
-        if (object instanceof Three.Mesh) {
-          // 释放几何体
-          object.geometry?.dispose()
-  
-          // 释放材质
-          if (object.material) {
-            if (Array.isArray(object.material)) {
-              object.material.forEach((material) => this.disposeMaterial(material))
-            } else {
-              this.disposeMaterial(object.material)
-            }
+  protected handleClearnJunk(group: Three.Group): void {
+    if (!group || !group.parent) {
+      console.warn('⚠️ 尝试释放无效的组')
+      return
+    }
+    // 递归释放所有资源
+    group.traverse((object) => {
+      if (object instanceof Three.Mesh) {
+        // 释放几何体
+        object.geometry?.dispose()
+
+        // 释放材质
+        if (object.material) {
+          if (Array.isArray(object.material)) {
+            object.material.forEach((material) => this.disposeMaterial(material))
+          } else {
+            this.disposeMaterial(object.material)
           }
         }
-      })
-  
-      // 清空引用
-      group.clear()
+      }
+    })
 
-      this.interactiveObjects = []
-      // group.parent = null
-    }
+    // 清空引用
+    group.clear()
+
+    this.interactiveObjects = []
+    // group.parent = null
+  }
 
   /**
    * 获取可交互对象列表
@@ -520,51 +594,111 @@ class RenderPlanLayout extends BaseThree {
     // 调用父类销毁方法
     super.destory()
   }
-  public handlleSaveEvt(){
-    const position = this.interactiveObjects.map(ele =>{
-      const {userData} = ele
+  public handlleSaveEvt() {
+    const position = this.interactiveObjects.map(ele => {
+      const { userData } = ele
       return {
-        groupName:ele.name,
-        deg:userData.data.deg,
-        code:userData.data.code,
-        position:{
-          x:userData.data.position.x,
-          y:userData.data.position.y,
-          z:userData.data.position.z,
+        groupName: ele.name,
+        deg: userData.data.deg,
+        code: userData.data.code,
+        position: {
+          x: userData.data.position.x,
+          y: userData.data.position.y,
+          z: userData.data.position.z,
         },
-        isSave:true,
-        z:ele.rotation.z,
-        newPosition:{
-          x:ele.position.x,
-          y:ele.position.y,
-          z:ele.position.z,
+        isSave: true,
+        z: ele.rotation.z,
+        newPosition: {
+          x: ele.position.x,
+          y: ele.position.y,
+          z: ele.position.z,
         }
-       }
+      }
     })
     return position
   }
   // 添加模型的移动
-   private handleMouseMoveAdd() {
-      
+  private handleMouseMoveAdd() {
+
   }
   // 添加部件
-  public async handleCreateModel(code:string) {
-  const modelUrl = getModelUrl(code)
-  const size = this.calculateGroupDimensions(this.wrapper)
-  const gltf = await this.loadGLTFResource(modelUrl)
+  public async handleCreateModel(code: string) {
+    const modelUrl = getModelUrl(code)
+    const size = this.calculateGroupDimensions(this.wrapper)
+    const gltf = await this.loadGLTFResource(modelUrl)
     this.addInteractiveModel(gltf, {
-      deg:0,
-      groupName:"",
-      code:code,
-      position:{
+      deg: 0,
+      groupName: "",
+      code: code,
+      position: {
         x: size.center.x,
-        y:size.center.y,
-        z:0
+        y: size.center.y,
+        z: 0
       }
     })
   }
+  public createTextSprite(text, options: any) {
+    // 获取文字纹理
+    const texture = this.createTextTexture(text, options);
+
+    // 创建精灵材质
+    const material = new Three.SpriteMaterial({
+      map: texture,        // 纹理贴图
+      transparent: true,
+      opacity: 0.6  // 开启透明度（如果背景透明）
+      // color: 0xff0000    // 材质颜色（会与纹理颜色混合，一般设为白色）
+    });
+
+    // 创建精灵对象
+    const sprite = new Three.Sprite(material);
+
+    // 设置精灵大小（根据场景比例调整，值为缩放因子）
+    sprite.scale.set(600, 300, 1); // x: 2, y: 0.8（宽高比对应 Canvas 的宽高比）
+
+    // 设置精灵位置（可选）
+    if (options.position) {
+      sprite.position.set(...options.position);
+    }
+
+    return sprite;
+  }
+  public createTextTexture(text, options: any) {
+    // 默认配置
+    const config = {
+      fontSize: 12,        // 字体大小
+      font: 'Arial',       // 字体
+      color: '#ffffff',    // 文字颜色
+      bgColor: '#ff5500',  // 背景颜色（透明则设为 'rgba(0,0,0,0)'）
+      padding: 10,         // 内边距
+      width: 200,          // Canvas 宽度
+      height: 100,          // Canvas 高度
+      ...options
+    };
+
+    // 创建 Canvas 元素
+    const canvas = document.createElement('canvas');
+    canvas.width = config.width;
+    canvas.height = config.height;
+    const ctx = canvas.getContext('2d');
+
+    // 绘制背景
+    ctx.fillStyle = config.bgColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 绘制文字
+    ctx.fillStyle = config.color;
+    ctx.font = `${config.fontSize}px ${config.font}`;
+    ctx.textAlign = 'center'; // 文字水平居中
+    ctx.textBaseline = 'middle'; // 文字垂直居中
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2); // 绘制文字到画布中心
+
+    // 转换为 Three.js 纹理
+    const texture = new Three.CanvasTexture(canvas);
+    return texture;
+  }
 
 }
+
 
 export const useRender = () => {
   return { RenderPlanLayout }

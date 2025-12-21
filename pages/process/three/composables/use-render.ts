@@ -38,7 +38,7 @@ class ProcessThree extends BaseThree {
         this.addEventListeners()
         // this.handleOriginModel(plan)
     }
-    
+
     private initRaycaster(): void {
         this.raycaster = new THREE.Raycaster()
         this.raycaster.far = 10000
@@ -133,10 +133,34 @@ class ProcessThree extends BaseThree {
         this.outLineGroup.forEach(ele => {
             ele.visible = false
         })
+
+
+
         this.topGroup.forEach(ele => {
             this.setGroupOpacity(ele, 0.3)
         })
+        //     const group1 = this.wrapper.getObjectByName("Group_1")
+        // group1.visible = false
+
+
+        const group2 = this.wrapper.getObjectByName("Group_27")
         this.innerGroup.forEach(ele => this.setGroupOpacity(ele, 0.8))
+        if (group2) {
+            const sprite =this.createTextSprite("生活区",{
+        fontSize: 40,
+        font: '微软雅黑, Arial', // 支持中文字体（确保系统有该字体）
+        color: '#ffffff',
+        bgColor: '#568FCC', // 半透明橙色背景
+        position: [group2.position.x-200, group2.position.y+80, group2.position.z-250]
+      })
+      this.wrapper.add(sprite)
+            group2.traverse((child) => {
+                if (child instanceof THREE.Mesh) {
+                    child.material.color.setRGB(0, 0, 1); // 改为蓝色
+                }
+            })
+        }
+
     }
     private handleLoadUrl(object: any, parent: any) {
         if (object.code) {
@@ -158,57 +182,6 @@ class ProcessThree extends BaseThree {
                 })
             })
         }
-        // else if (object.name.indexOf("<组件#") != -1) {
-        //     let name = ""
-        //     if (object.children && object.children.length > 0) {
-        //         const children = object.children[0]
-        //         name = children.name
-        //     }
-        //     if (name && name.indexOf("<组件#") != -1) {
-        //         const group = new THREE.Group()
-        //         group.name = object.name
-        //         group.position.set(
-        //             object.position.x,
-        //             object.position.y,
-        //             object.position.z,
-        //         )
-        //         group.rotation.set(
-        //             object.roation.x,
-        //             object.roation.y,
-        //             object.roation.z,
-        //         )
-        //         group.scale.set(
-        //             object.scale.x,
-        //             object.scale.y,
-        //             object.scale.z,
-        //         )
-        //         parent.add(group)
-        //         object.children.forEach(ele => {
-        //             this.handleLoadUrl(ele, group)
-        //         })
-        //     } else {
-        //         // 说明需要加载组件
-        //         const result = object.name.replace(/<组件#(\d+)>.*/, "model$1");
-        //         // const name = (result as string).split("model")
-        //         // object.code = "102"+name[name.length -1]
-        //         // this.promiseFactories.push(() =>this.loadGLTFResource(`/gltf/5/libary/${result}.gltf`))
-        //         this.promiseFactories.push(() => {
-        //             return new Promise((reslove) => {
-        //                 const modelUrl = getModelUrl(object.code)
-        //                 this.loadGLTFResource(modelUrl).then(res => {
-        //                     reslove({
-        //                         wrapper: parent,
-        //                         object: res,
-        //                         position: object.position,
-        //                         roation: object.roation,
-        //                         scale: object.scale,
-        //                         name: object.name
-        //                     })
-        //                 })
-        //             })
-        //         })
-        //     }
-        // }
         else if (object.children && object.children.length > 0) {
             const group = new THREE.Group()
             group.name = object.name
@@ -307,8 +280,66 @@ class ProcessThree extends BaseThree {
         })
         group.clear()
     }
-    
 
+  public createTextSprite(text, options: any) {
+    // 获取文字纹理
+    const texture = this.createTextTexture(text, options);
+
+    // 创建精灵材质
+    const material = new THREE.SpriteMaterial({
+      map: texture,        // 纹理贴图
+      transparent: true,
+      opacity: 0.9  // 开启透明度（如果背景透明）
+      // color: 0xff0000    // 材质颜色（会与纹理颜色混合，一般设为白色）
+    });
+
+    // 创建精灵对象
+    const sprite = new THREE.Sprite(material);
+
+    // 设置精灵大小（根据场景比例调整，值为缩放因子）
+    sprite.scale.set(100, 50, 1); // x: 2, y: 0.8（宽高比对应 Canvas 的宽高比）
+
+    // 设置精灵位置（可选）
+    if (options.position) {
+      sprite.position.set(...options.position);
+    }
+
+    return sprite;
+  }
+  public createTextTexture(text, options: any) {
+    // 默认配置
+    const config = {
+      fontSize: 12,        // 字体大小
+      font: 'Arial',       // 字体
+      color: '#ffffff',    // 文字颜色
+      bgColor: '#ff5500',  // 背景颜色（透明则设为 'rgba(0,0,0,0)'）
+      padding: 10,         // 内边距
+      width: 200,          // Canvas 宽度
+      height: 100,          // Canvas 高度
+      ...options
+    };
+
+    // 创建 Canvas 元素
+    const canvas = document.createElement('canvas');
+    canvas.width = config.width;
+    canvas.height = config.height;
+    const ctx = canvas.getContext('2d');
+
+    // 绘制背景
+    ctx.fillStyle = config.bgColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // 绘制文字
+    ctx.fillStyle = config.color;
+    ctx.font = `${config.fontSize}px ${config.font}`;
+    ctx.textAlign = 'center'; // 文字水平居中
+    ctx.textBaseline = 'middle'; // 文字垂直居中
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2); // 绘制文字到画布中心
+
+    // 转换为 Three.js 纹理
+    const texture = new THREE.CanvasTexture(canvas);
+    return texture;
+  }
 }
 export const useRender = () => {
     return { ProcessThree }

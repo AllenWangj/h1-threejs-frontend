@@ -97,7 +97,11 @@
           </el-descriptions>
         </div>
         <div class="plan-construct">
-          <el-descriptions title="地块信息" :column="2">
+               <!-- <el-descriptions title="地块信息" :column="2"> -->
+                    
+               
+             <!-- </el-descriptions> -->
+          <el-descriptions title="建筑信息" :column="2">
             <el-descriptions-item label="经纬度" :span="2"> 31.2304°N, 121.4737°E</el-descriptions-item>
             <el-descriptions-item label="地块面积" :span="2"> 250mx250m</el-descriptions-item>
             <el-descriptions-item label="海拔" :span="1">1200m</el-descriptions-item>
@@ -105,8 +109,29 @@
             <el-descriptions-item label="模式类型" :span="2">临时</el-descriptions-item>
             <el-descriptions-item label="功能模块布局" :span="2">办公、生活、卫勤、指挥、仓库</el-descriptions-item>
           </el-descriptions>
+        
+        </div>
+        <div>
+             <el-descriptions title="各模块位置信息" :column="2">
+            <el-descriptions-item label="模块名称" :span="1"> 办公区</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 31.2304°N, 121.4737°E</el-descriptions-item>
+
+               <el-descriptions-item label="模块名称" :span="1"> 生活区</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 31.3304°N, 121.1737°E</el-descriptions-item>
+
+
+            
+               <el-descriptions-item label="模块名称" :span="1"> 生产区</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 31.73404°N, 121.41737°E</el-descriptions-item>
+
+
+               <el-descriptions-item label="模块名称" :span="1"> 仓储区</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 31.7804°N, 121.1737°E</el-descriptions-item>
+
+          </el-descriptions>
         </div>
       </div>
+         
     </div>
   </div>
 </template>
@@ -191,6 +216,7 @@ async function fetchDetail(isLoadFirst = true) {
           data: { layouts }
         } = res
         loading.value = true
+        console.log("layouts",layouts)
         await renderPlanLayout!.loadSceneModels(layouts)
         loading.value = false
       })
@@ -333,17 +359,18 @@ function handleAddModel(code: string) {
   width: 510px;
   overflow-y: auto;
   display: flex;
-  flex-direction: column;
   background: #568FCC;
   padding: 10px 10px 0;
   border-radius: 8px;
   border: 1px solid #3A78C0;
   display: flex;
-  flex-direction: row;
+  // flex-direction: row;
+  flex-direction: column;
+
 
   .plan-base,
   .plan-construct {
-    width: calc(512px / 2);
+    width: 100%;
   }
 
   & ::v-deep {

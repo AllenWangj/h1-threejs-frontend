@@ -64,7 +64,20 @@
             <el-descriptions-item label="窗" :span="2">3个</el-descriptions-item>
           </el-descriptions>
         </div>
+           <el-descriptions title="位置信息" :column="2">
+      <el-descriptions-item label="经纬度" :span="2"> 31.2304°N, 121.4737°E</el-descriptions-item>
+            <el-descriptions-item label="颜色说明" :span="1"> 蓝色表示生活区</el-descriptions-item>
+            <el-descriptions-item label="面积" :span="1"> 3mx4m</el-descriptions-item>
 
+            <el-descriptions-item label="颜色说明" :span="1"> 其他颜色表示办公区</el-descriptions-item>
+            <el-descriptions-item label="面积" :span="1"> 4mx6m</el-descriptions-item>
+
+
+            <el-descriptions-item label="海拔" :span="1">1200m</el-descriptions-item>
+            <el-descriptions-item label="功能区别" :span="1">集中式</el-descriptions-item>
+            <el-descriptions-item label="模式类型" :span="2">临时</el-descriptions-item>
+            <el-descriptions-item label="功能模块布局" :span="2">办公</el-descriptions-item>
+          </el-descriptions>
 
       </div>
     </div>
@@ -95,7 +108,7 @@ const tapScheme = (item) => {
   planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
     const { data: { layouts } } = res
     loading.value = true
-
+    console.log("layouts",layouts)
     await processThree!.handleOriginModel(layouts)
     loading.value = false
   })
@@ -132,8 +145,16 @@ async function fetchDetail() {
       currentAcviteScheme.value = schemeList.value[0].id
       currentPlan.value = schemeList.value[0]
       planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
-        const { data: { layouts } } = res
-        loading.value = true
+        let { data: { layouts } } = res
+        // loading.value = true
+        // layouts = {
+        //   ...layouts,
+        //   children:[{
+        //     ...layouts.children[0],
+        //     children:[layouts.children[0].children[0]]
+        //   }]
+        // }
+        // console.log(":layouts",layouts)
         await processThree!.handleOriginModel(layouts)
         loading.value = false
 
@@ -198,7 +219,6 @@ function handleSceneScale(state: boolean) {
   border: 1px solid #ccc;
   border-radius: 8px;
   display: flex;
-  flex-direction: row;
   background: #568FCC;
   border-radius: 8px;
   border: 1px solid #3A78C0;
