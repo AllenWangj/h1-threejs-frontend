@@ -7,7 +7,7 @@
 
       <div class="form-page-body">
         <div class="flex-grow-[1]">
-          <File />
+          <File :type="5" />
         </div>
 
         <div class="flex-grow-[3] flex flex-col">
@@ -110,7 +110,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import File from './file.vue'
+import File from '~/pages/process/components/file.vue'
 import {
   updatePartsProductionParams,
   generatePartsProductionPlan,

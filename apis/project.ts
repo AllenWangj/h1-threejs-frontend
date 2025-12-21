@@ -55,12 +55,12 @@ export const getProjectSitePlanDetail = (params) => useBaseFetch().get(`${baseUr
 /**
  * 更新工具2（规划布局）的数据
 */
-export const updatePlanLayoutFiles = (params) => useBaseFetch().post(`${baseUrl}record/v1/file/add`, params)
+export const addFile = (params) => useBaseFetch().post(`${baseUrl}record/v1/file/add`, params)
 export const updatePlanLayoutParams = (params) => useBaseFetch().post(`${baseUrl}plan-layout/v1/update-params`, params)
 /**
  * 获取工具2（规划布局）的数据
 */
-export const getPlanLayout = (params) => useBaseFetch().get(`${baseUrl}record/v1/file/list`, params)
+export const getFileList = (params) => useBaseFetch().get(`${baseUrl}record/v1/file/list`, params)
 /**
  * 工具2（规划布局）方案生成
 */
@@ -166,7 +166,7 @@ export const updateParams = (data) => useBaseFetch().post(`${baseUrl}structural-
 
 export const updateParamsDetail = (params) => useBaseFetch().get(`${baseUrl}structural-design/v1/detail`, params)
 
-export const remove = (params) => useBaseFetch().post(`${baseUrl}record/v1/file/remove`, params)
+export const removeFile = (params) => useBaseFetch().post(`${baseUrl}record/v1/file/remove`, params)
 
 
 

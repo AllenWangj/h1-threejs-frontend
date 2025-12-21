@@ -7,7 +7,7 @@
 
       <div class="form-page-body">
         <div class="flex-grow-[1]">
-          <File />
+          <File :type="2" />
         </div>
 
         <div class="flex-grow-[3] flex flex-col">
@@ -110,7 +110,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import File from './file.vue'
+import File from '~/pages/process/components/file.vue'
 import { updatePlanLayoutParams, generatePlanLayoutPlan, planLayoutDetailInfo } from '@/apis/project'
 const route = useRoute()
 // { /** 荷载工况 字典 load_cases / loadCases: string /* 建筑布局 默认 0*/ buildingLayout: string /** 构建类型 字典 build_type / buildType: string /* 材料参数 字典 material / material: string /* 目标权重 默认0 / targetWeight: string /* 自定义参数 */ custom: string}

@@ -5,23 +5,11 @@
       <p class="text-[18px] text-[#69AAEE] ml-[4px]">（请上传项目相关的DWG、DXF或PDF文件，支持拖拽上传）</p>
     </div>
     <div class="flex-1 flex flex-col px-[54px] pb-[14px] overflow-y-auto">
-      <div
-        v-loading="uploadLoading"
-        class="h-[300px] flex-shrink-0 flex flex-col items-center justify-center w-[100%] min-w-[200px] bg-[#114E8E] rounded-[8px] border-[1px] border-[#3A78C0]"
-      >
-        <el-upload
-          ref="uploadRef"
-          :file-list="updateFileList"
-          :on-exceed="handleExceed"
-          :limit="1"
-          accept=".pdf,.dwg,.dxf"
-          action=""
-          :drag="true"
-          :auto-upload="false"
-          :on-change="uploadFile"
-          :show-file-list="false"
-          class="w-[100%] h-[100%]"
-        >
+      <div v-loading="uploadLoading"
+        class="h-[300px] flex-shrink-0 flex flex-col items-center justify-center w-[100%] min-w-[200px] bg-[#114E8E] rounded-[8px] border-[1px] border-[#3A78C0]">
+        <el-upload ref="uploadRef" :file-list="updateFileList" :on-exceed="handleExceed" :limit="1"
+          accept=".pdf,.dwg,.dxf" action="" :drag="true" :auto-upload="false" :on-change="uploadFile"
+          :show-file-list="false" class="w-[100%] h-[100%]">
           <div class="w-[100%] h-[100%] flex flex-col items-center justify-center px-[14px]">
             <img src="../../../assets/images/home/tianjiashangchuan.svg" width="90" height="110" alt="" />
             <div v-if="currentFile">
@@ -41,43 +29,41 @@
             <span class="text-[18px] text-[#69AAEE] ml-[4px]">({{ fileList.length }}个)</span>
           </span>
         </div>
-        <div
-          v-for="item in fileList"
-          :key="item.id"
-          class="file-item"
-        >
+        <div v-for="item in fileList" :key="item.id" class="file-item">
           <img src="../../../assets/images/icon-pdf.svg" alt="pdf" class="w-[26px] h-[26px]" />
           <div class="flex-1 flex flex-col px-[14px]">
             <span class="text-[18px] text-[#69AAEE] font-bold">{{ item.name }}</span>
             <div class="flex items-center mt-[4px]">
-              <span class="text-[15px] text-[#69AAEE] mr-[20px]">{{ formatTime(item.updatedAt, 'YYYY-MM-DD HH:mm:ss') }}</span>
+              <span class="text-[15px] text-[#69AAEE] mr-[20px]">{{ formatTime(item.updatedAt, 'YYYY-MM-DD HH:mm:ss')
+              }}</span>
               <span class="text-[15px] text-[#69AAEE]">{{ formatFileSize(item.size || 0) }}</span>
             </div>
           </div>
-          <img
-            src="../../../assets/images/home/icon-project-item-delete.png"
-            alt="remove"
-            class="cursor-pointer w-[20px] h-[20px]"
-            @click="handleRemoveFile(item)"
-          />
+          <img src="../../../assets/images/home/icon-project-item-delete.png" alt="remove"
+            class="cursor-pointer w-[20px] h-[20px]" @click="handleRemoveFile(item)" />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { getPlanLayout, updatePlanLayoutFiles,remove } from '@/apis/project'
+import { getFileList, addFile, removeFile } from '@/apis/project'
 import { genFileId } from 'element-plus'
+
 const route = useRoute()
+
 const { putFile } = useOss()
-const { formatFileSize } = useUtils()
-const { formatTime } = useUtils()
+const { formatFileSize, formatTime } = useUtils()
+
+const props = defineProps<{ type: number }>()
 
 const projectId = ref('')
 const pageLoading = ref(false)
+
 const updateFileList = ref([])
 const fileList = ref([])
 const currentFile = ref('')
+
 const handleRemoveFile = async (file) => {
   try {
     await ElMessageBox.confirm('确定删除该文件吗？', '提示', {
@@ -85,9 +71,7 @@ const handleRemoveFile = async (file) => {
       cancelButtonText: '取消',
       type: 'warning'
     })
-    const fileIdList = fileList.value.filter((item) => item.id !== file.id).map((item) => item.id)
-    await remove({
-      id: projectId.value,
+    await removeFile({
       fileId: file.id
     })
     ElMessage.success('删除成功')
@@ -101,13 +85,14 @@ const handleRemoveFile = async (file) => {
 async function fetchDetail() {
   try {
     pageLoading.value = true
-    const { data } = await getPlanLayout({
-      id: projectId.value
+    const { data } = await getFileList({
+      id: projectId.value,
+      type: props.type
     })
     fileList.value = data || []
-    console.log('获取部件生产详情', data)
+    console.log('获取选址决策详情', data)
   } catch (error) {
-    console.error('获取部件生产详情失败', error)
+    console.error('获取选址决策详情失败', error)
   } finally {
     pageLoading.value = false
   }
@@ -158,8 +143,9 @@ function createdUploadFile() {
       console.log('上传成功', data)
       const fileIdList = fileList.value.map((item) => item.id)
       fileIdList.push(data.id)
-      await updatePlanLayoutFiles({
+      await addFile({
         id: projectId.value,
+        type: props.type,
         fileId: data.id
       })
       // 更新列表
