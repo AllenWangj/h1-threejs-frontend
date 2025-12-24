@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     }
   },
   devtools: {
-    enabled: true
+    enabled: false
   },
   tailwindcss: {
     cssPath: [
