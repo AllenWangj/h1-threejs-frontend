@@ -35,12 +35,12 @@ const { updateExpand, expand } = useMenu()
 const { formatTime } = useUtils()
 
 // 获取当前星期几 并映射成星期一到星期日
-const week = ref(new Date().getDay())
+const week = ref(new Date(2025, 10, 7).getDay())
 const weekNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
 const currentWeek = computed(() => weekNames[week.value])
 
 // 获取当前时间
-const currentDate = ref(formatTime(new Date().getTime(), 'YYYY-MM-DD'))
+const currentDate = ref(formatTime(new Date(2025, 10, 7).getTime(), 'YYYY-MM-DD'))
 const currentDateTime = ref(formatTime(new Date().getTime(), 'HH:mm:ss'))
 
 setInterval(() => {
@@ -48,7 +48,6 @@ setInterval(() => {
 }, 1000)
 
 const selectMenu = (value: string) => {
-  console.log(value)
   switch (value) {
     case 'logout':
       logOut()

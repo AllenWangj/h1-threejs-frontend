@@ -18,7 +18,7 @@
         <el-descriptions title="方案信息" :column="2" >
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-          <el-descriptions-item label="方案创建时间" :span="1">{{ currentPlan.createdAt }}</el-descriptions-item>
+          <el-descriptions-item label="方案创建时间" :span="1">{{ dayjs(currentPlan.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</el-descriptions-item>
         </el-descriptions>
            <el-descriptions title="结构信息" :column="2" >
           <el-descriptions-item label="建筑类型" :span="1">仓储</el-descriptions-item>
@@ -39,6 +39,7 @@ import SchemesList from '@/components/schemes-list/index.vue'
 // import Threeobject from "@/threejs/three/index"
 import { getInternalLayoutDetail,planDetailInfo,planList ,createPlan, planExport} from '@/apis/project'
 import {useRender} from "./composables/use-render"
+import dayjs from "dayjs"
 // import {plan} from "./composables/plan1.ts"
 // import {plan} from "./composables/plan2"
 // import {plan} from "./composables/a"

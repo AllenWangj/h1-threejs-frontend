@@ -17,7 +17,7 @@
 
       <div v-if="!loading && currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
         <!-- 下载方案 -->
-        <el-button @click="downloadSolution" type="primary">导出方案</el-button>
+       <el-button @click="downloadSolution" type="primary">导出设计</el-button>
        <el-button type="primary" @click="handleScenePane(false)">禁止拖动</el-button>
         <el-button type="primary" @click="handleScenePane(true)">允许拖动</el-button>
         <el-button type="primary" @click="handleSceneEnable(false)">关闭场景</el-button>
