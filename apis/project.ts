@@ -107,7 +107,7 @@ export const updatePartsProductionParamsDetail = (params) => useBaseFetch().get(
 /**
  * 获取工具5（部件生产）的详情
 */
-export const getPartsProductionDetail = (params) => useBaseFetch().get(`${baseUrl}/plan/v1/list`, params)
+export const getPartsProductionDetail = (params) => useBaseFetch().get(`${baseUrl}plan/v1/list`, params)
 /**
  * 工具5（部件生产）方案生成
 */
@@ -120,7 +120,7 @@ export const generatePartsProductionPlan = (params) => useBaseFetch().post(`${ba
 */
 export const updatePackingFiles = (params) => useBaseFetch().post(`${baseUrl}packing/v1/update-files`, params)
 export const updatePackingParams = (params) => useBaseFetch().post(`${baseUrl}packing/v1/update-params`, params)
-export const packingParamsDetail = (params) => useBaseFetch().get(`${baseUrl}/packing/v1/detail`, params)
+export const packingParamsDetail = (params) => useBaseFetch().get(`${baseUrl}packing/v1/detail`, params)
 
 /**
  * 获取工具6（运输保障）的详情
@@ -150,9 +150,9 @@ export const generateAssemblePlan = (params) => useBaseFetch().post(`${baseUrl}p
 
 
 export const planDetail = (params) => useBaseFetch().get(`${baseUrl}plan/v1/detail`, params)
-export const removePlan = (data) => useBaseFetch().post(`${baseUrl}/plan/v1/remove`, data)
-export const createPlan = (data) => useBaseFetch().post(`${baseUrl}/plan/v1/create`, data)
-export const updatePlan = (data) => useBaseFetch().post(`${baseUrl}/plan/v1/update`, data)
+export const removePlan = (data) => useBaseFetch().post(`${baseUrl}plan/v1/remove`, data)
+export const createPlan = (data) => useBaseFetch().post(`${baseUrl}plan/v1/create`, data)
+export const updatePlan = (data) => useBaseFetch().post(`${baseUrl}plan/v1/update`, data)
 
 
 /**
