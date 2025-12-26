@@ -78,8 +78,6 @@
             <el-descriptions-item label="模式类型" :span="2">临时</el-descriptions-item>
             <el-descriptions-item label="功能模块布局" :span="2">办公</el-descriptions-item>
           </el-descriptions>
-
-       <div class="plan-detail">
         <el-descriptions title="方案信息" :column="2" >
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>

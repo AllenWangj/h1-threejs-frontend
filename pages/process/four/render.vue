@@ -78,8 +78,6 @@
 
 
 
-        <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
-         <div class="plan-detail">
         <el-descriptions title="方案信息" :column="2" >
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
           <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
@@ -93,7 +91,7 @@
           <el-descriptions-item label="门" :span="1">2个</el-descriptions-item>
           <el-descriptions-item label="窗" :span="1">3个</el-descriptions-item>
         </el-descriptions>
-            <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
+        <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
         </BuildInfo>
       </div>
     </div>
