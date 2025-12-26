@@ -6,7 +6,7 @@
       <div ref="threeContainer" class="three-container" />
       <div v-if="!loading && currentAcviteScheme" class="toolbar-container">
         <el-button v-for="item in materialDataList" :key="item.value"
-          :type="hideModel.includes(item.value) ? 'info' : 'primary'" @click="playStepAnimation(item.value)">
+          :source="hideModel.includes(item.value) ? 'info' : 'primary'" @click="playStepAnimation(item.value)">
           {{ item.name }}
         </el-button>
       </div>
@@ -62,7 +62,7 @@ const downloadSolution = async () => {
   try {
     const url = planExport({
       projectId: projectId.value,
-      type: 5
+      source: 5
     })
     const a = document.createElement('a')
     a.href = url
@@ -80,7 +80,7 @@ async function fetchDetail() {
   try {
     const { data } = await getPartsProductionDetail({
       projectId: projectId.value,
-      type:5
+      source: 5
     })
     schemeList.value = data || []
     if (schemeList.value.length) {

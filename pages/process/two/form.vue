@@ -7,7 +7,7 @@
 
       <div class="form-page-body">
         <div class="flex-grow-[1]">
-          <File :type="2" />
+          <File :source="2" />
         </div>
 
         <div class="flex-grow-[3] flex flex-col">
@@ -233,7 +233,7 @@ const handleGenerateSolution = async () => {
     const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generatePlanLayoutPlan({
       projectId: projectId.value,
-      type: 2,
+      source: 2,
       params
     })
     ElMessageBox.alert('方案生成中，请稍后去生成方案中查看', '温馨提示', {

@@ -7,7 +7,7 @@
 
       <div class="form-page-body">
         <div class="flex-grow-[1]">
-          <File :type="6" />
+          <File :source="6" />
         </div>
 
         <div class="flex-grow-[3] flex flex-col">
@@ -220,7 +220,7 @@ const handleGenerateSolution = async () => {
     const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generatePackingPlan({
       projectId: projectId.value,
-      type: 6,
+      source: 6,
       params
     })
     ElMessageBox.alert('方案生成中，请稍后去生成方案中查看', '温馨提示', {

@@ -354,7 +354,7 @@ const downloadSolution = async () => {
   try {
     const url = planExport({
       projectId: projectId.value,
-      type: 1
+      source: 1
     })
     const a = document.createElement('a')
     a.href = url

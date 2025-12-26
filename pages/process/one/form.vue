@@ -7,7 +7,7 @@
 
       <div class="form-page-body">
         <div class="flex-grow-[1]">
-          <File :type="1" />
+          <File :source="1" />
         </div>
 
         <div class="flex-grow-[3] flex flex-col">

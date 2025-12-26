@@ -55,7 +55,7 @@ const route = useRoute()
 const { putFile } = useOss()
 const { formatFileSize, formatTime } = useUtils()
 
-const props = defineProps<{ type: number }>()
+const props = defineProps<{ source: number }>()
 
 const projectId = ref('')
 const pageLoading = ref(false)
@@ -87,7 +87,7 @@ async function fetchDetail() {
     pageLoading.value = true
     const { data } = await getFileList({
       id: projectId.value,
-      type: props.type
+      source: props.source
     })
     fileList.value = data || []
     console.log('获取选址决策详情', data)
@@ -145,7 +145,7 @@ function createdUploadFile() {
       fileIdList.push(data.id)
       await addFile({
         id: projectId.value,
-        type: props.type,
+        source: props.source,
         fileId: data.id
       })
       // 更新列表

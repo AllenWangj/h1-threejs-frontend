@@ -7,7 +7,7 @@
 
       <div class="form-page-body">
         <div class="flex-grow-[1]">
-          <File :type="5" />
+          <File :source="5" />
         </div>
 
         <div class="flex-grow-[3] flex flex-col">
@@ -221,7 +221,7 @@ const handleGenerateSolution = async () => {
     const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generatePartsProductionPlan({
       projectId: projectId.value,
-      type: 5,
+      source: 5,
       params
     })
     ElMessageBox.alert('方案生成中，请稍后去生成方案中查看', '温馨提示', {

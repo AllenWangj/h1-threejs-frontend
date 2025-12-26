@@ -398,10 +398,10 @@ async function fetchProjectDetail(id: number) {
           status = data.structuralDesignStatus
           break
         case 5:
-          status = data.packingStatus
+          status = data.partsProductionStatus
           break
         case 6:
-          status = data.partsProductionStatus
+          status = data.packingStatus
           break
         case 7:
           status = data.assembleStatus

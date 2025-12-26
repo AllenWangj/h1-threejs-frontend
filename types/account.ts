@@ -1,6 +1,5 @@
 import type { BaseItem } from '~/types/base'
 export interface MenuItem extends BaseItem {
-  pid: string
   id: string
   parentId: string
   code: string

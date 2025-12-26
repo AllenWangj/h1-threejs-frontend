@@ -133,7 +133,7 @@ const downloadSolution = async () => {
   try {
     const url = planExport({
       projectId: projectId.value,
-      type: 2
+      source: 2
     })
     const a = document.createElement('a')
     a.href = url
@@ -161,7 +161,7 @@ async function fetchDetail(isLoadFirst = true) {
   try {
     const { data } = await planList({
       projectId: projectId.value,
-      type: '2'
+      source: 2
     })
     schemeList.value = data || []
     if (schemeList.value.length && isLoadFirst) {
@@ -213,7 +213,7 @@ function handlleOtherSaveEvt() {
       const result = schemeList.value.find((ele) => ele.id === currentAcviteScheme.value)!
       const data = {
         id: result.id,
-        type: '2',
+        source: 2,
         projectId: projectId.value,
         name: value,
         layouts: JSON.stringify(position)

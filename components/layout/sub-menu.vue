@@ -7,7 +7,7 @@
       <span>{{ props.item.name }}</span>
     </template>
     <template v-for="child in props.item.children" :key="child.path">
-      <sub-menu v-if="child.type === 1 && child.children.length > 0" :item="child" />
+      <sub-menu v-if="child.type === 1 && child.children.length > 0" :index="child.id" :item="child" />
       <menu-item v-else-if="child.type === 2 && child.visible === 1" :item="child" />
     </template>
   </el-sub-menu>

@@ -7,7 +7,7 @@
 
       <div class="form-page-body">
         <div class="flex-grow-[1]">
-          <File :type="3" />
+          <File :source="3" />
         </div>
 
         <div class="flex-grow-[3] flex flex-col">
@@ -225,7 +225,7 @@ const handleGenerateSolution = async () => {
     const params = JSON.parse(JSON.stringify(formData.value.projectForm))
     await generateInternalLayoutPlan({
       projectId: projectId.value,
-      type: 3,
+      source: 3,
       params
     })
     ElMessageBox.alert('方案生成中，请稍后去生成方案中查看', '温馨提示', {
@@ -296,19 +296,12 @@ const defData = [
   },
   {
     "tag": true,
-    "type": "multiple-dynamic",
+    "type": "select",
     "field": "scale",
     "label": "建筑规模",
     "value": [],
     "options": [],
-    "valueConfig": [
-      {
-        "field": "1",
-        "type": "input",
-        "unit": "m²",
-        "value": "",
-      }
-    ]
+    "valueConfig": null
   },
   {
     "tag": true,

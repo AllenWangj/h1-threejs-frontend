@@ -74,7 +74,7 @@ const downloadSolution = async () => {
   try {
     const url = planExport({
       projectId: projectId.value,
-      type: 3
+      source: 3
     })
     const a = document.createElement('a')
     a.href = url
@@ -92,7 +92,7 @@ async function fetchDetail() {
   try {
     const { data } = await planList({
       projectId: projectId.value,
-      type:3
+      source:3
     })
     schemeList.value = data || []
     if (schemeList.value.length) {
