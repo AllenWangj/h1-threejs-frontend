@@ -16,6 +16,7 @@
     border: 1px solid #6197D6;
     padding: 10px;
     margin-bottom:10px;
+    pointer-events: auto;
     cursor: pointer;
 }
 </style>
