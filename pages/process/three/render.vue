@@ -51,7 +51,6 @@
             <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
             <el-descriptions-item label="方案创建时间" :span="1">{{ formatTime(currentPlan.updatedAt, 'YYYY-MM-DD HH:mm:ss')
             }}</el-descriptions-item>
-
           </el-descriptions>
         </div>
         <div class="plan-construct">
@@ -65,32 +64,16 @@
           </el-descriptions>
         </div>
            <el-descriptions title="位置信息" :column="2">
-      <el-descriptions-item label="经纬度" :span="2"> 31.2304°N, 121.4737°E</el-descriptions-item>
-            <el-descriptions-item label="颜色说明" :span="1"> 蓝色表示生活区</el-descriptions-item>
-            <el-descriptions-item label="面积" :span="1"> 3mx4m</el-descriptions-item>
-
-            <el-descriptions-item label="颜色说明" :span="1"> 其他颜色表示办公区</el-descriptions-item>
+         <el-descriptions-item label="经纬度" :span="2"> 31.2304°N, 121.4737°E</el-descriptions-item>
+            <!-- <el-descriptions-item label="颜色说明" :span="1"> 蓝色表示生活区</el-descriptions-item> -->
+            <!-- <el-descriptions-item label="面积" :span="1"> 3mx4m</el-descriptions-item> -->
+            <!-- <el-descriptions-item label="颜色说明" :span="1"> 其他颜色表示办公区</el-descriptions-item> -->
             <el-descriptions-item label="面积" :span="1"> 4mx6m</el-descriptions-item>
-
-
             <el-descriptions-item label="海拔" :span="1">1200m</el-descriptions-item>
             <el-descriptions-item label="功能区别" :span="1">集中式</el-descriptions-item>
             <el-descriptions-item label="模式类型" :span="2">临时</el-descriptions-item>
             <el-descriptions-item label="功能模块布局" :span="2">办公</el-descriptions-item>
           </el-descriptions>
-        <el-descriptions title="方案信息" :column="2" >
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-          <el-descriptions-item label="方案创建时间" :span="1">{{ dayjs(currentPlan.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</el-descriptions-item>
-        </el-descriptions>
-           <el-descriptions title="结构信息" :column="2" >
-          <el-descriptions-item label="建筑类型" :span="1">仓储</el-descriptions-item>
-          <el-descriptions-item label="建筑边界" :span="1">1m</el-descriptions-item>
-          <el-descriptions-item label="建筑规模" :span="1">10平米</el-descriptions-item>
-          <el-descriptions-item label="标准功能模块" :span="1">供电</el-descriptions-item>
-          <el-descriptions-item label="门" :span="1">2个</el-descriptions-item>
-          <el-descriptions-item label="窗" :span="1">3个</el-descriptions-item>
-        </el-descriptions>
       </div>
     </div>
   </div>
@@ -162,15 +145,60 @@ async function fetchDetail() {
       currentPlan.value = schemeList.value[0]
       planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         let { data: { layouts } } = res
-        // loading.value = true
-        // layouts = {
-        //   ...layouts,
-        //   children:[{
-        //     ...layouts.children[0],
-        //     children:[layouts.children[0].children[0]]
-        //   }]
+        // const bottom = {
+        //   ...layouts.children[0].children[0],
+        //   position:{
+        //     ...layouts.children[0].children[0].position
+        //   }
         // }
-        // console.log(":layouts",layouts)
+        // const top = {
+        //   ...layouts.children[0].children[1],
+        //    position:{
+        //     ...layouts.children[0].children[1].position
+        //   }
+        // } 
+        // const yLen = 100
+        // bottom.position.y +=yLen
+        // top.position.y +=yLen
+
+        //  const bottom1 = {
+        //   ...layouts.children[0].children[0],
+        //   position:{
+        //     ...layouts.children[0].children[0].position
+        //   }
+        // }
+        // const top1 = {
+        //   ...layouts.children[0].children[1],
+        //    position:{
+        //     ...layouts.children[0].children[1].position
+        //   }
+        // } 
+        // bottom1.position.y +=yLen *2
+        // top1.position.y +=yLen *2
+        const object =  layouts.children[0].children[0]
+        const clone = {
+          ...layouts.children[0].children[0],
+          position: {
+            ...object.position
+          }
+        }
+        clone.position.y +=100
+        layouts = {
+          ...layouts,
+          children:[
+            {
+              ... layouts.children[0],
+              children:[
+                layouts.children[0].children[0],
+                clone
+            ]
+            }
+           
+          ]
+        }
+        loading.value = true
+        console.log(":layouts",layouts)
+        
         await processThree!.handleOriginModel(layouts)
         loading.value = false
 

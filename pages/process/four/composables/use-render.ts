@@ -48,9 +48,27 @@ class ProcessFour extends BaseThree {
                 scale.y,
                 scale.z,
             )
+            // wrapper.name = name
             wrapper.add(object.scene)
         })
         const size = this.calculateGroupDimensions(this.wrapper)
+
+
+
+        //  const group2 = this.wrapper.getObjectByName("Group_89")
+        // group2.visible =false
+
+        //    const group3 = this.wrapper.getObjectByName("Group_317")
+        // group3.visible =false
+
+        //  const group4 = this.wrapper.getObjectByName("Group_380")
+        // group4.visible =false
+
+        //   const group5 = this.wrapper.getObjectByName("Group_273")
+        // group5.visible =false
+
+        //  const group6 = this.wrapper.getObjectByName("Group_25")
+        // group6.visible =false
         const number = 600
         this.camera!.position.set(size.center.x- number, size.center.y , size.center.z)
         this.controls.target.set(size.center.x, size.center.y, size.center.z)

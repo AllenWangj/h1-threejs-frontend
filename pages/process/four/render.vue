@@ -75,22 +75,6 @@
             </el-descriptions>
           </div>
         </div>
-
-
-
-        <el-descriptions title="方案信息" :column="2" >
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-          <el-descriptions-item label="方案创建时间" :span="1">{{ dayjs(currentPlan.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</el-descriptions-item>
-        </el-descriptions>
-           <el-descriptions title="结构信息" :column="2" >
-          <el-descriptions-item label="建筑类型" :span="1">仓储</el-descriptions-item>
-          <el-descriptions-item label="建筑边界" :span="1">1m</el-descriptions-item>
-          <el-descriptions-item label="建筑规模" :span="1">10平米</el-descriptions-item>
-          <el-descriptions-item label="标准功能模块" :span="1">供电</el-descriptions-item>
-          <el-descriptions-item label="门" :span="1">2个</el-descriptions-item>
-          <el-descriptions-item label="窗" :span="1">3个</el-descriptions-item>
-        </el-descriptions>
         <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
         </BuildInfo>
       </div>
@@ -129,6 +113,8 @@ const tapScheme = (item) => {
       const {
         data: { layouts }
       } = res
+        console.log("layouts",layouts)
+
       await processFour!.handleOriginModel(layouts)
       loading.value = false
     })
@@ -155,6 +141,7 @@ const downloadSolution = async () => {
   }
 }
 const materialDataList = ref(materialInfoService())
+console.log("materialDataList",materialDataList)
 // 获取详情
 async function fetchDetail() {
   try {
