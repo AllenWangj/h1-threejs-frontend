@@ -58,6 +58,7 @@
             <el-descriptions title="方案信息" :column="2">
               <el-descriptions-item label="方案名称" :span="2"> {{ currentPlan.name }}</el-descriptions-item>
               <el-descriptions-item label="方案评分" :span="2"> {{ currentPlan.score }}</el-descriptions-item>
+              <el-descriptions-item label="方案造价" :span="2"> 25W</el-descriptions-item>
               <el-descriptions-item label="方案创建时间" :span="2">{{ formatTime(currentPlan.updatedAt, 'YYYY-MM-DD HH:mm:ss')
                 }}</el-descriptions-item>
 

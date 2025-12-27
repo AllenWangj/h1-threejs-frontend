@@ -49,6 +49,7 @@
           <el-descriptions title="方案信息" :column="1">
             <el-descriptions-item label="方案名称" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
             <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
+            <el-descriptions-item label="建筑规模" :span="1"> 75人</el-descriptions-item>
             <el-descriptions-item label="方案创建时间" :span="1">{{ formatTime(currentPlan.updatedAt, 'YYYY-MM-DD HH:mm:ss')
             }}</el-descriptions-item>
           </el-descriptions>
