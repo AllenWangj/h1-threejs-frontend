@@ -5,158 +5,177 @@
       <div ref="threeContainer" class="three-container"></div>
       <div class="opt">
         <div class="opt-content">
-          <p class="opt-btn" @click="handleScenePane(false)">
-            <img src="./svg/stop-o.svg"
-              style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
+          <p class="opt-btn" @click="handleScenePane(false);">
+            <img
+              src="./svg/stop-o.svg"
+              style="width: 26px; position: relative; margin-right: 3px; display: inline-block"
+            />
             <span>禁止拖动</span>
           </p>
           <p class="opt-btn" @click="handleScenePane(true)">
-            <img src="./svg/drag.svg"
-              style="width: 30px;position: relative;  margin-right: 3px;display: inline-block;" />
+            <img
+              src="./svg/drag.svg"
+              style="width: 26px; position: relative; margin-right: 3px; display: inline-block"
+            />
             <span>允许拖动</span>
           </p>
           <p class="opt-btn" @click="handleSceneEnable(false)">
-            <img src="./svg/closescene.svg"
-              style="width: 30px;position: relative;  margin-right: 3px; display: inline-block;" />
+            <img
+              src="./svg/closescene.svg"
+              style="width: 24px; position: relative; margin-right: 3px; display: inline-block"
+            />
             <span>关闭场景</span>
           </p>
           <p class="opt-btn" @click="handleSceneEnable(true)">
-            <img src="./svg/openscene.svg"
-              style="width: 30px; position: relative;  margin-right: 3px; display: inline-block;" />
+            <img
+              src="./svg/openscene.svg"
+              style="width: 24px; position: relative; margin-right: 3px; display: inline-block"
+            />
             <span>开启场景</span>
           </p>
           <p class="opt-btn" @click="handleSceneScale(true)">
-            <img src="./svg/okscale.svg"
-              style="width: 30px;position: relative;  margin-right: 3px;  display: inline-block;" />
+            <img
+              src="./svg/okscale.svg"
+              style="width: 26px; position: relative; margin-right: 3px; display: inline-block"
+            />
             <span>允许缩放</span>
           </p>
           <p class="opt-btn" @click="handleSceneScale(false)">
-            <img src="./svg/hide.svg"
-              style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
+            <img
+              src="./svg/hide.svg"
+              style="width: 26px; position: relative; margin-right: 3px; display: inline-block"
+            />
             <span>禁止缩放</span>
+          </p>
+          <p class="opt-btn flex items-center justify-center" @click="toggleAnimation">
+            <el-icon v-if="isPaused" size="22"><VideoPlay /></el-icon>
+            <el-icon v-else size="22"><VideoPause /></el-icon>
+            <span>{{ isPaused ? '播放' : '暂停' }}</span>
           </p>
         </div>
         <el-button
-          style="background-color: #3A78C0;width: 110px;border-radius: 30px;background: linear-gradient( 180deg, #C7EEFF 0%, #4FF396 100%);color:#09488A"
-          type="primary" @click="downloadSolution" size="large">导出方案</el-button>
+          style="
+            background-color: #3a78c0;
+            width: 110px;
+            border-radius: 30px;
+            background: linear-gradient(180deg, #c7eeff 0%, #4ff396 100%);
+            color: #09488a;
+          "
+          type="primary"
+          @click="downloadSolution"
+          size="large"
+        >
+          导出方案
+        </el-button>
       </div>
       <div class="toolbar-container">
         <ModelWrapper @click="playStep1Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤1</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要20人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤1</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要20人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStepNew2Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤2</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要10人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤2</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要10人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStepNew221Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤3</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要10人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤3</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要10人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep2Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤4</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要5人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤4</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要5人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStepNew21Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤5</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要15人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤5</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要15人/天</p>
         </ModelWrapper>
-
-
 
         <ModelWrapper @click="playStepNew22Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤6</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要10人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤6</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要10人/天</p>
         </ModelWrapper>
-
 
         <ModelWrapper @click="playStep3Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤7</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要5人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤7</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要5人/天</p>
         </ModelWrapper>
 
-
         <ModelWrapper @click="playStep41Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤8</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要6人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤8</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要6人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep42Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤9</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要7人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤9</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要7人/天</p>
         </ModelWrapper>
-
 
         <ModelWrapper @click="playStep43Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤10</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要3人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤10</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要3人/天</p>
         </ModelWrapper>
 
-
         <ModelWrapper @click="playStep44Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤11</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要2人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤11</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要2人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep51Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤12</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要1人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤12</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要1人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep52Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤13</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要4人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤13</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要4人/天</p>
         </ModelWrapper>
         <ModelWrapper @click="playStep53Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤14</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要5人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤14</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要5人/天</p>
         </ModelWrapper>
 
-
         <ModelWrapper @click="playStep53Animation1">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤15</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要7人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤15</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要7人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep53Animation2">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤16</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要2人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤16</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要2人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep54Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤17</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要3人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤17</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要3人/天</p>
         </ModelWrapper>
 
-
         <ModelWrapper @click="playStep55Animation">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤18</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要5人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤18</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要5人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep55Animation1">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤19</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要7人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤19</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要7人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep55Animation2">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤20</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要3人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤20</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要3人/天</p>
         </ModelWrapper>
 
         <ModelWrapper @click="playStep55Animation3">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤21</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要4人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤21</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要4人/天</p>
         </ModelWrapper>
 
-
         <ModelWrapper @click="playStep55Animation4">
-          <p style="width: 100%;text-align: center;color:#fff"> 步骤22</p>
-          <p style="width: 100%;text-align: center;color:#fff;font-size: 12px;"> 需要5人/天</p>
+          <p style="width: 100%; text-align: center; color: #fff">步骤22</p>
+          <p style="width: 100%; text-align: center; color: #fff; font-size: 12px">需要5人/天</p>
         </ModelWrapper>
       </div>
       <div v-if="currentAcviteScheme" class="absolute top-[10px] left-[10px] z-10">
@@ -170,9 +189,12 @@
         <el-button type="primary"  @click="handleSceneScale(false)">禁止缩放</el-button> -->
       </div>
       <div class="toolbar-content">
-        <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
-        </BuildInfo>
-
+        <BuildInfo
+          v-for="item in materialDataList"
+          :key="item.value"
+          :name="item.name"
+          :list="item.infoList"
+        ></BuildInfo>
       </div>
     </div>
   </div>
@@ -187,7 +209,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { getAssembleDetail, planExport } from '@/apis/project'
 import BuildInfo from './components/build-info.vue'
 import { materialInfoService } from './composables/material-info-service'
-import ModelWrapper from "@/components/model-wrapper/index.vue"
+import ModelWrapper from '@/components/model-wrapper/index.vue'
 
 // 全屏相关
 const fullscreenContainer = ref<HTMLElement | null>(null)
@@ -202,6 +224,14 @@ const tapScheme = (item) => {
   console.log('点击了现场组装方案', item)
   currentAcviteScheme.value = item.id
   loadModel()
+}
+
+// 动画控制状态
+const isPaused = ref(false)
+
+// 切换暂停/恢复的方法
+const toggleAnimation = () => {
+  isPaused.value = !isPaused.value
 }
 
 // 下载方案
@@ -1160,7 +1190,7 @@ async function playStep53Animation() {
     '屋面板'
   ])
   // await animateObjects(['屋面主檩条'])
-  await animateObjects1(['屋架'], 500, 1, 0)
+  await animateObjects1(['屋架'], 500, 3, 0)
   btnLoading.value = false
 }
 async function playStep53Animation1() {
@@ -1217,7 +1247,7 @@ async function playStep53Animation1() {
     '屋面板'
   ])
   // await animateObjects(['屋面主檩条'])
-  await animateObjects1(['屋架'], 500, 1, 1)
+  await animateObjects1(['屋架'], 500, 3, 1)
   btnLoading.value = false
 }
 async function playStep53Animation2() {
@@ -1274,7 +1304,7 @@ async function playStep53Animation2() {
     '屋面板'
   ])
   // await animateObjects(['屋面主檩条'])
-  await animateObjects1(['屋架'], 500, 1, 2)
+  await animateObjects1(['屋架'], 500, 3, 2)
   btnLoading.value = false
 }
 async function playStep54Animation() {
@@ -1653,7 +1683,7 @@ async function playStep5Animation() {
  * @param {number} startZ - 起始Z坐标
  * @param {number} duration - 动画时长
  */
-function animateObject(object, endPosition, startZ = 500, duration = 1) {
+function animateObject(object, endPosition, startZ = 500, duration = 3) {
   return new Promise((resolve) => {
     object.visible = true
 
@@ -1665,6 +1695,15 @@ function animateObject(object, endPosition, startZ = 500, duration = 1) {
     object.position.copy(start)
 
     function animateFrame() {
+      // --- 暂停逻辑 ---
+      if (isPaused.value) {
+        clock.stop() // 暂停时停止时钟
+        requestAnimationFrame(animateFrame)
+        return
+      }
+
+      if (!clock.running) clock.start() // 恢复时重新启动
+
       const delta = clock.getDelta()
       elapsedTime += delta
       const t = Math.min(elapsedTime / duration, 1)
@@ -1689,7 +1728,7 @@ function animateObject(object, endPosition, startZ = 500, duration = 1) {
  * @param {number} startZ - 起始Z
  * @param {number} duration - 动画时长
  */
-function animateObjects(names, startZ = 500, duration = 1) {
+function animateObjects(names, startZ = 500, duration = 3) {
   const promises = names.map((name) => {
     const obj = scene.getObjectByName(name)
     if (!obj || obj.visible) return Promise.resolve()
@@ -1699,38 +1738,36 @@ function animateObjects(names, startZ = 500, duration = 1) {
 
   return Promise.all(promises)
 }
-function animateObjects1(names, startZ = 500, duration = 1, number = 0) {
-
+function animateObjects1(names, startZ = 500, duration = 3, number = 0) {
   const promises = names.map((name) => {
     const obj = scene.getObjectByName(name)
 
     // const namme = ['屋面主檩条',"屋面次檩条","屋面连接件"]
     if (number == 0) {
-      const obj = scene.getObjectByName("屋面主檩条")
-      const obj1 = scene.getObjectByName("屋面次檩条")
-      const obj2 = scene.getObjectByName("屋面连接件")
+      const obj = scene.getObjectByName('屋面主檩条')
+      const obj1 = scene.getObjectByName('屋面次檩条')
+      const obj2 = scene.getObjectByName('屋面连接件')
       obj.visible = true
       obj1.visible = false
       obj2.visible = false
     } else if (number == 1) {
-      const obj1 = scene.getObjectByName("屋面次檩条")
+      const obj1 = scene.getObjectByName('屋面次檩条')
       obj1.visible = true
       obj1.parent.visible = true
-      const obj2 = scene.getObjectByName("屋面次檩条")
+      const obj2 = scene.getObjectByName('屋面次檩条')
       obj2.visible = false
-      animateObjects(["屋面次檩条"])
-      const obj3 = scene.getObjectByName("屋面连接件")
+      animateObjects(['屋面次檩条'])
+      const obj3 = scene.getObjectByName('屋面连接件')
       obj3.visible = false
-
     } else if (number == 2) {
-      const obj1 = scene.getObjectByName("屋面次檩条")
+      const obj1 = scene.getObjectByName('屋面次檩条')
       obj1.visible = true
       obj1.parent.visible = true
-      const obj2 = scene.getObjectByName("屋面次檩条")
+      const obj2 = scene.getObjectByName('屋面次檩条')
       obj2.visible = true
-      const obj3 = scene.getObjectByName("屋面连接件")
+      const obj3 = scene.getObjectByName('屋面连接件')
       obj3.visible = false
-      animateObjects(["屋面连接件"])
+      animateObjects(['屋面连接件'])
     }
 
     if (!obj || obj.visible) return Promise.resolve()
@@ -1742,7 +1779,6 @@ function animateObjects1(names, startZ = 500, duration = 1, number = 0) {
 
   return Promise.all(promises)
 }
-
 
 // 隐藏模型
 function hiddenModel(names = []) {
@@ -1772,13 +1808,10 @@ function handleScenePane(state: boolean) {
 function handleSceneEnable(state: boolean) {
   // processFour!.handleSceneEnable(state)
   controls!.enabled = state
-
 }
 function handleSceneScale(state: boolean) {
   controls!.enableZoom = state
-
 }
-
 </script>
 
 <style scoped lang="less">
@@ -1811,7 +1844,7 @@ function handleSceneScale(state: boolean) {
   align-items: flex-end;
   /* 交叉轴（水平）靠右对齐（核心：整体内容靠右） */
   gap: 8px;
-align-content: flex-end;
+  align-content: flex-end;
   .el-button {
     margin: 0;
     margin-bottom: 10px;
@@ -1830,9 +1863,9 @@ align-content: flex-end;
   padding: 10px 10px 0;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background: #568FCC;
-border-radius: 8px;
-border: 1px solid #3A78C0;
+  background: #568fcc;
+  border-radius: 8px;
+  border: 1px solid #3a78c0;
 }
 
 .opt {
@@ -1850,7 +1883,7 @@ border: 1px solid #3A78C0;
     height: 40px;
 
     border-radius: 8px;
-    border: 1px solid #3A78C0;
+    border: 1px solid #3a78c0;
     display: flex;
     flex-direction: row;
     overflow: hidden;
@@ -1862,14 +1895,12 @@ border: 1px solid #3A78C0;
       line-height: 38px;
       height: 38px;
       cursor: pointer;
-      background: #568FCC;
+      background: #568fcc;
 
       &:hover {
-        background: #568FCC90
+        background: #568fcc90;
       }
     }
-
   }
-
 }
 </style>
