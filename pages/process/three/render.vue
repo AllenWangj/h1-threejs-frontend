@@ -145,60 +145,6 @@ async function fetchDetail() {
       currentPlan.value = schemeList.value[0]
       planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         let { data: { layouts } } = res
-        // const bottom = {
-        //   ...layouts.children[0].children[0],
-        //   position:{
-        //     ...layouts.children[0].children[0].position
-        //   }
-        // }
-        // const top = {
-        //   ...layouts.children[0].children[1],
-        //    position:{
-        //     ...layouts.children[0].children[1].position
-        //   }
-        // } 
-        // const yLen = 100
-        // bottom.position.y +=yLen
-        // top.position.y +=yLen
-
-        //  const bottom1 = {
-        //   ...layouts.children[0].children[0],
-        //   position:{
-        //     ...layouts.children[0].children[0].position
-        //   }
-        // }
-        // const top1 = {
-        //   ...layouts.children[0].children[1],
-        //    position:{
-        //     ...layouts.children[0].children[1].position
-        //   }
-        // } 
-        // bottom1.position.y +=yLen *2
-        // top1.position.y +=yLen *2
-        const object =  layouts.children[0].children[0]
-        const clone = {
-          ...layouts.children[0].children[0],
-          position: {
-            ...object.position
-          }
-        }
-        clone.position.y +=100
-        layouts = {
-          ...layouts,
-          children:[
-            {
-              ... layouts.children[0],
-              children:[
-                layouts.children[0].children[0],
-                clone
-            ]
-            }
-           
-          ]
-        }
-        loading.value = true
-        console.log(":layouts",layouts)
-        
         await processThree!.handleOriginModel(layouts)
         loading.value = false
 
