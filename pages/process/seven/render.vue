@@ -5,7 +5,7 @@
       <div ref="threeContainer" class="three-container"></div>
       <div class="opt">
         <div class="opt-content">
-          <p class="opt-btn" @click="handleScenePane(false);">
+          <p class="opt-btn" @click="handleScenePane(false)">
             <img
               src="./svg/stop-o.svg"
               style="width: 26px; position: relative; margin-right: 3px; display: inline-block"
@@ -53,6 +53,20 @@
             <span>{{ isPaused ? '播放' : '暂停' }}</span>
           </p>
         </div>
+        <el-button
+          style="
+            background-color: #3a78c0;
+            width: 110px;
+            border-radius: 30px;
+            background: linear-gradient(180deg, #c7eeff 0%, #4ff396 100%);
+            color: #09488a;
+          "
+          type="primary"
+          @click="openGanttChart"
+          size="large"
+        >
+          甘特图
+        </el-button>
         <el-button
           style="
             background-color: #3a78c0;
@@ -197,13 +211,15 @@
         ></BuildInfo>
       </div>
     </div>
+    <GanttChartDialog ref="ganttChartDialogRef" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
-import * as THREE from 'three'
+import GanttChartDialog from './components/gantt-chart-dialog.vue'  
+import * as THREE from 'three'  
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { getAssembleDetail, planExport } from '@/apis/project'
@@ -232,6 +248,11 @@ const isPaused = ref(false)
 // 切换暂停/恢复的方法
 const toggleAnimation = () => {
   isPaused.value = !isPaused.value
+}
+
+const ganttChartDialogRef = ref(null)
+const openGanttChart = () => { 
+  ganttChartDialogRef.value?.open()
 }
 
 // 下载方案

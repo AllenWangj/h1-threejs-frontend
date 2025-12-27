@@ -30,6 +30,7 @@
     "@maxtan/nuxt-exclude-pages": "^0.5.0",
     "@vueuse/nuxt": "^13.2.0",
     "dayjs": "^1.11.13",
+    "dhtmlx-gantt": "^9.1.1",
     "element-plus": "^2.9.10",
     "file-saver": "^2.0.5",
     "geotiff": "2.1.4-beta.0",
