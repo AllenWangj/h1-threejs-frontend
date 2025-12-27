@@ -58,7 +58,7 @@
             <el-descriptions title="方案信息" :column="2">
               <el-descriptions-item label="方案名称" :span="2"> {{ currentPlan.name }}</el-descriptions-item>
               <el-descriptions-item label="方案评分" :span="2"> {{ currentPlan.score }}</el-descriptions-item>
-              <el-descriptions-item label="方案造价" :span="2"> 25W</el-descriptions-item>
+              <el-descriptions-item label="方案造价" :span="2"> {{ info.price || 25 }}W</el-descriptions-item>
               <el-descriptions-item label="方案创建时间" :span="2">{{ formatTime(currentPlan.updatedAt, 'YYYY-MM-DD HH:mm:ss')
                 }}</el-descriptions-item>
 
@@ -67,16 +67,16 @@
           </div>
           <div class="plan-construct">
             <el-descriptions title="结构信息" :column="2">
-              <el-descriptions-item label="建筑类型" :span="2">仓储</el-descriptions-item>
-              <el-descriptions-item label="建筑边界" :span="2">1m</el-descriptions-item>
-              <el-descriptions-item label="建筑规模" :span="2">10平米</el-descriptions-item>
-              <el-descriptions-item label="标准功能模块" :span="2">供电</el-descriptions-item>
-              <el-descriptions-item label="门" :span="1">2个</el-descriptions-item>
-              <el-descriptions-item label="窗" :span="1">3个</el-descriptions-item>
+              <el-descriptions-item label="建筑类型" :span="2">{{ info.buildingType }}</el-descriptions-item>
+              <el-descriptions-item label="建筑边界" :span="2">{{  info.buildingBoundary }}</el-descriptions-item>
+              <el-descriptions-item label="建筑规模" :span="2">{{  info.buildingScale }}</el-descriptions-item>
+              <el-descriptions-item label="标准功能模块" :span="2">{{  info.standardFunctionModule }}</el-descriptions-item>
+              <el-descriptions-item label="门" :span="1">{{  info.doorCount }}个</el-descriptions-item>
+              <el-descriptions-item label="窗" :span="1">{{  info.windowCount }}个</el-descriptions-item>
             </el-descriptions>
           </div>
         </div>
-        <BuildInfo v-for="item in materialDataList" :key="item.value" :name="item.name" :list="item.infoList">
+        <BuildInfo v-for="item in info.table" :key="item.value" :name="item.name" :list="item.infoList">
         </BuildInfo>
       </div>
     </div>
@@ -104,7 +104,7 @@ const projectId = ref('')
 const schemeList = ref<any[]>([])
 // 当前激活得方案id
 const currentAcviteScheme = ref('')
-
+const info = ref<any>({table:[]})
 const tapScheme = (item) => {
   currentAcviteScheme.value = item.id
   currentPlan.value = item
@@ -115,7 +115,7 @@ const tapScheme = (item) => {
         data: { layouts }
       } = res
         console.log("layouts",layouts)
-
+      info.value = res.data.info
       await processFour!.handleOriginModel(layouts)
       loading.value = false
     })
@@ -159,6 +159,8 @@ async function fetchDetail() {
         const {
           data: { layouts }
         } = res
+        debugger
+          info.value = res.data.info
         loading.value = true
         await processFour!.handleOriginModel(layouts)
         loading.value = false

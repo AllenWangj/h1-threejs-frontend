@@ -1035,7 +1035,7 @@ function autoDropToGround(obj: any) {
 
 .toolbar-container {
   position: absolute;
-  top: 20px;
+  top: 60px;
   right: 20px;
   z-index: 999;
   background: transparent;
@@ -1045,7 +1045,8 @@ function autoDropToGround(obj: any) {
   align-items: center;
   padding: 10px;
   overflow: auto;
-  height: 100%;
+  // height: 100%;
+  bottom:20px ;
   .el-button {
     margin: 0;
     margin-bottom: 10px;
@@ -1094,7 +1095,7 @@ border: 1px solid #3A78C0;
   .opt-content {
     width: 800px;
     height: 40px;
-
+    margin-right: 400px;
     border-radius: 8px;
     border: 1px solid #3A78C0;
     display: flex;
