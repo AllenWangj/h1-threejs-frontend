@@ -207,14 +207,7 @@ export const downProjectCreate = (params) => {
     return `${BASE_URL}${baseUrl}parts-production/v1/design` + '?' + new URLSearchParams(params).toString()
 }
 
-export const design = (params) =>{
-    return new Promise((resolve)=>{
-        debugger
-         useBaseFetch().get(`${baseUrl}parts-production/v1/design`, params).then(res=>{
-            debugger
-         })
-    })
-}
+export const design = (params) => useBaseFetch().get(`${baseUrl}parts-production/v1/design`, params)
 
 
 
