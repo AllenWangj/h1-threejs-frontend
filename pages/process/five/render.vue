@@ -111,8 +111,8 @@ const downloadSolution = async () => {
       id: projectId.value,
       // source: 5
     })
-    design({id:projectId.value})
-    debugger
+    // design({id:projectId.value})
+    // debugger
     const a = document.createElement('a')
     a.href = url
     a.download = `部件生成方案.zip`
