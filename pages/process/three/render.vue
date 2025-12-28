@@ -49,31 +49,31 @@
           <el-descriptions title="方案信息" :column="1">
             <el-descriptions-item label="方案名称" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
             <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-            <el-descriptions-item label="建筑规模" :span="1"> 75人</el-descriptions-item>
+            <el-descriptions-item label="建筑规模" :span="1"> {{info.locationInfo.people || 75}}人</el-descriptions-item>
             <el-descriptions-item label="方案创建时间" :span="1">{{ formatTime(currentPlan.updatedAt, 'YYYY-MM-DD HH:mm:ss')
             }}</el-descriptions-item>
           </el-descriptions>
         </div>
         <div class="plan-construct">
           <el-descriptions title="结构信息" :column="2">
-            <el-descriptions-item label="建筑类型" :span="1">仓储</el-descriptions-item>
-            <el-descriptions-item label="建筑边界" :span="1">1m</el-descriptions-item>
-            <el-descriptions-item label="建筑规模" :span="2">10平米</el-descriptions-item>
-            <el-descriptions-item label="标准功能模块" :span="2">供电</el-descriptions-item>
-            <el-descriptions-item label="门" :span="2">2个</el-descriptions-item>
-            <el-descriptions-item label="窗" :span="2">3个</el-descriptions-item>
+            <el-descriptions-item label="建筑类型" :span="1">{{ info.structureInfo.buildingType  }}</el-descriptions-item>
+            <el-descriptions-item label="建筑边界" :span="1">{{ info.structureInfo.buildingBoundary  }}</el-descriptions-item>
+            <el-descriptions-item label="建筑规模" :span="2">{{ info.structureInfo.buildingScale  }}</el-descriptions-item>
+            <el-descriptions-item label="标准功能模块" :span="2">{{ info.structureInfo.standardFunctionModule  }}</el-descriptions-item>
+            <el-descriptions-item label="门" :span="2">{{ info.structureInfo.doorCount  }}个</el-descriptions-item>
+            <el-descriptions-item label="窗" :span="2">{{ info.structureInfo.windowCount  }}个</el-descriptions-item>
           </el-descriptions>
         </div>
            <el-descriptions title="位置信息" :column="2">
-         <el-descriptions-item label="经纬度" :span="2"> 31.2304°N, 121.4737°E</el-descriptions-item>
+         <el-descriptions-item label="经纬度" :span="2">{{info.locationInfo.latitudeAndLongitude }}</el-descriptions-item>
             <!-- <el-descriptions-item label="颜色说明" :span="1"> 蓝色表示生活区</el-descriptions-item> -->
             <!-- <el-descriptions-item label="面积" :span="1"> 3mx4m</el-descriptions-item> -->
             <!-- <el-descriptions-item label="颜色说明" :span="1"> 其他颜色表示办公区</el-descriptions-item> -->
-            <el-descriptions-item label="面积" :span="1"> 4mx6m</el-descriptions-item>
-            <el-descriptions-item label="海拔" :span="1">1200m</el-descriptions-item>
-            <el-descriptions-item label="功能区别" :span="1">集中式</el-descriptions-item>
-            <el-descriptions-item label="模式类型" :span="2">临时</el-descriptions-item>
-            <el-descriptions-item label="功能模块布局" :span="2">办公</el-descriptions-item>
+            <el-descriptions-item label="面积" :span="1"> {{info.locationInfo.areaDimensions }}</el-descriptions-item>
+            <el-descriptions-item label="海拔" :span="1">{{info.locationInfo.altitude }}</el-descriptions-item>
+            <el-descriptions-item label="功能区别" :span="1">{{info.locationInfo.functionDistinction }}</el-descriptions-item>
+            <el-descriptions-item label="模式类型" :span="2">{{info.locationInfo.modeType }}</el-descriptions-item>
+            <el-descriptions-item label="功能模块布局" :span="2">{{info.locationInfo.functionDistinction }}</el-descriptions-item>
           </el-descriptions>
       </div>
     </div>
@@ -107,6 +107,7 @@ const tapScheme = (item) => {
   currentPlan.value = item
   planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
     const { data: { layouts } } = res
+       info.value = res.data.info
     loading.value = true
     console.log("layouts",layouts)
     await processThree!.handleOriginModel(layouts)
@@ -132,7 +133,7 @@ const downloadSolution = async () => {
     console.error('下载方案失败', error)
   }
 }
-
+const info = ref<any>({locationInfo:{},structureInfo:{}})
 // 获取详情
 async function fetchDetail() {
   try {
@@ -146,6 +147,8 @@ async function fetchDetail() {
       currentPlan.value = schemeList.value[0]
       planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         let { data: { layouts } } = res
+         loading.value = true
+         info.value = res.data.info
         await processThree!.handleOriginModel(layouts)
         loading.value = false
 
