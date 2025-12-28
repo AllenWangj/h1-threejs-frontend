@@ -119,7 +119,7 @@ const downloadSolution = async () => {
     const aTag = document.createElement("a");
     aTag.href = blobUrl;
     // 设置下载文件名（可自定义）
-    aTag.download = "生产部件.doc";
+    aTag.download = "生产部件.zip";
     // 触发点击下载
     aTag.click();
     // 释放 Blob URL 资源（避免内存泄漏）
