@@ -84,14 +84,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { modeService } from './composables/mode-service'
 import { materialInfoService } from './composables/material-info-service'
-import { getPartsProductionDetail, planExport ,downProjectCreate,design} from '@/apis/project'
+import { getPartsProductionDetail } from '@/apis/project'
 import ModelWrapper from "@/components/model-wrapper/index.vue"
 
 
 // 全屏相关
 const fullscreenContainer = ref<HTMLElement | null>(null)
 useFullScreenResize(fullscreenContainer, onResize)
-
+const { baseURL } = useRuntimeConfig().public
 const route = useRoute()
 const projectId = ref('')
 const schemeList = ref<any[]>([])
@@ -106,22 +106,31 @@ const tapScheme = (item) => {
 
 // 下载方案
 const downloadSolution = async () => {
-  try {
-    const url = downProjectCreate({
-      id: currentAcviteScheme.value ,
-      // source: 5
-    })
-    // design({id:currentAcviteScheme.value })
-    // debugger
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `部件生成方案.zip`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-  } catch (error) {
-    console.error('下载方案失败', error)
-  }
+  const { token } = useAuth()
+  const res = await fetch(`${baseURL}/project/parts-production/v1/design?id=${currentAcviteScheme.value}`, {
+    method: 'GET',
+    headers: {
+      'access-token': token.value
+    }
+  })
+
+  if (!res.ok) throw new Error('下载失败')
+
+  // 转成 Blob
+  const blob = await res.blob()
+
+  // 创建临时 URL
+  const url = window.URL.createObjectURL(blob)
+  // 创建 a 标签触发下载
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'design.zip' // 文件名
+  document.body.appendChild(a)
+  a.click()
+
+  // 清理
+  document.body.removeChild(a)
+  window.URL.revokeObjectURL(url)
 }
 
 // 获取详情

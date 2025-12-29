@@ -57,6 +57,18 @@
       >
         ✈️ 空运
       </button>
+      <button 
+        :class="['mode-btn']"
+        @click="showUnsupportedMessage('铁路')"
+      >
+        🚂 铁路
+      </button>
+      <button 
+        :class="['mode-btn']"
+        @click="showUnsupportedMessage('水运')"
+      >
+        🚢 水运
+      </button>
     </div>
 
     <!-- 动画提示 -->
@@ -639,6 +651,11 @@ function switchTransportMode(mode: 'ground' | 'air') {
   drawRoute()
   
   console.log(`🖄 切换运输模式为: ${mode === 'ground' ? '陆运' : '空运'}`)
+}
+
+// 显示不支持的运输模式提示
+function showUnsupportedMessage(transportType: string) {
+  ElMessage.warning(`当前地块不满足${transportType}运输条件`)
 }
 
 // Catmull-Rom 样条插值函数

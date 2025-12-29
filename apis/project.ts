@@ -1,7 +1,7 @@
 import { useBaseFetch } from '~~/composables/use-base-fetch'
 const BASE_URL = useRuntimeConfig().public.baseURL
 const baseUrl = '/project/'
-
+import { Http } from '@maxtan/fetch'
 /**
  * 获取项目列表
 */
@@ -207,7 +207,21 @@ export const downProjectCreate = (params) => {
     return `${BASE_URL}${baseUrl}parts-production/v1/design` + '?' + new URLSearchParams(params).toString()
 }
 
-export const design = (params) => useBaseFetch().get(`${baseUrl}parts-production/v1/design`, params)
+export const design = (params) => {
+  const { baseURL } = useRuntimeConfig().public
+
+    let  createInstance = new Http().create({
+         baseURL,
+      onRequest({ options }) {
+        const accessToken = useCookie('TOKEN').value
+        if (accessToken) {
+          options.headers = new Headers(options.headers)
+          options.headers.set('access-token', accessToken)
+        }
+      },
+    })
+    return  createInstance.get(`${BASE_URL}${baseUrl}parts-production/v1/design`,params)
+}
 
 
 

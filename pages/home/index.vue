@@ -348,6 +348,7 @@ const handleSubmitProject = async () => {
     if (projectForm.id) {
       // 编辑项目
       await updateProject(params)
+      fetchProjectDetail(params.id)
     } else {
       // 新建项目
       await createProject(params)
