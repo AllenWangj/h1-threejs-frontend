@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue' // ✅ 1. 导入 nextTick
 import { gantt } from 'dhtmlx-gantt'
 import 'dhtmlx-gantt/codebase/dhtmlxgantt.css'
 
@@ -15,53 +15,94 @@ const props = defineProps({
 })
 
 const ganttContainer = ref(null)
+let isUpdating = ref(false) // ✅ 2. 添加更新锁，防止循环
 
 onMounted(async () => {
-  // 必须等待 Vue 将组件挂载到 DOM
+  // 等待 DOM 挂载
   await nextTick()
 
-  // 1. 配置甘特图（可选）
+  // 配置甘特图（只配置一次）
   gantt.config.date_format = '%Y-%m-%d %H:%i'
-  gantt.config.readonly = true;
-  gantt.i18n.setLocale('cn') // 设置中文
+  gantt.config.readonly = true
+  gantt.i18n.setLocale('cn')
 
-  // 2. 初始化挂载
+  // 初始化挂载
   gantt.init(ganttContainer.value)
 
-  // 3. 渲染数据
-  gantt.parse(props.tasks)
+  // 首次渲染数据
+  if (props.tasks.data.length > 0) {
+    gantt.parse(props.tasks)
+  }
 })
 
-// 监听数据变化（如果是从后端动态获取）
+// ✅ 3. 优化 watch：添加防抖和循环保护
 watch(
   () => props.tasks,
-  (newData) => {
-    gantt.clearAll()
-    gantt.parse(newData)
-  },
-  { deep: true }
-)
+  async (newData, oldData) => {
+    // 防止循环：如果正在更新，跳过本次
+    if (isUpdating.value) return
 
+    // 防抖：等待下一帧，确保数据稳定
+    await nextTick()
+
+    try {
+      isUpdating.value = true
+
+      // 清空并重新加载数据
+      gantt.clearAll()
+
+      // 确保数据存在且有效
+      if (newData && newData.data && newData.data.length > 0) {
+        gantt.parse(newData)
+      }
+
+      // 强制刷新视图
+      gantt.render()
+
+    } finally {
+      // 释放锁，但延迟释放避免快速连续触发
+      setTimeout(() => {
+        isUpdating.value = false
+      }, 100)
+    }
+  },
+  {
+    deep: true,
+    // 不要在初始化时立即执行，避免不必要的渲染
+    // immediate: false (默认就是 false)
+  }
+)
 
 /**
  * 获取编辑后数据
  */
 const getGanttData = () => {
-  // serialize() 会返回一个包含 data 和 links 的对象
-  const currentData = gantt.serialize()
-
-  return currentData
+  try {
+    const currentData = gantt.serialize()
+    return currentData
+  } catch (error) {
+    console.error('获取甘特图数据失败:', error)
+    return { data: [], links: [] }
+  }
 }
 
-defineExpose({
-    getGanttData
+// ✅ 4. 提供销毁钩子，清理资源
+onUnmounted(() => {
+  if (gantt) {
+    gantt.destructor() // 清理 gantt 实例
+  }
 })
 
+defineExpose({
+  getGanttData
+})
 </script>
 
 <style scoped>
 .gantt-container {
   width: 100%;
-  height: 500px; /* 必须指定高度，否则看不见 */
+  height: 500px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 </style>
