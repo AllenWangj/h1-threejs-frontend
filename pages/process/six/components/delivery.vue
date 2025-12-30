@@ -47,6 +47,7 @@
     <div v-if="!loading" class="mode-selector">
       <button 
         :class="['mode-btn', { active: transportMode === 'ground' }]"
+        v-if="showList.includes('0') || showList.includes('1')"
         @click="switchTransportMode('ground')"
       >
         🚚 陆运
@@ -54,18 +55,21 @@
       <button 
         :class="['mode-btn', { active: transportMode === 'air' }]"
         @click="switchTransportMode('air')"
+        v-if="showList.includes('4')"
       >
         ✈️ 空运
       </button>
       <button 
         :class="['mode-btn']"
         @click="showUnsupportedMessage('铁路')"
+        v-if="showList.includes('2')"
       >
         🚂 铁路
       </button>
       <button 
         :class="['mode-btn']"
         @click="showUnsupportedMessage('水运')"
+        v-if="showList.includes('3')"
       >
         🚢 水运
       </button>
@@ -81,6 +85,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import * as THREE from 'three'
 import { fromArrayBuffer } from 'geotiff'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { packingParamsDetail } from '~/apis/project';
 
 const props = defineProps<{
   demUrl: string
@@ -99,8 +104,15 @@ const totalDistance = ref(0)
 const minElevation = ref(0)
 const maxElevation = ref(0)
 const isAnimating = ref(false)
+const projectId = ref('')
+const detailInfo = ref(null)
+const route = useRoute()
 const transportMode = ref<'ground' | 'air'>('ground') // 陆运或空运
-
+const showList = computed(() => {
+  const params = detailInfo.value ? detailInfo.value.params : []
+  const transportation = params.find((param: any) => param.field === 'transportation')
+  return transportation ? transportation.value : ''
+})
 let scene: THREE.Scene
 let camera: THREE.PerspectiveCamera
 let renderer: THREE.WebGLRenderer
@@ -665,10 +677,21 @@ function catmullRom(t: number, p0: number, p1: number, p2: number, p3: number): 
 
   return 0.5 * (2 * p1 + (-p0 + p2) * t + (2 * p0 - 5 * p1 + 4 * p2 - p3) * t2 + (-p0 + 3 * p1 - 3 * p2 + p3) * t3)
 }
-
+const getDetail = async (id: string) => {
+  try {
+    const { data } = await packingParamsDetail({ projectId: id })
+    detailInfo.value = data
+    console.log(data);
+  } catch (error) {
+    console.error('获取项目详情失败:', error)
+  }
+}
 async function init() {
   if (!container.value || !props.demUrl) return
-
+  if (route.query.projectId) {
+    projectId.value = route.query.projectId as string
+    getDetail(projectId.value)
+  }
   try {
     loading.value = true
     loadingProgress.value = 10
