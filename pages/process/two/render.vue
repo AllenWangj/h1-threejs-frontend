@@ -87,26 +87,14 @@
             }}</el-descriptions-item>
           </el-descriptions>
 
-
-          <el-descriptions title="建筑信息" :column="2">
-            <el-descriptions-item label="办公" :span="1"> 3栋</el-descriptions-item>
-            <el-descriptions-item label="生活" :span="1"> 6栋</el-descriptions-item>
-            <el-descriptions-item label="卫勤" :span="1"> 2栋</el-descriptions-item>
-            <el-descriptions-item label="指挥" :span="1"> 6栋</el-descriptions-item>
-            <el-descriptions-item label="仓库" :span="1"> 2栋</el-descriptions-item>
-          </el-descriptions>
         </div>
         <div class="plan-construct">
-               <!-- <el-descriptions title="地块信息" :column="2"> -->
-                    
-               
-             <!-- </el-descriptions> -->
           <el-descriptions title="建筑信息" :column="2">
             <el-descriptions-item label="经纬度" :span="2"> 31.2304°N, 121.4737°E</el-descriptions-item>
             <el-descriptions-item label="地块面积" :span="2"> 250mx250m</el-descriptions-item>
             <el-descriptions-item label="海拔" :span="1">1200m</el-descriptions-item>
-            <el-descriptions-item label="功能区别" :span="1">集中式</el-descriptions-item>
-            <el-descriptions-item label="模式类型" :span="2">临时</el-descriptions-item>
+            <el-descriptions-item label="功能区划" :span="1">{{functionalDivision}}</el-descriptions-item>
+            <el-descriptions-item label="模式类型" :span="2">{{ schemaType }}</el-descriptions-item>
             <el-descriptions-item label="功能模块布局" :span="2">办公、生活、卫勤、指挥、仓库</el-descriptions-item>
           </el-descriptions>
         
@@ -115,32 +103,27 @@
              <el-descriptions title="各模块位置信息" :column="2">
             <el-descriptions-item label="模块名称" :span="1"> 办公区</el-descriptions-item>
             <el-descriptions-item label="位置信息" :span="1"> 31.2304°N, 121.4737°E</el-descriptions-item>
-
-               <el-descriptions-item label="模块名称" :span="1"> 生活区</el-descriptions-item>
+              <el-descriptions-item label="模块名称" :span="1"> 生活区</el-descriptions-item>
             <el-descriptions-item label="位置信息" :span="1"> 31.3304°N, 121.1737°E</el-descriptions-item>
 
-
-        <el-descriptions title="方案信息" :column="2" >
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
-          <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-          <el-descriptions-item label="方案创建时间" :span="1">{{ dayjs(currentPlan.createdAt).format('YYYY-MM-DD HH:mm:ss') }}</el-descriptions-item>
-        </el-descriptions>
-           <el-descriptions title="地块信息" :column="2" >
+            <el-descriptions-item label="模块名称" :span="1"> 服务区</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 31.32304°N, 121.7137°E</el-descriptions-item>
+            
+           <!-- <el-descriptions title="地块信息" :column="2" >
           <el-descriptions-item label="经纬度" :span="1"> 31.2304°N, 121.4737°E</el-descriptions-item>
           <el-descriptions-item label="地块面积" :span="1"> 250mx250m</el-descriptions-item>
           <el-descriptions-item label="海拔" :span="1">1200m</el-descriptions-item>
-          <el-descriptions-item label="功能区别" :span="1">集中式</el-descriptions-item>
-          <el-descriptions-item label="模式类型" :span="1">临时</el-descriptions-item>
+          <el-descriptions-item label="功能区划" :span="1">{{ functionalDivision }}111</el-descriptions-item>
+          <el-descriptions-item label="模式模式" :span="1">{{ schemaType }}</el-descriptions-item>
           <el-descriptions-item label="功能模块布局" :span="1">办公、生活、卫勤、指挥、仓库</el-descriptions-item>
-
         </el-descriptions>
-            
+          
                <el-descriptions-item label="模块名称" :span="1"> 生产区</el-descriptions-item>
             <el-descriptions-item label="位置信息" :span="1"> 31.73404°N, 121.41737°E</el-descriptions-item>
 
 
                <el-descriptions-item label="模块名称" :span="1"> 仓储区</el-descriptions-item>
-            <el-descriptions-item label="位置信息" :span="1"> 31.7804°N, 121.1737°E</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 31.7804°N, 121.1737°E</el-descriptions-item> -->
 
           </el-descriptions>
         </div>
@@ -161,7 +144,7 @@ import image5 from "/assets/02_75_10140.png"
 import image6 from "/assets/02_75_10126.png"
 import image7 from "/assets/02_75_10125.png"
 const { formatTime } = useUtils()
-import { planList, planDetailInfo, removePlan, createPlan, updatePlan, planExport } from '@/apis/project'
+import { planLayoutDetailInfo,planList, planDetailInfo, removePlan, createPlan, updatePlan, planExport } from '@/apis/project'
 import dayjs from 'dayjs'
 const route = useRoute()
 const projectId = ref('')
@@ -242,13 +225,31 @@ async function fetchDetail(isLoadFirst = true) {
   } finally {
   }
 }
-
+const schemaType  = ref("")
+const functionalDivision = ref("")
 onMounted(() => {
   if (route.query.projectId) {
     projectId.value = route.query.projectId as string
   }
   fetchDetail()
   renderPlanLayout = new RenderPlanLayout(renderRef.value)
+  planLayoutDetailInfo({projectId: projectId.value}).then(res=>{
+    console.log("res---",res)
+    let {params}=res.data
+    params = params || []
+    const find = params.find(ele =>'schemaType' === ele.field)
+    // debugger
+    if(find) {
+      const {options,value} = find
+       schemaType.value = options.find(ele=>ele.value == value).label
+    }
+    // debugger
+    const functionalDivisionResult =   params.find(ele =>'functionalDivision' === ele.field)
+    if(functionalDivisionResult) {
+      const {options,value} = functionalDivisionResult
+      functionalDivision.value = options.find(ele=>ele.value == value).label
+    }
+  })
 })
 function handlleSaveEvt() {
   const position = renderPlanLayout!.handlleSaveEvt()

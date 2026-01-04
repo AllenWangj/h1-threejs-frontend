@@ -27,7 +27,7 @@ export const materialInfoService = (): any[] => {
             no: 'LT1',
             spec: '宽度 ±8mm，高度 ±6mm',
             length:2000 ,
-            quantity:15,
+            quantity:8,
             material: 'Q235B',
             weight: 52.052
         }
@@ -50,24 +50,24 @@ export const materialInfoService = (): any[] => {
         {
             no: 'LT1',
             spec: '宽度 ±28mm，高度 ±36mm',
-            length: 1800 ,
-            quantity: 20,
+            length: 9000 ,
+            quantity: 8,
             material: 'Q235B',
             weight: 52.052
         },
         {
             no: '屋架',
             spec: '宽度 ±28mm，高度 ±36mm',
-            length: 6000,
-            quantity: 4,
+            length: 9000,
+            quantity: 3,
             material: 'Q235B',
             weight: null
         },
         {
             no: 'QL1',
             spec: '宽度 ±28mm，高度 ±36mm',
-            length: 2600,
-            quantity: 20,
+            length: 9000,
+            quantity: 8,
             material: 'Q235B',
             weight: 22.4
         },
@@ -100,15 +100,15 @@ export const materialInfoService = (): any[] => {
             no: 'GKZ1',
             spec: '宽度 ±3mm，高度 ±1mm',
             length: 5800,
-            quantity: 10,
+            quantity: 8,
             material: 'Q235B',
             weight: 76.2
         },
         {
             no: 'GZ1短',
             spec: '宽度 ±3mm，高度 ±1mm',
-            length: 450,
-            quantity: 10,
+            length: 5800,
+            quantity: 8,
             material: 'Q235B',
             weight: 15.24
         },
@@ -210,8 +210,6 @@ export const materialInfoService = (): any[] => {
         infoList: groundData.map(ele =>{
             return {
                 ...ele,
-                length:Math.floor(Math.random() *10000) ,
-                quantity:Math.floor(Math.random() *20) ,
 
             }
         })

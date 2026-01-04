@@ -89,7 +89,7 @@
 import { ref } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
 // import FourObject from "~~/threejs/four/index"
-import { planList, planDetailInfo, planExport } from '@/apis/project'
+import { planList, planDetailInfo, planExport,getStructuralDesignDetail } from '@/apis/project'
 import { useRender } from './composables/use-render'
 import { materialInfoService } from './composables/material-info-service'
 import BuildInfo from './build-info.vue'
@@ -209,6 +209,12 @@ onMounted(() => {
   processFour = new ProcessFour(four.value, {
     progress: () => { }
   })
+  // debugger
+  // getStructuralDesignDetail({
+  //   projectId:projectId.value
+  // }).then(res=>{
+  //   console.log("res---",res)
+  // })
 })
 const currentPlan = ref<any>({})
 function handleScenePane(state: boolean) {

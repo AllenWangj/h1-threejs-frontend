@@ -49,17 +49,17 @@
           <el-descriptions title="方案信息" :column="1">
             <el-descriptions-item label="方案名称" :span="1"> {{ currentPlan.name }}</el-descriptions-item>
             <el-descriptions-item label="方案评分" :span="1"> {{ currentPlan.score }}</el-descriptions-item>
-            <el-descriptions-item label="建筑规模" :span="1"> {{info.locationInfo.people || 75}}人</el-descriptions-item>
+            <!-- <el-descriptions-item label="建筑规模" :span="1"> {{info.locationInfo.people || 75}}人</el-descriptions-item> -->
             <el-descriptions-item label="方案创建时间" :span="1">{{ formatTime(currentPlan.updatedAt, 'YYYY-MM-DD HH:mm:ss')
             }}</el-descriptions-item>
           </el-descriptions>
         </div>
         <div class="plan-construct">
           <el-descriptions title="结构信息" :column="2">
-            <el-descriptions-item label="建筑类型" :span="1">{{ info.structureInfo.buildingType  }}</el-descriptions-item>
-            <el-descriptions-item label="建筑边界" :span="1">{{ info.structureInfo.buildingBoundary  }}</el-descriptions-item>
-            <el-descriptions-item label="建筑规模" :span="2">{{ info.structureInfo.buildingScale  }}</el-descriptions-item>
-            <el-descriptions-item label="标准功能模块" :span="2">{{ info.structureInfo.standardFunctionModule  }}</el-descriptions-item>
+            <el-descriptions-item label="建筑类型" :span="1">{{ functional  }}</el-descriptions-item>
+            <el-descriptions-item label="建筑边界" :span="1">{{boundary }}</el-descriptions-item>
+            <el-descriptions-item label="建筑规模" :span="2">{{ scale }}</el-descriptions-item>
+            <el-descriptions-item label="标准功能模块" :span="2">{{ moduleLibrary  }}</el-descriptions-item>
             <el-descriptions-item label="门" :span="2">{{ info.structureInfo.doorCount  }}个</el-descriptions-item>
             <el-descriptions-item label="窗" :span="2">{{ info.structureInfo.windowCount  }}个</el-descriptions-item>
           </el-descriptions>
@@ -71,8 +71,8 @@
             <!-- <el-descriptions-item label="颜色说明" :span="1"> 其他颜色表示办公区</el-descriptions-item> -->
             <el-descriptions-item label="面积" :span="1"> {{info.locationInfo.areaDimensions }}</el-descriptions-item>
             <el-descriptions-item label="海拔" :span="1">{{info.locationInfo.altitude }}</el-descriptions-item>
-            <el-descriptions-item label="功能区别" :span="1">{{info.locationInfo.functionDistinction }}</el-descriptions-item>
-            <el-descriptions-item label="模式类型" :span="2">{{info.locationInfo.modeType }}</el-descriptions-item>
+            <el-descriptions-item label="功能区划" :span="1">{{info.locationInfo.functionDistinction }}</el-descriptions-item>
+            <!-- <el-descriptions-item label="模式类型" :span="2">{{info.locationInfo.modeType }}</el-descriptions-item> -->
             <el-descriptions-item label="功能模块布局" :span="2">{{info.locationInfo.functionDistinction }}</el-descriptions-item>
           </el-descriptions>
       </div>
@@ -84,7 +84,7 @@
 import { ref, onMounted } from "vue"
 import SchemesList from '@/components/schemes-list/index.vue'
 // import Threeobject from "@/threejs/three/index"
-import { getInternalLayoutDetail, planDetailInfo, planList, createPlan, planExport } from '@/apis/project'
+import { getInternalLayoutDetail, planDetailInfo, planList, createPlan, planExport ,internalLayoutDetail} from '@/apis/project'
 import { useRender } from "./composables/use-render"
 const { formatTime } = useUtils()
 import dayjs from "dayjs"
@@ -168,7 +168,10 @@ async function fetchDetail() {
   } finally {
   }
 }
-
+const functional  = ref("")
+const boundary = ref("")
+const scale = ref("")
+const moduleLibrary = ref("")
 onMounted(() => {
   if (route.query.projectId) {
     projectId.value = route.query.projectId as string
@@ -177,6 +180,42 @@ onMounted(() => {
   processThree = new ProcessThree(three.value, {
     progress: () => {
     }
+  })
+  internalLayoutDetail({projectId:projectId.value}).then(res=>{
+       let {params}=res.data
+    params = params || []
+    const find = params.find(ele =>'functional' === ele.field)
+    // debugger
+    if(find) {
+      const {options,value} = find
+       functional.value = options.find(ele=>ele.value == value).label
+    }
+ const boundaryReult = params.find(ele =>'boundary' === ele.field)
+    // debugger
+    if(boundaryReult) {
+      boundary.value = boundaryReult.value.join(",") +"m"
+      // const {options,value} = find
+      //  functional.value = options.find(ele=>ele.value == value).label
+    }
+
+       const scaleResult = params.find(ele =>'scale' === ele.field)
+    // debugger
+    if(scaleResult) {
+      const {options,value} = scaleResult
+       scale.value = options.find(ele=>ele.value == value).label
+       
+    }
+
+        const moduleLibraryResult = params.find(ele =>'moduleLibrary' === ele.field)
+    // debugger
+    if(moduleLibraryResult) {
+      const {options,value} = moduleLibraryResult
+       moduleLibrary.value = options.find(ele=>ele.value == value).label
+    }
+
+
+    
+    
   })
 })
 const currentPlan = ref<any>({})
