@@ -259,6 +259,7 @@ async function fetchDetail() {
       item.options = DICT_MAP.value[item.field] || []
       return item
     })
+    debugger
     initProjectForm.value = JSON.parse(JSON.stringify(formData.value))
   } catch (error) {
     console.error('获取规划布局详情失败', error)
@@ -324,58 +325,58 @@ const defData = [
   },
   {
     tag: true,
-    type: 'multiple-dynamic',
+    type: 'select',
     field: 'functionalBuilding',
     label: '功能模块建筑',
     value: [],
     options: [],
-    valueConfig: [
-      {
-        field: '1',
-        type: 'input',
-        type2: 'input',
-        unit: '个',
-        unit2: 'm²',
-        value: '',
-        value2: ''
-      },
-      {
-        field: '2',
-        type: 'input',
-        type2: 'input',
-        unit: '个',
-        unit2: 'm²',
-        value: '',
-        value2: ''
-      },
-      {
-        field: '3',
-        type: 'input',
-        type2: 'input',
-        unit: '个',
-        unit2: 'm²',
-        value: '',
-        value2: ''
-      },
-      {
-        field: '4',
-        type: 'input',
-        type2: 'input',
-        unit: '个',
-        unit2: 'm²',
-        value: '',
-        value2: ''
-      },
-      {
-        field: '5',
-        type: 'input',
-        type2: 'input',
-        unit: '个',
-        unit2: 'm²',
-        value: '',
-        value2: ''
-      }
-    ]
+    // valueConfig: [
+    //   {
+    //     field: '1',
+    //     type: 'input',
+    //     type2: 'input',
+    //     unit: '个',
+    //     unit2: 'm²',
+    //     value: '',
+    //     value2: ''
+    //   },
+    //   {
+    //     field: '2',
+    //     type: 'input',
+    //     type2: 'input',
+    //     unit: '个',
+    //     unit2: 'm²',
+    //     value: '',
+    //     value2: ''
+    //   },
+    //   {
+    //     field: '3',
+    //     type: 'input',
+    //     type2: 'input',
+    //     unit: '个',
+    //     unit2: 'm²',
+    //     value: '',
+    //     value2: ''
+    //   },
+    //   {
+    //     field: '4',
+    //     type: 'input',
+    //     type2: 'input',
+    //     unit: '个',
+    //     unit2: 'm²',
+    //     value: '',
+    //     value2: ''
+    //   },
+    //   {
+    //     field: '5',
+    //     type: 'input',
+    //     type2: 'input',
+    //     unit: '个',
+    //     unit2: 'm²',
+    //     value: '',
+    //     value2: ''
+    //   }
+    // ]
   },
   {
     tag: true,

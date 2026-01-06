@@ -102,13 +102,18 @@
         <div>
              <el-descriptions title="各模块位置信息" :column="2">
             <el-descriptions-item label="模块名称" :span="1"> 办公区</el-descriptions-item>
-            <el-descriptions-item label="位置信息" :span="1"> 31.2304°N, 121.4737°E</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 106.2304°N, 27.2132E</el-descriptions-item>
               <el-descriptions-item label="模块名称" :span="1"> 生活区</el-descriptions-item>
-            <el-descriptions-item label="位置信息" :span="1"> 31.3304°N, 121.1737°E</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 106.2567°N, 27.2321E</el-descriptions-item>
 
             <el-descriptions-item label="模块名称" :span="1"> 服务区</el-descriptions-item>
-            <el-descriptions-item label="位置信息" :span="1"> 31.32304°N, 121.7137°E</el-descriptions-item>
-            
+            <el-descriptions-item label="位置信息" :span="1"> 106.2667°N, 27.2521E</el-descriptions-item>
+
+               <el-descriptions-item label="模块名称" :span="1"> 生产区</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 106.2867°N, 27.2431E</el-descriptions-item>
+             <el-descriptions-item label="模块名称" :span="1"> 仓储区</el-descriptions-item>
+            <el-descriptions-item label="位置信息" :span="1"> 106.2362°N, 27.25881E</el-descriptions-item>
+
            <!-- <el-descriptions title="地块信息" :column="2" >
           <el-descriptions-item label="经纬度" :span="1"> 31.2304°N, 121.4737°E</el-descriptions-item>
           <el-descriptions-item label="地块面积" :span="1"> 250mx250m</el-descriptions-item>
