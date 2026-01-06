@@ -259,7 +259,6 @@ async function fetchDetail() {
       item.options = DICT_MAP.value[item.field] || []
       return item
     })
-    debugger
     initProjectForm.value = JSON.parse(JSON.stringify(formData.value))
   } catch (error) {
     console.error('获取规划布局详情失败', error)

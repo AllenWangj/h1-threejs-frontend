@@ -124,7 +124,7 @@ const saveLoading = ref(false)
 
 const pageLoading = ref(false)
 
-const BuildingFunctional = 'building_functional' // 建筑功能
+const BuildingFunctional = 'construct_func' // 建筑功能
 const BuildingBoundary = 'building_boundary' // 建筑边界
 const BuildingScale = 'building_scale' // 建筑规模
 const ModuleLibrary = 'module_library' // 标准化模块库

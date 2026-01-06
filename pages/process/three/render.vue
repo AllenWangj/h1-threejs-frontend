@@ -15,27 +15,33 @@
         <div class="opt">
           <div class="opt-content">
             <p class="opt-btn" @click="handleScenePane(false)">
-              <img src="./svg/stop-o.svg" style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
+              <img src="./svg/stop-o.svg"
+                style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
               <span>禁止拖动</span>
             </p>
             <p class="opt-btn" @click="handleScenePane(true)">
-              <img src="./svg/drag.svg" style="width: 30px;position: relative;  margin-right: 3px;display: inline-block;" />
+              <img src="./svg/drag.svg"
+                style="width: 30px;position: relative;  margin-right: 3px;display: inline-block;" />
               <span>允许拖动</span>
             </p>
             <p class="opt-btn" @click="handleSceneEnable(false)">
-              <img src="./svg/closescene.svg" style="width: 30px;position: relative;  margin-right: 3px; display: inline-block;" />
+              <img src="./svg/closescene.svg"
+                style="width: 30px;position: relative;  margin-right: 3px; display: inline-block;" />
               <span>关闭场景</span>
             </p>
             <p class="opt-btn" @click="handleSceneEnable(true)">
-              <img src="./svg/openscene.svg" style="width: 30px; position: relative;  margin-right: 3px; display: inline-block;" />
+              <img src="./svg/openscene.svg"
+                style="width: 30px; position: relative;  margin-right: 3px; display: inline-block;" />
               <span>开启场景</span>
             </p>
             <p class="opt-btn" @click="handleSceneScale(true)">
-              <img src="./svg/okscale.svg" style="width: 30px;position: relative;  margin-right: 3px;  display: inline-block;" />
+              <img src="./svg/okscale.svg"
+                style="width: 30px;position: relative;  margin-right: 3px;  display: inline-block;" />
               <span>允许缩放</span>
             </p>
             <p class="opt-btn" @click="handleSceneScale(false)">
-              <img  src="./svg/hide.svg" style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
+              <img src="./svg/hide.svg"
+                style="width: 30px; position: relative; margin-right: 3px; display: inline-block;" />
               <span>禁止缩放</span>
             </p>
           </div>
@@ -56,25 +62,23 @@
         </div>
         <div class="plan-construct">
           <el-descriptions title="结构信息" :column="2">
-            <el-descriptions-item label="建筑类型" :span="1">{{ functional  }}</el-descriptions-item>
-            <el-descriptions-item label="建筑边界" :span="1">{{boundary }}</el-descriptions-item>
-            <el-descriptions-item label="建筑规模" :span="2">{{ scale }}</el-descriptions-item>
-            <el-descriptions-item label="标准功能模块" :span="2">{{ moduleLibrary  }}</el-descriptions-item>
-            <el-descriptions-item label="门" :span="2">{{ info.structureInfo.doorCount  }}个</el-descriptions-item>
-            <el-descriptions-item label="窗" :span="2">{{ info.structureInfo.windowCount  }}个</el-descriptions-item>
+            <el-descriptions-item label="建筑类型" :span="2">{{ functional }}</el-descriptions-item>
+            <el-descriptions-item label="建筑边界" :span="2">{{ boundary }}</el-descriptions-item>
+            <el-descriptions-item label="建筑规模" :span="2">{{ info.structureInfo.scale  }}</el-descriptions-item>
+            <el-descriptions-item label="标准功能模块" :span="2">{{ moduleLibrary }}</el-descriptions-item>
+            <el-descriptions-item label="门" :span="2">{{ info.structureInfo.doorCount }}个</el-descriptions-item>
+            <el-descriptions-item label="窗" :span="2">{{ info.structureInfo.windowCount }}个</el-descriptions-item>
           </el-descriptions>
         </div>
-           <el-descriptions title="位置信息" :column="2">
-         <el-descriptions-item label="经纬度" :span="2">{{info.locationInfo.latitudeAndLongitude }}</el-descriptions-item>
-            <!-- <el-descriptions-item label="颜色说明" :span="1"> 蓝色表示生活区</el-descriptions-item> -->
-            <!-- <el-descriptions-item label="面积" :span="1"> 3mx4m</el-descriptions-item> -->
-            <!-- <el-descriptions-item label="颜色说明" :span="1"> 其他颜色表示办公区</el-descriptions-item> -->
-            <el-descriptions-item label="面积" :span="1"> {{info.locationInfo.areaDimensions }}</el-descriptions-item>
-            <el-descriptions-item label="海拔" :span="1">{{info.locationInfo.altitude }}</el-descriptions-item>
-            <el-descriptions-item label="功能区划" :span="1">{{info.locationInfo.functionDistinction }}</el-descriptions-item>
-            <!-- <el-descriptions-item label="模式类型" :span="2">{{info.locationInfo.modeType }}</el-descriptions-item> -->
-            <el-descriptions-item label="功能模块布局" :span="2">{{info.locationInfo.functionDistinction }}</el-descriptions-item>
-          </el-descriptions>
+        <el-descriptions title="位置信息" :column="2">
+          <el-descriptions-item label="经纬度" :span="2">{{ info.locationInfo.latitudeAndLongitude }}</el-descriptions-item>
+          <el-descriptions-item label="面积" :span="1"> {{ info.locationInfo.areaDimensions }}</el-descriptions-item>
+          <el-descriptions-item label="海拔" :span="1">{{ info.locationInfo.altitude }}</el-descriptions-item>
+          <el-descriptions-item label="功能区划" :span="1">{{ info.locationInfo.functionDistinction }}</el-descriptions-item>
+          <!-- <el-descriptions-item label="模式类型" :span="2">{{info.locationInfo.modeType }}</el-descriptions-item> -->
+          <el-descriptions-item label="功能模块布局" :span="2">{{ info.locationInfo.functionDistinction
+            }}</el-descriptions-item>
+        </el-descriptions>
       </div>
     </div>
   </div>
@@ -84,7 +88,7 @@
 import { ref, onMounted } from "vue"
 import SchemesList from '@/components/schemes-list/index.vue'
 // import Threeobject from "@/threejs/three/index"
-import { getInternalLayoutDetail, planDetailInfo, planList, createPlan, planExport ,internalLayoutDetail} from '@/apis/project'
+import { getInternalLayoutDetail, planDetailInfo, planList, createPlan, planExport, internalLayoutDetail } from '@/apis/project'
 import { useRender } from "./composables/use-render"
 const { formatTime } = useUtils()
 import dayjs from "dayjs"
@@ -106,9 +110,9 @@ const tapScheme = (item) => {
   currentPlan.value = item
   planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
     const { data: { layouts } } = res
-       info.value = res.data.info
+    info.value = res.data.info
     loading.value = true
-    console.log("layouts",layouts)
+    console.log("layouts", layouts)
     await processThree!.handleOriginModel(layouts)
     loading.value = false
   })
@@ -132,13 +136,13 @@ const downloadSolution = async () => {
     console.error('下载方案失败', error)
   }
 }
-const info = ref<any>({locationInfo:{},structureInfo:{}})
+const info = ref<any>({ locationInfo: {}, structureInfo: {} })
 // 获取详情
 async function fetchDetail() {
   try {
     const { data } = await planList({
       projectId: projectId.value,
-      source:3
+      source: 3
     })
     schemeList.value = data || []
     if (schemeList.value.length > 0) {
@@ -146,8 +150,8 @@ async function fetchDetail() {
       currentPlan.value = schemeList.value[0]
       planDetailInfo({ id: currentAcviteScheme.value }).then(async (res) => {
         let { data: { layouts } } = res
-         loading.value = true
-         info.value = res.data.info
+        loading.value = true
+        info.value = res.data.info
         await processThree!.handleOriginModel(layouts)
         loading.value = false
 
@@ -168,7 +172,7 @@ async function fetchDetail() {
   } finally {
   }
 }
-const functional  = ref("")
+const functional = ref("")
 const boundary = ref("")
 const scale = ref("")
 const moduleLibrary = ref("")
@@ -181,41 +185,41 @@ onMounted(() => {
     progress: () => {
     }
   })
-  internalLayoutDetail({projectId:projectId.value}).then(res=>{
-       let {params}=res.data
+  internalLayoutDetail({ projectId: projectId.value }).then(res => {
+    let { params } = res.data
     params = params || []
-    const find = params.find(ele =>'functional' === ele.field)
+    const find = params.find(ele => 'functional' === ele.field)
     // debugger
-    if(find) {
-      const {options,value} = find
-       functional.value = options.find(ele=>ele.value == value).label
+    if (find) {
+      const { options, value } = find
+      functional.value = options.find(ele => ele.value == value).label
     }
- const boundaryReult = params.find(ele =>'boundary' === ele.field)
-    // debugger
-    if(boundaryReult) {
-      boundary.value = boundaryReult.value.join(",") +"m"
-      // const {options,value} = find
-      //  functional.value = options.find(ele=>ele.value == value).label
-    }
-
-       const scaleResult = params.find(ele =>'scale' === ele.field)
-    // debugger
-    if(scaleResult) {
-      const {options,value} = scaleResult
-       scale.value = options.find(ele=>ele.value == value).label
-       
+    const boundaryReult = params.find(ele => 'boundary' === ele.field)
+    if (boundaryReult) {
+      const { valueConfig } = boundaryReult
+      boundary.value = valueConfig.map(ele => {
+        return `${ele.value}${ele.unit}`
+      }).join(",")
     }
 
-        const moduleLibraryResult = params.find(ele =>'moduleLibrary' === ele.field)
+    const scaleResult = params.find(ele => 'scale' === ele.field)
     // debugger
-    if(moduleLibraryResult) {
-      const {options,value} = moduleLibraryResult
-       moduleLibrary.value = options.find(ele=>ele.value == value).label
+    if (scaleResult) {
+      const { options, value } = scaleResult
+      scale.value = options.find(ele => ele.value == value).label
+
+    }
+
+    const moduleLibraryResult = params.find(ele => 'moduleLibrary' === ele.field)
+    // debugger
+    if (moduleLibraryResult) {
+      const { options, value } = moduleLibraryResult
+      moduleLibrary.value = options.find(ele => ele.value == value).label
     }
 
 
-    
-    
+
+
   })
 })
 const currentPlan = ref<any>({})
