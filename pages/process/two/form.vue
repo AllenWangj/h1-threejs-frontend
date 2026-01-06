@@ -329,53 +329,7 @@ const defData = [
     label: '功能模块建筑',
     value: [],
     options: [],
-    // valueConfig: [
-    //   {
-    //     field: '1',
-    //     type: 'input',
-    //     type2: 'input',
-    //     unit: '个',
-    //     unit2: 'm²',
-    //     value: '',
-    //     value2: ''
-    //   },
-    //   {
-    //     field: '2',
-    //     type: 'input',
-    //     type2: 'input',
-    //     unit: '个',
-    //     unit2: 'm²',
-    //     value: '',
-    //     value2: ''
-    //   },
-    //   {
-    //     field: '3',
-    //     type: 'input',
-    //     type2: 'input',
-    //     unit: '个',
-    //     unit2: 'm²',
-    //     value: '',
-    //     value2: ''
-    //   },
-    //   {
-    //     field: '4',
-    //     type: 'input',
-    //     type2: 'input',
-    //     unit: '个',
-    //     unit2: 'm²',
-    //     value: '',
-    //     value2: ''
-    //   },
-    //   {
-    //     field: '5',
-    //     type: 'input',
-    //     type2: 'input',
-    //     unit: '个',
-    //     unit2: 'm²',
-    //     value: '',
-    //     value2: ''
-    //   }
-    // ]
+    valueConfig: null
   },
   {
     tag: true,
