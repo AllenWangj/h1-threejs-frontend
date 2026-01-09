@@ -69,10 +69,10 @@
           </div>
           <div class="plan-construct">
             <el-descriptions title="结构信息" :column="2">
-              <el-descriptions-item label="建筑类型" :span="2">{{ info.buildingType }}</el-descriptions-item>
-              <el-descriptions-item label="建筑边界" :span="2">{{  info.buildingBoundary }}</el-descriptions-item>
-              <el-descriptions-item label="建筑规模" :span="2">{{  info.buildingScale }}</el-descriptions-item>
-              <el-descriptions-item label="标准功能模块" :span="2">{{  info.standardFunctionModule }}</el-descriptions-item>
+              <el-descriptions-item label="建筑类型" :span="2">{{ functional }}</el-descriptions-item>
+              <el-descriptions-item label="建筑边界" :span="2">{{ boundary }}</el-descriptions-item>
+              <el-descriptions-item label="建筑面积" :span="2">{{  info.buildingScale }}</el-descriptions-item>
+              <el-descriptions-item label="标准功能模块" :span="2">{{  moduleLibrary }}</el-descriptions-item>
               <el-descriptions-item label="门" :span="1">{{  info.doorCount }}个</el-descriptions-item>
               <el-descriptions-item label="窗" :span="1">{{  info.windowCount }}个</el-descriptions-item>
             </el-descriptions>
@@ -89,7 +89,7 @@
 import { ref } from 'vue'
 import SchemesList from '@/components/schemes-list/index.vue'
 // import FourObject from "~~/threejs/four/index"
-import { planList, planDetailInfo, planExport,getStructuralDesignDetail } from '@/apis/project'
+import { internalLayoutDetail,planList, planDetailInfo, planExport,getStructuralDesignDetail } from '@/apis/project'
 import { useRender } from './composables/use-render'
 import { materialInfoService } from './composables/material-info-service'
 import BuildInfo from './build-info.vue'
@@ -212,6 +212,44 @@ function handleSceneScale(state: boolean) {
   processFour!.handleSceneScale(state)
 
 }
+const functional = ref("")
+const boundary = ref("")
+const scale = ref("")
+const moduleLibrary = ref("")
+onMounted(() => {
+    internalLayoutDetail({ projectId: projectId.value }).then(res => {
+    let { params } = res.data
+    params = params || []
+    const find = params.find(ele => 'functional' === ele.field)
+    // debugger
+    if (find) {
+      const { options, value } = find
+      functional.value = options.find(ele => ele.value == value).label
+    }
+    const boundaryReult = params.find(ele => 'boundary' === ele.field)
+    if (boundaryReult) {
+      const { valueConfig } = boundaryReult
+      boundary.value = valueConfig.map(ele => {
+        return `${ele.value}${ele.unit}`
+      }).join(",")
+    }
+
+    const scaleResult = params.find(ele => 'scale' === ele.field)
+    // debugger
+    if (scaleResult) {
+      const { options, value } = scaleResult
+      scale.value = options.find(ele => ele.value == value).label
+
+    }
+
+    const moduleLibraryResult = params.find(ele => 'moduleLibrary' === ele.field)
+    // debugger
+    if (moduleLibraryResult) {
+      const { options, value } = moduleLibraryResult
+      moduleLibrary.value = options.find(ele => ele.value == value).label
+    }
+  })
+})
 </script>
 
 <style lang="less" scoped>

@@ -74,9 +74,9 @@
           <el-descriptions-item label="经纬度" :span="2">{{ info.locationInfo.latitudeAndLongitude }}</el-descriptions-item>
           <el-descriptions-item label="面积" :span="1"> {{ info.locationInfo.areaDimensions }}</el-descriptions-item>
           <el-descriptions-item label="海拔" :span="1">{{ info.locationInfo.altitude }}</el-descriptions-item>
-          <el-descriptions-item label="功能区划" :span="1">{{ info.locationInfo.functionDistinction }}</el-descriptions-item>
+          <el-descriptions-item label="功能区划" :span="1">{{ functionalDivision}}</el-descriptions-item>
           <!-- <el-descriptions-item label="模式类型" :span="2">{{info.locationInfo.modeType }}</el-descriptions-item> -->
-          <el-descriptions-item label="功能模块布局" :span="2">{{ info.locationInfo.functionDistinction
+          <el-descriptions-item label="功能模块布局" :span="2">{{ functionalBuilding
             }}</el-descriptions-item>
         </el-descriptions>
       </div>
@@ -88,7 +88,7 @@
 import { ref, onMounted } from "vue"
 import SchemesList from '@/components/schemes-list/index.vue'
 // import Threeobject from "@/threejs/three/index"
-import { getInternalLayoutDetail, planDetailInfo, planList, createPlan, planExport, internalLayoutDetail } from '@/apis/project'
+import { planLayoutDetailInfo,getInternalLayoutDetail, planDetailInfo, planList, createPlan, planExport, internalLayoutDetail } from '@/apis/project'
 import { useRender } from "./composables/use-render"
 const { formatTime } = useUtils()
 import dayjs from "dayjs"
@@ -176,6 +176,10 @@ const functional = ref("")
 const boundary = ref("")
 const scale = ref("")
 const moduleLibrary = ref("")
+
+
+const functionalDivision = ref("")
+const functionalBuilding = ref("")
 onMounted(() => {
   if (route.query.projectId) {
     projectId.value = route.query.projectId as string
@@ -216,10 +220,30 @@ onMounted(() => {
       const { options, value } = moduleLibraryResult
       moduleLibrary.value = options.find(ele => ele.value == value).label
     }
+  })
 
+  planLayoutDetailInfo({projectId: projectId.value}).then(res=>{
+  //  console.log("res---",res)
+    let {params}=res.data
+    params = params || []
+    // const find = params.find(ele =>'schemaType' === ele.field)
+    // // debugger
+    // if(find) {
+    //   const {options,value} = find
+    //   //  schemaType.value = options.find(ele=>ele.value == value).label
+    // }
+    // debugger
+    const functionalDivisionResult =   params.find(ele =>'functionalDivision' === ele.field)
+    if(functionalDivisionResult) {
+      const {options,value} = functionalDivisionResult
+      functionalDivision.value = options.find(ele=>ele.value == value).label
+    }
 
-
-
+     const ffunctionalBuildingResult =   params.find(ele =>'functionalBuilding' === ele.field)
+    if(ffunctionalBuildingResult) {
+      const {options,value} = ffunctionalBuildingResult
+      functionalBuilding.value = options.find(ele=>ele.value == value).label
+    }
   })
 })
 const currentPlan = ref<any>({})
