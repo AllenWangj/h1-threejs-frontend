@@ -8,9 +8,9 @@ on:
   # 允许手动触发
   workflow_dispatch:
   
-  # 当有推送到main分支时也触发（可选）
+  # 当有推送到master分支时也触发（可选）
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   sync:
@@ -19,7 +19,8 @@ jobs:
       - name: Checkout current repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 获取所有历史记录
+          fetch-depth: 0
+          ref: master  # 明确指定检出master分支
       
       - name: Setup Git
         run: |
@@ -35,12 +36,12 @@ jobs:
       
       - name: Merge changes
         run: |
-          # 切换到main分支
-          git checkout main
-          # 尝试合并，如果冲突则中止
-          git merge source/main --no-edit --allow-unrelated-histories || echo "Merge failed, continuing..."
+          # 确保在master分支
+          git checkout master
+          # 尝试合并源仓库的master分支
+          git merge source/master --no-edit --allow-unrelated-histories || echo "合并失败，继续..."
       
       - name: Push changes to GitHub
-        run: git push origin main
+        run: git push origin master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
