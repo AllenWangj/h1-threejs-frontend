@@ -1,0 +1,46 @@
+name: Auto Sync from Source Repo
+
+on:
+  schedule:
+    # 每隔6小时同步一次（UTC时间）
+    - cron: '0 */6 * * *'
+  
+  # 允许手动触发
+  workflow_dispatch:
+  
+  # 当有推送到main分支时也触发（可选）
+  push:
+    branches: [ main ]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取所有历史记录
+      
+      - name: Setup Git
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+      
+      - name: Add source repository as remote
+        run: |
+          git remote add source https://${{ secrets.SOURCE_USER }}:${{ secrets.SOURCE_TOKEN }}@git.maxtan.cn/MaxTan/h1-threejs-frontend.git
+      
+      - name: Fetch from source
+        run: git fetch source
+      
+      - name: Merge changes
+        run: |
+          # 切换到main分支
+          git checkout main
+          # 尝试合并，如果冲突则中止
+          git merge source/main --no-edit --allow-unrelated-histories || echo "Merge failed, continuing..."
+      
+      - name: Push changes to GitHub
+        run: git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
