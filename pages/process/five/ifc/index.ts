@@ -1,6 +1,8 @@
 
 import * as THREE from 'three'
-import { element } from "./sourceData"
+const { getModelUrl, getModelMap } = useModelMap()
+
+// import { element } from "./sourceData"
 const { BaseThree } = useThree()
 class IFC extends BaseThree {
     constructor(node: HTMLElement) {
@@ -8,13 +10,19 @@ class IFC extends BaseThree {
             enableShadow: true,
             enableDamping: true
         })
-        this.handleLoad()
+        // this.handleLoad()
     }
-    private handleLoad() {
+    public async handleLoad(element) {
         const promiseAll = []
         const urlData = []
+        const codes = element.map(e=>e.element_encode.slice(0, 9)+"01")
+        console.log("'codes",codes)
+         await getModelMap(codes)
         element.forEach(ele => {
-            promiseAll.push(this.loadGLTFResource(` /c/${ele.element_encode.slice(0, 9)}01.glb`))
+            const code = ele.element_encode.slice(0, 9)+"01"
+      const scenePath = getModelUrl(code)
+      debugger
+            promiseAll.push(this.loadGLTFResource(`${scenePath}`))
             urlData.push(ele)
         })
         const wrapper = new THREE.Group()
@@ -35,10 +43,10 @@ class IFC extends BaseThree {
                         y,
                         z
                     )
-                    const xyz = data.transfer_params.corresponding_angles
-                    container.rotation.x = THREE.MathUtils.degToRad(xyz[0]); // X轴旋转
-                    container.rotation.y = THREE.MathUtils.degToRad(xyz[1]); // Y轴旋转
-                    container.rotation.z = THREE.MathUtils.degToRad(xyz[2]); // Z轴旋转
+                    // const xyz = data.transfer_params.corresponding_angles
+                    // container.rotation.x = THREE.MathUtils.degToRad(xyz[0]); // X轴旋转
+                    // container.rotation.y = THREE.MathUtils.degToRad(xyz[1]); // Y轴旋转
+                    // container.rotation.z = THREE.MathUtils.degToRad(xyz[2]); // Z轴旋转
                     container.rotation.order = 'ZYX'; // 默认 XYZ，可改为 'ZYX'/'YZX' 等
                 })
                 const size = this.calculateGroupDimensions(wrapper)

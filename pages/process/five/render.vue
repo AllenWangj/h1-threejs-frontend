@@ -20,7 +20,7 @@ import SchemesList from '@/components/schemes-list/index.vue'
 // import { materialInfoService } from './composables/material-info-service'
 import { getPartsProductionDetail ,algorithmGenerate,planDetail} from '@/apis/project'
 // import ModelWrapper from "@/components/model-wrapper/index.vue"
-
+import {useRender} from "./ifc/index"
 
 // 全屏相关
 const fullscreenContainer = ref<HTMLElement | null>(null)
@@ -87,6 +87,10 @@ async function fetchDetail() {
       // loadModel()
       planDetail({id:"141658339091267725"}).then(res=>{
         console.log("res----",res)
+        const {data:{layouts}} = res
+        const IfcRender = useRender()
+        const ifc = new IfcRender.IFC(threeContainer.value)
+        ifc.handleLoad(layouts)
       })
     }
     console.log('获取部件生产详情', data)
@@ -105,7 +109,7 @@ async function fetchDetail() {
 
 // const hideModel = ref([])
 
-// const threeContainer = ref(null)
+const threeContainer = ref(null)
 // let scene, camera, renderer, controls, animationId
 
 onMounted(() => {
