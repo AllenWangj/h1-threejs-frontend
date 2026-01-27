@@ -90,7 +90,7 @@ async function fetchDetail() {
         const {data:{layouts}} = res
         const IfcRender = useRender()
         const ifc = new IfcRender.IFC(threeContainer.value)
-        ifc.handleLoad(layouts)
+        // ifc.handleLoad(layouts)
       })
     }
     console.log('获取部件生产详情', data)
