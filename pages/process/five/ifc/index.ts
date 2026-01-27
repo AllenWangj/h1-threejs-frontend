@@ -15,11 +15,19 @@ class IFC extends BaseThree {
     public async handleLoad(element) {
         const promiseAll = []
         const urlData = []
-        const codes = element.map(e => e.element_encode)
+        // element = element.map(ele=>{
+        //     return {
+        //         ...ele,
+        //         element_encode:ele.element_encode
+        //     }
+        // })
+        const codes = element.map(e => e.element_encode.slice(0,9) +"0101")
+        debugger
         console.log("'codes", codes)
         await getModelMap(codes)
         element.forEach((ele,index) => {
-            const code = ele.element_encode
+            const code =ele.element_encode.slice(0,9) +"0101"
+            
             const scenePath = getModelUrl(code)
             if(!scenePath) {
                 console.log("scenePath",code)
